@@ -83,21 +83,21 @@
 <meta name="keywords" content="MyCat,Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MyCat 启蒙：分布式系统的数据库架构演变">
-<meta property="og:url" content="http://yoursite.com/2018/02/01/mycat_enlighten/index.html">
+<meta property="og:url" content="http://yoursite.com/2018/02/02/mycat_enlighten/index.html">
 <meta property="og:site_name" content="陈树义">
 <meta property="og:description" content="单数据库架构一个项目在初期的时候，为了尽可能快地验证市场，其对业务系统的最大要求是快速实现。在这个阶段，代码开发人员为了能快速实现业务系统，一般都是将所有层级（MVC）的业务代码都写在同一个项目中，所有的业务数据都存放在同一个数据库中。此时，项目的整体架构图如下所示：  从上图可以看到，我们在一个项目中集中了注册、登陆、购物三个模块的业务代码，并且这三个业务模块都读取同一个业务数据库。 但随着项目">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://images2017.cnblogs.com/blog/595137/201801/595137-20180129201054343-1808516741.png">
-<meta property="og:image" content="http://images2017.cnblogs.com/blog/595137/201801/595137-20180129201107890-1392408389.png">
-<meta property="og:image" content="http://images2017.cnblogs.com/blog/595137/201801/595137-20180129201119687-1235065396.png">
-<meta property="og:image" content="http://images2017.cnblogs.com/blog/595137/201801/595137-20180129201133281-478765222.png">
-<meta property="og:image" content="http://images2017.cnblogs.com/blog/595137/201801/595137-20180129201147281-278356857.png">
-<meta property="og:image" content="http://images2017.cnblogs.com/blog/595137/201801/595137-20180129201200171-1685112165.png">
-<meta property="og:updated_time" content="2018-02-01T09:38:13.305Z">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/mycat_enlighten_01.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/mycat_enlighten_02.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/mycat_enlighten_03.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/mycat_enlighten_04.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/mycat_enlighten_05.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/mycat_enlighten_06.png">
+<meta property="og:updated_time" content="2018-02-07T10:04:26.401Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MyCat 启蒙：分布式系统的数据库架构演变">
 <meta name="twitter:description" content="单数据库架构一个项目在初期的时候，为了尽可能快地验证市场，其对业务系统的最大要求是快速实现。在这个阶段，代码开发人员为了能快速实现业务系统，一般都是将所有层级（MVC）的业务代码都写在同一个项目中，所有的业务数据都存放在同一个数据库中。此时，项目的整体架构图如下所示：  从上图可以看到，我们在一个项目中集中了注册、登陆、购物三个模块的业务代码，并且这三个业务模块都读取同一个业务数据库。 但随着项目">
-<meta name="twitter:image" content="http://images2017.cnblogs.com/blog/595137/201801/595137-20180129201054343-1808516741.png">
+<meta name="twitter:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/mycat_enlighten_01.png">
 
 
 
@@ -127,7 +127,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/02/01/mycat_enlighten/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/02/02/mycat_enlighten/"/>
 
 
 
@@ -289,7 +289,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/mycat_enlighten/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/02/mycat_enlighten/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -318,8 +318,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T17:38:13+08:00">
-                2018-02-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-02T18:04:19+08:00">
+                2018-02-02
               </time>
             
 
@@ -379,15 +379,15 @@
 
       
         <h2 id="单数据库架构"><a href="#单数据库架构" class="headerlink" title="单数据库架构"></a>单数据库架构</h2><p>一个项目在初期的时候，为了尽可能快地验证市场，其对业务系统的最大要求是快速实现。在这个阶段，代码开发人员为了能快速实现业务系统，一般都是将所有层级（MVC）的业务代码都写在同一个项目中，所有的业务数据都存放在同一个数据库中。此时，项目的整体架构图如下所示：</p>
-<p><img src="http://images2017.cnblogs.com/blog/595137/201801/595137-20180129201054343-1808516741.png" alt=""></p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/mycat_enlighten_01.png" alt=""></p>
 <p>从上图可以看到，我们在一个项目中集中了注册、登陆、购物三个模块的业务代码，并且这三个业务模块都读取同一个业务数据库。</p>
 <p>但随着项目的不断推进，用户量不断增长，单台应用服务器已经无法承受如此巨大的流量了。此时常见的做法是把项目进行分布式部署，分散单台服务器的流量，从而可以暂时缓解用户增长带来的应用服务器压力。此时的项目架构图如下所示：</p>
-<p><img src="http://images2017.cnblogs.com/blog/595137/201801/595137-20180129201107890-1392408389.png" alt=""></p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/mycat_enlighten_02.png" alt=""></p>
 <p>但随着我们部署的应用服务器越来越多，后端的单台数据库服务器已经无法承受如此巨大的流量了。为了尽快缓解用户访问压力，我们一般是在应用服务器与数据库服务器中间加多一个缓存层，通过缓存可以抵消掉一部分的数据库查询操作。此时的项目架构图如下所示：</p>
-<p><img src="http://images2017.cnblogs.com/blog/595137/201801/595137-20180129201119687-1235065396.png" alt=""></p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/mycat_enlighten_03.png" alt=""></p>
 <p>但是增加数据库缓存层只能缓解数据库访问压力，拦截部分数据库访问请求。随着用户访问量的进一步增长，数据库访问的瓶颈还是会进一步凸显。这个时候，我们不得不对数据层的架构进行改造。</p>
 <h2 id="主从数据库架构"><a href="#主从数据库架构" class="headerlink" title="主从数据库架构"></a>主从数据库架构</h2><p>这个时候常用的解决方案就是将原本单台数据库服务器变成主从模式的数据库服务器，即一台数据库作为主库支持写入数据，一台数据库作为读库支持查询数据。此时项目的架构图如下所示：</p>
-<p><img src="http://images2017.cnblogs.com/blog/595137/201801/595137-20180129201133281-478765222.png" alt=""></p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/mycat_enlighten_04.png" alt=""></p>
 <p>我们通过数据库主从同步实现了读写分离，将所有读操作都引导到从库进行，将所有写操作都引导到主库进行。</p>
 <p>因为我们对数据库层进行了改造，规定所有读数据库操作要访问从库，所有写数据库操作要访问主库，那么我们就必须对原来的代码进行改造。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public User selectUser()&#123;</span><br><span class="line">    dataTemplate.selectById(...);</span><br><span class="line">&#125;</span><br><span class="line">public User insertUser()&#123;</span><br><span class="line">    dataTemplate.insert(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -406,7 +406,7 @@
 </ul>
 <p>上面说的这些问题只是实战中遇到的一部分问题，事实上遇到的问题只会更多不会更少，而且随着业务的不断发展会愈加凸显。</p>
 <h2 id="垂直切分数据库架构"><a href="#垂直切分数据库架构" class="headerlink" title="垂直切分数据库架构"></a>垂直切分数据库架构</h2><p>此时为了各个业务模块不互相影响，我们把应用层进行垂直拆分，即把注册模块、登陆模块、购物模块都单独作为一个应用系统，分别读写独立的数据库服务器。此时，我们的系统架构图如下图所示：</p>
-<p><img src="http://images2017.cnblogs.com/blog/595137/201801/595137-20180129201147281-278356857.png" alt=""></p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/mycat_enlighten_05.png" alt=""></p>
 <p>实现了垂直拆分之后，我们可以成功解决上面说到的三个问题：业务模块相互影响问题、单数据库压力问题。</p>
 <p>但是随着业务的进一步扩大，我们又增加了许多业务模块：客服模块、钱包模块、个人中心模块、收藏夹模块、订单模块等。按照我们之前所设计的数据库架构，我们会存在许多个数据源，这些数据源分散在各个项目中：</p>
 <ul>
@@ -422,7 +422,7 @@
 <h2 id="水平切分数据库架构"><a href="#水平切分数据库架构" class="headerlink" title="水平切分数据库架构"></a>水平切分数据库架构</h2><p>当数据库架构经历了主从架构、垂直拆分架构之后，应对一般的业务读写是没有什么问题了。但对于一些核心的业务数据，可能还是会有瓶颈问题，例如用户模块。</p>
 <p>对于一些用户量高达一个亿的用户系统来说，即使经过主从架构、垂直拆分架构的优化，但其用户数据库的单个表里需要存储的数据还是高达一个亿的大小。如果我们把所有的数据都存放在一个表里，无论是注册时的插入数据，或者是登陆时的查询数据，势必会变得很慢。</p>
 <p>这时候，我们就不得不对这些高数据量的核心业务表进行水平拆分，即将海量的数据记录拆分到多张表中保存。例如我们一开始可能只有一张 User 表，我们将 User 表按照用户 ID 对 1000 取余进行拆分，那么我们就会有 1000 张表，分别是 User_000 至 User_999。此时，项目的架构图如下所示：</p>
-<p><img src="http://images2017.cnblogs.com/blog/595137/201801/595137-20180129201200171-1685112165.png" alt=""></p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/mycat_enlighten_06.png" alt=""></p>
 <p>当我们在代码中查询用户数据时，我们先根据用户 ID 取余判断其应该操作的表，之后再查询对应的表。例如 UserId 为 90749738 的用户就应该查询 User_38 表，UserId 为 74847383 的用户就应该查询 User_83 表。</p>
 <p>通过水平拆分，我们成功解决了海量数据核心业务表的读写瓶颈问题。但此时在代码层面上有一个问题出现了，那就是我们需要在查询数据库之前，根据 UserId 去判断应该查询哪个表，这个操作对于所有业务模块来说都是高度一致的，应该抽离成一个公用的项目。</p>
 <p>与判断应该使用读数据源还是写数据源一致，我们都觉得这样机械的任务不应该丢给程序员做，应该让机器去做。这其实就是 MyCat 可以帮我们做的事情：<strong>MyCat 通过配置一系列的分库分表规则，让 MyCat 帮我们自动判断应该查询哪一个分表。</strong>通过使用 MyCat 数据库中间件，我们可以省去在代码层判断查询哪个表的冗余代码，从而让开发人员更专注于业务逻辑的开发。</p>
@@ -457,6 +457,26 @@
       
       
 
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/28/something_about_java_log_framework/" rel="next" title="Java日志框架那些事儿">
+                <i class="fa fa-chevron-left"></i> Java日志框架那些事儿
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/07/head_first_of_mycat/" rel="prev" title="MyCat 入门：漫谈 MyCat 配置系统">
+                MyCat 入门：漫谈 MyCat 配置系统 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
 
       
@@ -534,7 +554,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -545,7 +565,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
