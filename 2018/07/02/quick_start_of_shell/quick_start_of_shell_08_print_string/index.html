@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="陈树义">
 <meta property="og:description" content="在 Shell 脚本中，我们可以使用 echo 命令或者 printf 命令来打印字符串。echo 适合用于简单的打印，而 printf 则适用于统一缩进的复杂打印。 echo命令在 Shell 语言中，一般使用 echo 命令来打印字符串。而 echo 命令后面跟着的字符串有好几种形式：裸奔、单引号、双引号。 第一种，裸奔。 所谓裸奔就是后面什么引用符号都不用加，直接写上要输出的字符串。 1ec">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-03T00:02:53.607Z">
+<meta property="og:updated_time" content="2018-07-03T07:51:19.951Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Shell 快速入门（八）：如何打印字符串">
 <meta name="twitter:description" content="在 Shell 脚本中，我们可以使用 echo 命令或者 printf 命令来打印字符串。echo 适合用于简单的打印，而 printf 则适用于统一缩进的复杂打印。 echo命令在 Shell 语言中，一般使用 echo 命令来打印字符串。而 echo 命令后面跟着的字符串有好几种形式：裸奔、单引号、双引号。 第一种，裸奔。 所谓裸奔就是后面什么引用符号都不用加，直接写上要输出的字符串。 1ec">
@@ -401,7 +401,9 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">NAME=<span class="string">"chenshuyi"</span></span><br><span class="line">str=<span class="string">"Hello! My Name is <span class="variable">$NAME</span>"</span>;</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$str</span></span><br></pre></td></tr></table></figure>
 <p>输出结果：<code>Hello! My Name is chenshuyi</code>。可以看到在双引号的引用方式下，我们可以成功打印出 NAME 变量的值。但是这种方式也有其缺陷，就是无法直接打印出特殊字符，需要把特殊进行转义。</p>
 <p><strong>简单地说：如果你打印的语句没有任何变量，那么直接和特殊字符，直接裸奔也未尝不可。但如果有一些特殊字符，那么使用单引号可能更好。如果又有特殊字符，又需要引用变量，那么只能使用双引号了。</strong></p>
-<h2 id="printf命令"><a href="#printf命令" class="headerlink" title="printf命令"></a>printf命令</h2>
+<h2 id="printf命令"><a href="#printf命令" class="headerlink" title="printf命令"></a>printf命令</h2><p>使用 printf 命令可以对齐打印字符串，对于阅读比较友好。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># author:陈树义</span></span><br><span class="line"><span class="comment"># site:www.shuyi.me</span></span><br><span class="line"> </span><br><span class="line"><span class="built_in">printf</span> <span class="string">"%-10s %-8s %-4s\n"</span> 姓名 年龄 存款K  </span><br><span class="line"><span class="built_in">printf</span> <span class="string">"%-10s %-8s %-4.2f\n"</span> 郭靖 30 52.20</span><br><span class="line"><span class="built_in">printf</span> <span class="string">"%-10s %-8s %-4.2f\n"</span> 杨过 25 26.32</span><br><span class="line"><span class="built_in">printf</span> <span class="string">"%-10s %-8s %-4.2f\n"</span> 郭芙 27 15.20</span><br></pre></td></tr></table></figure>
+
       
     </div>
     
