@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="陈树义">
 <meta property="og:description" content="在 Shell 中标记语句的结束有两种方式：分号和换行。 例如下面的 Shell 脚本： 1234a=10if [ $a = 10 ]; then   echo &quot;the value of a is 10&quot;fi 也可以写成： 12345a=10if [ $a = 10 ]then   echo &quot;the value of a is 10&quot;fi 即上面将 if 表达式后面的分号换成换行符了。但是不推">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-03T07:51:07.998Z">
+<meta property="og:updated_time" content="2018-07-04T14:46:40.673Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Shell 快速入门（五）：如何标记语句的结束">
 <meta name="twitter:description" content="在 Shell 中标记语句的结束有两种方式：分号和换行。 例如下面的 Shell 脚本： 1234a=10if [ $a = 10 ]; then   echo &quot;the value of a is 10&quot;fi 也可以写成： 12345a=10if [ $a = 10 ]then   echo &quot;the value of a is 10&quot;fi 即上面将 if 表达式后面的分号换成换行符了。但是不推">
@@ -387,7 +387,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a=10</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> = 10 ]; <span class="keyword">then</span> </span><br><span class="line">  <span class="built_in">echo</span> <span class="string">"the value of a is 10"</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
 <p>也可以写成：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a=10</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> = 10 ]</span><br><span class="line"><span class="keyword">then</span> </span><br><span class="line">  <span class="built_in">echo</span> <span class="string">"the value of a is 10"</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
-<p>即上面将 if 表达式后面的分号换成换行符了。但是不推荐这种写法，因为这样不利于阅读。具体可以在选择结构一文中查看。</p>
+<p>即上面将 if 表达式后面的分号换成换行符了。但是不推荐这种写法，因为这样不利于阅读。因为最好的阅读方式就是 if 和 fi 对齐，中间是执行的语句，就像上面一开始的例子一样。</p>
 
       
     </div>

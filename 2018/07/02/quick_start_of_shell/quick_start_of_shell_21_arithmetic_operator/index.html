@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="在 Shell 中，利用 expr 命令再加上算术运算符可以实现数值运算。目前支持的算术运算符有： [image:0B08004E-7E77-4605-90BC-53E05D5BFE4E-315-00009090865A46D4/8C57D022-B83A-4068-BE91-EC3B6F599424.png] 在 Java 中，我们可以这样实现一个算术运算： 123int a = 12;int">
+<meta name="description" content="在 Shell 中，利用 expr 命令再加上算术运算符可以实现数值运算。目前支持的算术运算符有：  +：加法 -：减法 *：乘法 /：除法 %：取余 =：赋值 ==：相等 !=：不相等  在 Java 中，我们可以这样实现一个算术运算： 123int a = 12;int b = 10;int c = a + b; 但在 Shell 中，我们不能这么操作。因为在 原生 Bash 不支持简单的数学">
 <meta name="keywords" content="Shell,Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Shell 快速入门（二十一）：算术运算符的使用">
 <meta property="og:url" content="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_21_arithmetic_operator/index.html">
 <meta property="og:site_name" content="陈树义">
-<meta property="og:description" content="在 Shell 中，利用 expr 命令再加上算术运算符可以实现数值运算。目前支持的算术运算符有： [image:0B08004E-7E77-4605-90BC-53E05D5BFE4E-315-00009090865A46D4/8C57D022-B83A-4068-BE91-EC3B6F599424.png] 在 Java 中，我们可以这样实现一个算术运算： 123int a = 12;int">
+<meta property="og:description" content="在 Shell 中，利用 expr 命令再加上算术运算符可以实现数值运算。目前支持的算术运算符有：  +：加法 -：减法 *：乘法 /：除法 %：取余 =：赋值 ==：相等 !=：不相等  在 Java 中，我们可以这样实现一个算术运算： 123int a = 12;int b = 10;int c = a + b; 但在 Shell 中，我们不能这么操作。因为在 原生 Bash 不支持简单的数学">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-03T07:52:10.928Z">
+<meta property="og:updated_time" content="2018-07-04T15:29:44.748Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Shell 快速入门（二十一）：算术运算符的使用">
-<meta name="twitter:description" content="在 Shell 中，利用 expr 命令再加上算术运算符可以实现数值运算。目前支持的算术运算符有： [image:0B08004E-7E77-4605-90BC-53E05D5BFE4E-315-00009090865A46D4/8C57D022-B83A-4068-BE91-EC3B6F599424.png] 在 Java 中，我们可以这样实现一个算术运算： 123int a = 12;int">
+<meta name="twitter:description" content="在 Shell 中，利用 expr 命令再加上算术运算符可以实现数值运算。目前支持的算术运算符有：  +：加法 -：减法 *：乘法 /：除法 %：取余 =：赋值 ==：相等 !=：不相等  在 Java 中，我们可以这样实现一个算术运算： 123int a = 12;int b = 10;int c = a + b; 但在 Shell 中，我们不能这么操作。因为在 原生 Bash 不支持简单的数学">
 
 
 
@@ -383,7 +383,16 @@
 
       
         <p>在 Shell 中，利用 expr 命令再加上算术运算符可以实现数值运算。目前支持的算术运算符有：</p>
-<p>[image:0B08004E-7E77-4605-90BC-53E05D5BFE4E-315-00009090865A46D4/8C57D022-B83A-4068-BE91-EC3B6F599424.png]</p>
+<ul>
+<li><code>+</code>：加法</li>
+<li><code>-</code>：减法</li>
+<li><code>*</code>：乘法</li>
+<li><code>/</code>：除法</li>
+<li><code>%</code>：取余</li>
+<li><code>=</code>：赋值</li>
+<li><code>==</code>：相等</li>
+<li><code>!=</code>：不相等</li>
+</ul>
 <p>在 Java 中，我们可以这样实现一个算术运算：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">12</span>;</span><br><span class="line"><span class="keyword">int</span> b = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> c = a + b;</span><br></pre></td></tr></table></figure>
 <p>但在 Shell 中，我们不能这么操作。因为在 原生 Bash 不支持简单的数学运算，所以在 Shell 语言中的运算都是通过其他命令来实现的，其中最常用的就是 expr 命令。</p>
@@ -422,8 +431,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_17_array/" rel="next" title="Shell 快速入门（十七）：如何使用数组">
-                <i class="fa fa-chevron-left"></i> Shell 快速入门（十七）：如何使用数组
+              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_16_file_judge/" rel="next" title="Shell 快速入门（十六）：如何进行文件判断">
+                <i class="fa fa-chevron-left"></i> Shell 快速入门（十六）：如何进行文件判断
               </a>
             
           </div>
@@ -432,8 +441,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_18_special_syntax/" rel="prev" title="Shell 快速入门（十八）：特殊符号的使用">
-                Shell 快速入门（十八）：特殊符号的使用 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_17_array/" rel="prev" title="Shell 快速入门（十七）：如何使用数组">
+                Shell 快速入门（十七）：如何使用数组 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

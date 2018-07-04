@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="陈树义">
 <meta property="og:description" content="有时候我们需要比较两个数字的大小关系，这时候就要用到关系运算符。关系运算符只支持数值运算，不支持字符运算。 12345678910111213#!/bin/bash# author:陈树义# site:www.chenshuyi.coma=10b=20if [ $a -gt $b ]then   echo &quot;a great than b&quot;else   echo &quot;a not great than">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-03T07:52:07.600Z">
+<meta property="og:updated_time" content="2018-07-04T15:28:17.019Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Shell 快速入门（二十）：关系运算符的使用">
 <meta name="twitter:description" content="有时候我们需要比较两个数字的大小关系，这时候就要用到关系运算符。关系运算符只支持数值运算，不支持字符运算。 12345678910111213#!/bin/bash# author:陈树义# site:www.chenshuyi.coma=10b=20if [ $a -gt $b ]then   echo &quot;a great than b&quot;else   echo &quot;a not great than">
@@ -386,7 +386,14 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># author:陈树义</span></span><br><span class="line"><span class="comment"># site:www.chenshuyi.com</span></span><br><span class="line"></span><br><span class="line">a=10</span><br><span class="line">b=20</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> -gt <span class="variable">$b</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">   <span class="built_in">echo</span> <span class="string">"a great than b"</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">   <span class="built_in">echo</span> <span class="string">"a not great than b"</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
 <p>上面输出：<code>a not great than b</code>。</p>
 <p>除了支持大于运算符，Shell 语言还支持下面这些关系运算符：</p>
-<p>[image:C34013BD-15AA-48FE-B5D7-6559B1B9C456-315-0000913506C8D431/0274C915-A250-477A-8CED-1EA35A3668BA.png]</p>
+<ul>
+<li><code>-eq</code>：检测两个数是否相等，相等返回 true。</li>
+<li><code>-ne</code>：检测两个数是否不相等，相等返回 true。</li>
+<li><code>-gt</code>：检测左边的数是否大于右边的，如果是返回 true。</li>
+<li><code>-lt</code>：检测左边的数是否小于右边的，如果是返回 true。</li>
+<li><code>-ge</code>：检测左边的数是否大于等于右边的，如果是返回 true。</li>
+<li><code>-le</code>：检测左边的数是否小于等于右边的，如果是返回 true。</li>
+</ul>
 
       
     </div>

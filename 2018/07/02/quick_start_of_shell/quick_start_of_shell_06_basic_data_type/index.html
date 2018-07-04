@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="陈树义">
 <meta property="og:description" content="Shell 语言是一门弱类型的语言，它并没有数据类型上的概念。无论你输入的是字符串、数字，在 Shell 中都按照字符串类型来存储。至于具体是什么类型，Shell 根据上下文去确定。 例如下面当你尝试对一个字符串进行加一操作时，Shell 运行时便会报错。 12345#!/bin/bashnum=&quot;Hello&quot;echo `expr $num + 1`	//expr: not a decimal n">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-03T07:51:12.238Z">
+<meta property="og:updated_time" content="2018-07-04T14:46:56.506Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Shell 快速入门（六）：基本数据类型">
 <meta name="twitter:description" content="Shell 语言是一门弱类型的语言，它并没有数据类型上的概念。无论你输入的是字符串、数字，在 Shell 中都按照字符串类型来存储。至于具体是什么类型，Shell 根据上下文去确定。 例如下面当你尝试对一个字符串进行加一操作时，Shell 运行时便会报错。 12345#!/bin/bashnum=&quot;Hello&quot;echo `expr $num + 1`	//expr: not a decimal n">
@@ -384,7 +384,7 @@
       
         <p>Shell 语言是一门弱类型的语言，它并没有数据类型上的概念。无论你输入的是字符串、数字，在 Shell 中都按照字符串类型来存储。至于具体是什么类型，Shell 根据上下文去确定。 例如下面当你尝试对一个字符串进行加一操作时，Shell 运行时便会报错。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">num=<span class="string">"Hello"</span></span><br><span class="line"><span class="built_in">echo</span> `expr <span class="variable">$num</span> + 1`	//expr: not a decimal number: <span class="string">'Hello'</span></span><br><span class="line">num=1</span><br><span class="line"><span class="built_in">echo</span> `expr <span class="variable">$num</span> + 1`	//2</span><br></pre></td></tr></table></figure>
-<p>这是因为虽然 Shell 语言是弱语言类型，但其解释执行的时候会进行语法检查。意识到 Shell 在数据类型上的特殊性很重要，这样你就不会犯一些基础错误了。例如下面的例子：</p>
+<p>这是因为虽然 Shell 语言是弱语言类型，但其解释执行的时候会进行语法检查。<strong>意识到 Shell 在数据类型上的特殊性很重要，这样你就不会犯一些基础错误了。</strong>例如下面的例子：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">result=<span class="string">"false"</span></span><br><span class="line"><span class="keyword">if</span> <span class="variable">$result</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"true."</span></span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"false."</span>	<span class="comment"># 输出false</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
 <p>虽然上面的 result 变量是一个字符串，但是实际上在运行时，Shell 是将其当成一个布尔型的值进行比较的。当你将 result 改成 true 之后，结果便会输出 true。</p>
 

@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="陈树义">
 <meta property="og:description" content="因为 Shell 语言是一门弱语言类型，所以变量可以无须定义便可直接使用。在 Shell 语言中，引用变量有几种方式。 第一种，直接使用 $ 符号引用。 12str=&quot;Hello&quot;echo $str	//Hello 第二种，使用 ${} 符号引用。 12str=&quot;Hello&quot;echo $&amp;#123;str&amp;#125; //Hello 一般来说，如果不会引起变量的阅读困难，那么可以使用第一种变量引用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-03T07:51:17.031Z">
+<meta property="og:updated_time" content="2018-07-04T14:48:25.385Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Shell 快速入门（七）：变量的使用">
 <meta name="twitter:description" content="因为 Shell 语言是一门弱语言类型，所以变量可以无须定义便可直接使用。在 Shell 语言中，引用变量有几种方式。 第一种，直接使用 $ 符号引用。 12str=&quot;Hello&quot;echo $str	//Hello 第二种，使用 ${} 符号引用。 12str=&quot;Hello&quot;echo $&amp;#123;str&amp;#125; //Hello 一般来说，如果不会引起变量的阅读困难，那么可以使用第一种变量引用">
@@ -391,6 +391,8 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"What is your name?"</span></span><br><span class="line"><span class="built_in">read</span> USER_NAME</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Hello <span class="variable">$USER_NAME</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"I have create an email <span class="variable">$USER_NAME</span>@gmail.com for you"</span></span><br></pre></td></tr></table></figure>
 <p>上面的例子非常简单，输入你的名字，为你创建一个邮箱。虽然上面的例子能正常运行，但是却不易阅读。特别最后一行，你需要很仔细端详，才知道原来是引用了<code>$USER_NAME</code>这个变量，而不是引用了<code>$USER_NAME@gmail.com</code>这个变量。在这种情况下，使用花括号来引用变量是更为合适的：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"What is your name?"</span></span><br><span class="line"><span class="built_in">read</span> USER_NAME</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Hello <span class="variable">$USER_NAME</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"I have create an email <span class="variable">$&#123;USER_NAME&#125;</span>@gmail.com for you"</span></span><br></pre></td></tr></table></figure>
+<p>虽然说我们可以加上大括号，或者不加，但是业界统一的规范还是加上大括号。因为这样比较统一，便于阅读。<strong>因此树义也建议大家使用第二种方式，即使用加上大括号的方式。</strong></p>
+
       
     </div>
     

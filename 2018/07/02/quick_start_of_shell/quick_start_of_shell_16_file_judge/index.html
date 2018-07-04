@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="文件测试运算符用于检测文件的各种状态和属性，目前支持的运算符如下： [image:44DD7249-5EF8-42CE-9839-BF166BD387D8-315-000096C2B00CE9BC/6EDA3189-B658-41F8-81C3-75337D6977E2.png] 变量 file 表示文件 /User/chenshuyi/hello.sh，它的大小为 52 字节，具有 rwx 权限">
+<meta name="description" content="文件测试运算符用于检测文件的各种状态和属性，目前支持的运算符如下：  -b file：是否块设备文件 -c file：是否字符设别文件 -d file：是否目录 -f file：是否普通文件 -g file：文件是否设置了 SGID 位 -k file：是否设置了粘着位 -p file：文件是否有名管道 -u file：文件是否设置了 SUID 位 -r file：文件是否可读 -w file：文">
 <meta name="keywords" content="Shell,Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Shell 快速入门（十六）：如何进行文件判断">
 <meta property="og:url" content="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_16_file_judge/index.html">
 <meta property="og:site_name" content="陈树义">
-<meta property="og:description" content="文件测试运算符用于检测文件的各种状态和属性，目前支持的运算符如下： [image:44DD7249-5EF8-42CE-9839-BF166BD387D8-315-000096C2B00CE9BC/6EDA3189-B658-41F8-81C3-75337D6977E2.png] 变量 file 表示文件 /User/chenshuyi/hello.sh，它的大小为 52 字节，具有 rwx 权限">
+<meta property="og:description" content="文件测试运算符用于检测文件的各种状态和属性，目前支持的运算符如下：  -b file：是否块设备文件 -c file：是否字符设别文件 -d file：是否目录 -f file：是否普通文件 -g file：文件是否设置了 SGID 位 -k file：是否设置了粘着位 -p file：文件是否有名管道 -u file：文件是否设置了 SUID 位 -r file：文件是否可读 -w file：文">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-03T07:51:50.312Z">
+<meta property="og:updated_time" content="2018-07-04T15:15:02.440Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Shell 快速入门（十六）：如何进行文件判断">
-<meta name="twitter:description" content="文件测试运算符用于检测文件的各种状态和属性，目前支持的运算符如下： [image:44DD7249-5EF8-42CE-9839-BF166BD387D8-315-000096C2B00CE9BC/6EDA3189-B658-41F8-81C3-75337D6977E2.png] 变量 file 表示文件 /User/chenshuyi/hello.sh，它的大小为 52 字节，具有 rwx 权限">
+<meta name="twitter:description" content="文件测试运算符用于检测文件的各种状态和属性，目前支持的运算符如下：  -b file：是否块设备文件 -c file：是否字符设别文件 -d file：是否目录 -f file：是否普通文件 -g file：文件是否设置了 SGID 位 -k file：是否设置了粘着位 -p file：文件是否有名管道 -u file：文件是否设置了 SUID 位 -r file：文件是否可读 -w file：文">
 
 
 
@@ -383,7 +383,22 @@
 
       
         <p>文件测试运算符用于检测文件的各种状态和属性，目前支持的运算符如下：</p>
-<p>[image:44DD7249-5EF8-42CE-9839-BF166BD387D8-315-000096C2B00CE9BC/6EDA3189-B658-41F8-81C3-75337D6977E2.png]</p>
+<ul>
+<li><code>-b file</code>：是否块设备文件</li>
+<li><code>-c file</code>：是否字符设别文件</li>
+<li><code>-d file</code>：是否目录</li>
+<li><code>-f file</code>：是否普通文件</li>
+<li><code>-g file</code>：文件是否设置了 SGID 位</li>
+<li><code>-k file</code>：是否设置了粘着位</li>
+<li><code>-p file</code>：文件是否有名管道</li>
+<li><code>-u file</code>：文件是否设置了 SUID 位</li>
+<li><code>-r file</code>：文件是否可读</li>
+<li><code>-w file</code>：文件是否可写</li>
+<li><code>-x file</code>：文件是否可执行</li>
+<li><code>-s file</code>：文件是否为空（文件大小是否大于0），不为空返回 true。</li>
+<li><code>-e file</code>：文件（包括目录）是否存在</li>
+</ul>
+<p>要特别注意的是<code>-s file</code>判断文件是否为空时，不为空才返回true。</p>
 <p>变量 file 表示文件 <code>/User/chenshuyi/hello.sh</code>，它的大小为 52 字节，具有 rwx 权限。下面的代码，将检测该文件的各种属性：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># author:陈树义</span><br><span class="line"># site:http://www.shuyi.me</span><br><span class="line"></span><br><span class="line">file=&quot;/User/chenshuyi/hello.sh&quot;</span><br><span class="line">if [ -r $file ]</span><br><span class="line">then</span><br><span class="line">   echo &quot;文件可读&quot;</span><br><span class="line">else</span><br><span class="line">   echo &quot;文件不可读&quot;</span><br><span class="line">fi</span><br><span class="line">if [ -w $file ]</span><br><span class="line">then</span><br><span class="line">   echo &quot;文件可写&quot;</span><br><span class="line">else</span><br><span class="line">   echo &quot;文件不可写&quot;</span><br><span class="line">fi</span><br><span class="line">if [ -x $file ]</span><br><span class="line">then</span><br><span class="line">   echo &quot;文件可执行&quot;</span><br><span class="line">else</span><br><span class="line">   echo &quot;文件不可执行&quot;</span><br><span class="line">fi</span><br><span class="line">if [ -f $file ]</span><br><span class="line">then</span><br><span class="line">   echo &quot;文件为普通文件&quot;</span><br><span class="line">else</span><br><span class="line">   echo &quot;文件为特殊文件&quot;</span><br><span class="line">fi</span><br><span class="line">if [ -d $file ]</span><br><span class="line">then</span><br><span class="line">   echo &quot;文件是个目录&quot;</span><br><span class="line">else</span><br><span class="line">   echo &quot;文件不是个目录&quot;</span><br><span class="line">fi</span><br><span class="line">if [ -s $file ]</span><br><span class="line">then</span><br><span class="line">   echo &quot;文件不为空&quot;</span><br><span class="line">else</span><br><span class="line">   echo &quot;文件为空&quot;</span><br><span class="line">fi</span><br><span class="line">if [ -e $file ]</span><br><span class="line">then</span><br><span class="line">   echo &quot;文件存在&quot;</span><br><span class="line">else</span><br><span class="line">   echo &quot;文件不存在&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
 <p>输出结果为：</p>
@@ -430,8 +445,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_17_array/" rel="prev" title="Shell 快速入门（十七）：如何使用数组">
-                Shell 快速入门（十七）：如何使用数组 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_21_arithmetic_operator/" rel="prev" title="Shell 快速入门（二十一）：算术运算符的使用">
+                Shell 快速入门（二十一）：算术运算符的使用 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
