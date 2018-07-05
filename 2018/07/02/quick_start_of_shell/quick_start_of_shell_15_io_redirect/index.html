@@ -79,15 +79,18 @@
 
 
 
+<meta name="description" content="在写 Shell 脚本的时候，我们经常会想将命令的输出结果保存到文件中，或者将命令的执行结果保存到日志记录中。这时候就需要把命令的输出结果重定向。而要进行重定向，就要了解 Linux 的输入输出流。 在 Linux 中有三个经常用到的输入输出流，他们分别是：  标准输入（stdin） 标准输出（stdout） 标准错误（stderr）  在 Linux 系统中，系统保留了 0（标准输入）、1（标准">
 <meta name="keywords" content="Shell,Linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Shell 快速入门（十五）：输入输出重定向">
+<meta property="og:title" content="Shell 快速入门（十五）：输出重定向">
 <meta property="og:url" content="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_15_io_redirect/index.html">
 <meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="在写 Shell 脚本的时候，我们经常会想将命令的输出结果保存到文件中，或者将命令的执行结果保存到日志记录中。这时候就需要把命令的输出结果重定向。而要进行重定向，就要了解 Linux 的输入输出流。 在 Linux 中有三个经常用到的输入输出流，他们分别是：  标准输入（stdin） 标准输出（stdout） 标准错误（stderr）  在 Linux 系统中，系统保留了 0（标准输入）、1（标准">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-03T07:51:46.312Z">
+<meta property="og:updated_time" content="2018-07-05T13:41:42.075Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Shell 快速入门（十五）：输入输出重定向">
+<meta name="twitter:title" content="Shell 快速入门（十五）：输出重定向">
+<meta name="twitter:description" content="在写 Shell 脚本的时候，我们经常会想将命令的输出结果保存到文件中，或者将命令的执行结果保存到日志记录中。这时候就需要把命令的输出结果重定向。而要进行重定向，就要了解 Linux 的输入输出流。 在 Linux 中有三个经常用到的输入输出流，他们分别是：  标准输入（stdin） 标准输出（stdout） 标准错误（stderr）  在 Linux 系统中，系统保留了 0（标准输入）、1（标准">
 
 
 
@@ -123,7 +126,7 @@
 
 
 
-  <title>Shell 快速入门（十五）：输入输出重定向 | 陈树义</title>
+  <title>Shell 快速入门（十五）：输出重定向 | 陈树义</title>
   
 
 
@@ -296,7 +299,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Shell 快速入门（十五）：输入输出重定向</h1>
+          <h1 class="post-title" itemprop="name headline">Shell 快速入门（十五）：输出重定向</h1>
         
 
         <div class="post-meta">
@@ -348,7 +351,7 @@
 
           
           
-             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_15_io_redirect/" class="leancloud_visitors" data-flag-title="Shell 快速入门（十五）：输入输出重定向">
+             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_15_io_redirect/" class="leancloud_visitors" data-flag-title="Shell 快速入门（十五）：输出重定向">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -379,7 +382,24 @@
       
 
       
-        
+        <p>在写 Shell 脚本的时候，我们经常会想将命令的输出结果保存到文件中，或者将命令的执行结果保存到日志记录中。这时候就需要把命令的输出结果重定向。而要进行重定向，就要了解 Linux 的输入输出流。</p>
+<p>在 Linux 中有三个经常用到的输入输出流，他们分别是：</p>
+<ul>
+<li>标准输入（stdin）</li>
+<li>标准输出（stdout）</li>
+<li>标准错误（stderr）</li>
+</ul>
+<p>在 Linux 系统中，系统保留了 0（标准输入）、1（标准输出）、2（标准错误） 三个文件描述符分别代表它们。</p>
+<p><strong>标准输入指的是从键盘这些标准输入设备读取到的数据。</strong>一般情况下标准输入重定向的很少用到，因此我们就不展开说。</p>
+<p><strong>标准输出则是通过屏幕输出的这些数据。</strong>我们可以通过标准输出重定向来让数据保存到文件里。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">YuRongChandeMacBook-Pro:chenshuyi yurongchan$ echo &quot;hello shell, I&apos;m shuyi&quot; &gt; out.txt</span><br><span class="line">YuRongChandeMacBook-Pro:chenshuyi yurongchan$ cat out.txt</span><br><span class="line">hello shell, I&apos;m shuyi</span><br></pre></td></tr></table></figure>
+<p>可以看到 echo 命令的输出并没有在屏幕上打印出来，而是保存在了 out.txt 文件中。</p>
+<p>其实上面这种方式和<code>echo &quot;hello&quot; 1&gt; out.txt</code>这条命令的结果是一样的。或许是因为标准输出重定向比较频繁，所以就把数字 1 省略了。</p>
+<p><strong>标准错误是指输出的错误信息。</strong>例如当我们运行一条错误的指令时，控制台会提示凑无信息，这些就是错误信息。如果我们要重定向错误信息到文件中，我们可以用<code>2&gt;</code>这个操作符。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">YuRongChandeMacBook-Pro:chenshuyi yurongchan$ ls +</span><br><span class="line">ls: +: No such file or directory</span><br><span class="line">YuRongChandeMacBook-Pro:chenshuyi yurongchan$ ls + 2&gt; error.txt</span><br><span class="line">YuRongChandeMacBook-Pro:chenshuyi yurongchan$ cat error.txt</span><br><span class="line">ls: +: No such file or directory</span><br></pre></td></tr></table></figure>
+<p>通过<code>2&gt;</code>这个操作符，我们将标准错误重定向到了 error.txt 文件中了。</p>
+<p>说到这里，输入输出重定向就说完了。其实这一章很简单，就是通过<code>1&gt;</code>和<code>2&gt;</code>这两个操作符达到输出重定向的目的。</p>
+
       
     </div>
     
