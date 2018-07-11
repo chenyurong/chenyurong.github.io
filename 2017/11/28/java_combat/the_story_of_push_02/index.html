@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="推送," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在《测试妹子的呐喊：为什么总是收不到推送？》这篇文章中，小树解决了测试妹子收不到推送的反馈后，小树对推送就异常感兴趣，把项目里面所有有关推送的代码都阅读了一遍。 但细心的小树发现这里面并没有请求苹果 APNS 接口的代码，只有一些类似于极光推送，友盟推送，腾讯信鸽等推送的注释。 带着这些疑惑，小树又找到了小黑，希望能再次得到大神的指导。 极光推送、友盟推送、腾讯信鸽这些其实都是第三方推送服务商，小">
+<meta name="keywords" content="推送">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开发小哥的困惑：为何要用第三方推送？">
+<meta property="og:url" content="http://yoursite.com/2017/11/28/java_combat/the_story_of_push_02/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="在《测试妹子的呐喊：为什么总是收不到推送？》这篇文章中，小树解决了测试妹子收不到推送的反馈后，小树对推送就异常感兴趣，把项目里面所有有关推送的代码都阅读了一遍。 但细心的小树发现这里面并没有请求苹果 APNS 接口的代码，只有一些类似于极光推送，友盟推送，腾讯信鸽等推送的注释。 带着这些疑惑，小树又找到了小黑，希望能再次得到大神的指导。 极光推送、友盟推送、腾讯信鸽这些其实都是第三方推送服务商，小">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-07-11T09:52:18.413Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="开发小哥的困惑：为何要用第三方推送？">
+<meta name="twitter:description" content="在《测试妹子的呐喊：为什么总是收不到推送？》这篇文章中，小树解决了测试妹子收不到推送的反馈后，小树对推送就异常感兴趣，把项目里面所有有关推送的代码都阅读了一遍。 但细心的小树发现这里面并没有请求苹果 APNS 接口的代码，只有一些类似于极光推送，友盟推送，腾讯信鸽等推送的注释。 带着这些疑惑，小树又找到了小黑，希望能再次得到大神的指导。 极光推送、友盟推送、腾讯信鸽这些其实都是第三方推送服务商，小">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/28/java_combat/the_story_of_push_02/"/>
+
+
+
+
+
+  <title>开发小哥的困惑：为何要用第三方推送？ | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/28/java_combat/the_story_of_push_02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">开发小哥的困惑：为何要用第三方推送？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-28T18:17:29+08:00">
+                2017-11-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java实战/" itemprop="url" rel="index">
+                    <span itemprop="name">Java实战</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/11/28/java_combat/the_story_of_push_02/" class="leancloud_visitors" data-flag-title="开发小哥的困惑：为何要用第三方推送？">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在<a href="http://www.cnblogs.com/chanshuyi/p/head_first_of_push_01.html" target="_blank" rel="noopener">《测试妹子的呐喊：为什么总是收不到推送？》</a>这篇文章中，小树解决了测试妹子收不到推送的反馈后，小树对推送就异常感兴趣，把项目里面所有有关推送的代码都阅读了一遍。</p>
+<p>但细心的小树发现这里面并没有请求苹果 APNS 接口的代码，只有一些类似于极光推送，友盟推送，腾讯信鸽等推送的注释。</p>
+<p>带着这些疑惑，小树又找到了小黑，希望能再次得到大神的指导。</p>
+<p>极光推送、友盟推送、腾讯信鸽这些其实都是第三方推送服务商，小黑说道。</p>
+<p>诶，有了官方推送那为什么还要用第三方推送呢，小树困惑地问道。</p>
+<p>你这个问题倒是问对了，但要清楚地解释这个问题，就必须跟你讲一讲推送的历史了。小黑补充说。</p>
+<h2 id="苹果的远见：APNS诞生"><a href="#苹果的远见：APNS诞生" class="headerlink" title="苹果的远见：APNS诞生"></a>苹果的远见：APNS诞生</h2><p>其实互联网崛起也就在 2010 年左右，在这之前是没有推送这个概念的。而在互联网时代，最常用的几大平台就是：iOS、Android、Windows Phone。</p>
+<p>在 iOS 平台上，苹果有其官方推送平台 APNS（Apple Push Notification service），开发者可以直接使用该推送服务，但是提供的功能非常有限。</p>
+<p>说起官方推送服务，苹果可以说是很有自己的远见的。在 iOS 系统一推出的时候就推出了 APNS 服务，所有推送给用户的通知必须要通过 APNS 服务才可以送达。</p>
+<p>「不就是一个服务嘛，这么大的公司应该没啥问题吧」，小树不屑地说。</p>
+<p>可能一般人觉得这没啥啊，不就一个服务嘛。但对于一个提供硬件厂商的公司来说，让其来做一个软件服务提供商，还是有些难度的，并且还是一个高并发量、海量用户的一个服务。如果服务发生了异常，那么这个锅可就是要苹果背的。</p>
+<h2 id="安卓的短视：混乱的推送"><a href="#安卓的短视：混乱的推送" class="headerlink" title="安卓的短视：混乱的推送"></a>安卓的短视：混乱的推送</h2><p>你看，安卓平台可就做出了不一样的选择了。安卓平台在一开始推出的时候并没有考虑到统一推送平台的问题，所以在安卓平台上是没有一个统一的推送解决方案的。虽然后面安卓平台也推出了自己的 GCM (Google Cloud Messaging）推送平台，但开发者都习惯使用了自己的第三方推送服务，想改也很难了。再之，因为 Google 服务长期在国内处于不可用状态，所以开发者也就懒得改了。</p>
+<p>因为以上许多原因，你可以看到苹果和安卓系统在设计推送系统上的不同。这其实直接就导致了用户在使用时的体验。对于苹果系统来说，因为 iOS 对推送做了严格的规范，所以在 iOS 系统上的推送代码都比较规范，不敢造次。而在安卓平台上，因为没有了具体的规范，所以经常会出现弹窗通知一大堆的情况，过度打扰了用户。</p>
+<p>除了用户体验问题，与推送相关的还有另一个手机电量的问题。因为 iOS 对推送服务做了统一，所以在 iOS 手机上一般情况下就只会有一个「官方推送服务」的系统服务一直运行。而对于 Android 平台来说，因为每个 App 提供商都有自己喜好的第三方服务提供商，所以经常会出现一个 Android 设备上运行着数十个推送服务。这毋庸置疑就直接导致了 Android 设备的耗电量急剧上升，而 iOS 设备则因为良好的规范设计避免了这个问题。</p>
+<p>说了这么多东西，觉得懂了挺多东西的，但发现并没有解决一开始提出的问题。</p>
+<h2 id="为什么用第三方推送？"><a href="#为什么用第三方推送？" class="headerlink" title="为什么用第三方推送？"></a>为什么用第三方推送？</h2><p>那到底为什么要用第三方推送而不是用官方推送呢？小树继续问。</p>
+<p>其实这个问题只问对了一半，并不完全正确。</p>
+<p>因为 Android 平台上的官方推送服务经常处于不可用的状态。所以如果我们使用 Android 平台的官方推送的话，就会使得我们的推送服务非常不安全。因为这个原因，我们只能抛弃 Android 平台的官方服务。那现在只有两条路可以走，一个是自建推送服务，另一个是使用第三方推送服务。</p>
+<p>前面说到自建推送服务的难度是很高的，不仅要求开发人员有丰富的开发经验，还要求其对网络编程方面的知识有深入的了解。此外，对于运维人员也有很高的要求，其必须保证服务能长时间零差错地运行。</p>
+<p>这样的要求对于中小型公司来收，成本是非常高的。所以很多时候，许多公司会选择第三方推送服务，就像我们公司一样。</p>
+<p><em>小树这下终于明白了使用第三方推送的原因了。</em>虽然饶了许多弯子，但知其然才能知其所依然嘛。了解多一些历史背景和原因，才能更好地理解现在所使用的技术。</p>
+<p>这就是许多公司为什么选择第三方推送的原因了。而因为 Android 使用了第三方推送，一般情况下都会要求 iOS 端也使用第三方推送，这是为了保持移动端实现的统一。你想一想，如果 Android 用第三方推送，而 iOS 端使用官方推送，那后台代码岂不是要写两次实现？</p>
+<p>对！保持一定的规范性是非常必要的。小树兴奋地说道。</p>
+<h2 id="第三方推送的优势"><a href="#第三方推送的优势" class="headerlink" title="第三方推送的优势"></a>第三方推送的优势</h2><p>除了技术实现难度低、统一移动端的推送之外，第三方推送平台的有点之一是能实现更多复杂的功能。</p>
+<p>对于 APNS 官方推送服务来说，它只允许我们推送一个系统通知，用户点击之后跳转到 App 里的某个页面。但第三方推送服务则可以实现更多复杂的操作，比如用户点击通知后直接播放。</p>
+<p>所以我们使用第三方推送的原因就是：</p>
+<ul>
+<li>Android 官方推送的缺陷，我们只能使用第三方推送服务。</li>
+<li>使用第三方推送实现难度低，可以节省成本。</li>
+<li>使用第三方推送能实现更多的复杂功能。</li>
+</ul>
+<p>你的总结能力可真不错啊，小黑竖起了大拇指。</p>
+<h2 id="苹果与安卓的推送差异"><a href="#苹果与安卓的推送差异" class="headerlink" title="苹果与安卓的推送差异"></a>苹果与安卓的推送差异</h2><p>但你还没解释为什么我那个问题只问对了一半呢。（为什么要用第三方推送而不是用官方推送呢？）</p>
+<p>你不仅总结能力不差，记性还很厉害嘛。</p>
+<p>在回答你这个问题之前，我先问题几个问题。</p>
+<p>在 iOS 设备上，我们的 App 使用了第三方推送。我们把 App 进程杀掉后，给该用户发送一条推送消息，你猜该 iOS 设备能否收到？</p>
+<p>小树摸摸脑袋想，我们使用第三方推送服务，那这个推送服务必然是跟随我们的 App 进程的。既然 App 进程都被杀掉了，那应该是接收不到推送的了。</p>
+<p>就在小树思考的那几分钟，小黑打开了一个小项目，模拟了一次简单的推送。接着小黑运行了一个 JUnit 测试用例，向旁边的测试机发送了一条推送。过了没几秒手机就响起了「叮叮」的推送提示声。</p>
+<p>小树这下子可是丈二和尚摸不着头脑，但是小黑却不急着回答小树的问题。继续问第二个问题。</p>
+<p>在 Android 设备上，我们的 App 使用了第三方推送。我们把 App 进程杀掉后，给该用户发送一条推送消息，你猜该 Android 设备能否收到？</p>
+<p>小黑还是用原先的方式发送了一条测试推送，这次旁边的 Android 测试机却一点动静都没有。</p>
+<p>小树这下可真的完全不知道所以然了，为什么 iOS 设备杀掉进程后能收到推送，而 Android 设备却不行？</p>
+<p>小树急的像热锅上的蚂蚁，但小黑却悠然自得地拿起旁边的咖啡喝了起来。</p>
+<p>今天还有紧急需求要做，下次我再给你讲讲这个问题，你先回去想一想吧。小黑这次卖了个关子。</p>
+<hr>
+<p>你所看到是推送系列文章中的一篇，更多关于推送的文章：</p>
+<ul>
+<li><a href="http://shuyi.me/2017/11/28/java_combat/the_story_of_push_01/" target="_blank" rel="noopener">《测试妹子的呐喊：为什么总是收不到推送？》</a></li>
+<li><a href="http://shuyi.me/2017/11/28/java_combat/the_story_of_push_02/" target="_blank" rel="noopener">《开发小哥的困惑：为何要用第三方推送？》</a></li>
+<li><a href="http://shuyi.me/2017/11/28/java_combat/the_story_of_push_03/" target="_blank" rel="noopener">《官方老爹之痛：为什么苹果能收到推送，而安卓不行？》</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/推送/" rel="tag"># 推送</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/28/java_combat/open_source_china_district_syscode/" rel="next" title="开源项目 —— 中国行政区划数据">
+                <i class="fa fa-chevron-left"></i> 开源项目 —— 中国行政区划数据
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/28/java_combat/the_story_of_push_03/" rel="prev" title="官方老爹之痛：为什么苹果能收到推送，而安卓不行？">
+                官方老爹之痛：为什么苹果能收到推送，而安卓不行？ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#苹果的远见：APNS诞生"><span class="nav-number">1.</span> <span class="nav-text">苹果的远见：APNS诞生</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安卓的短视：混乱的推送"><span class="nav-number">2.</span> <span class="nav-text">安卓的短视：混乱的推送</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么用第三方推送？"><span class="nav-number">3.</span> <span class="nav-text">为什么用第三方推送？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三方推送的优势"><span class="nav-number">4.</span> <span class="nav-text">第三方推送的优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#苹果与安卓的推送差异"><span class="nav-number">5.</span> <span class="nav-text">苹果与安卓的推送差异</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
