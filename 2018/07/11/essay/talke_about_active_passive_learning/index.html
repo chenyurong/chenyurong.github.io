@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="我在《聊聊阿里面试的三个层次》中说到阿里的面试要求，其中有一个读者看完觉得很困惑，觉得这些知识点平时都用不着，如何去学习这些知识才能保证学习质量呢？  我有个迷茫的地方在于，这些知识点如果在工作中都用不上，应该怎么保证学习的效果呢，面试的时候又该怎么聊呢。例如很多软件系统(ERP、财务、税务等内部信息系统)其实核心在于实现业务逻辑，就是基于业务的CRUD，高并发、分布式这些技术都用不上，做的时间长">
+<meta property="og:type" content="article">
+<meta property="og:title" content="优秀程序员具备的高效习惯，你具备吗？">
+<meta property="og:url" content="http://yoursite.com/2018/07/11/essay/talke_about_active_passive_learning/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="我在《聊聊阿里面试的三个层次》中说到阿里的面试要求，其中有一个读者看完觉得很困惑，觉得这些知识点平时都用不着，如何去学习这些知识才能保证学习质量呢？  我有个迷茫的地方在于，这些知识点如果在工作中都用不上，应该怎么保证学习的效果呢，面试的时候又该怎么聊呢。例如很多软件系统(ERP、财务、税务等内部信息系统)其实核心在于实现业务逻辑，就是基于业务的CRUD，高并发、分布式这些技术都用不上，做的时间长">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/talke_about_active_passive_learning_02.png">
+<meta property="og:updated_time" content="2018-07-11T10:06:38.274Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="优秀程序员具备的高效习惯，你具备吗？">
+<meta name="twitter:description" content="我在《聊聊阿里面试的三个层次》中说到阿里的面试要求，其中有一个读者看完觉得很困惑，觉得这些知识点平时都用不着，如何去学习这些知识才能保证学习质量呢？  我有个迷茫的地方在于，这些知识点如果在工作中都用不上，应该怎么保证学习的效果呢，面试的时候又该怎么聊呢。例如很多软件系统(ERP、财务、税务等内部信息系统)其实核心在于实现业务逻辑，就是基于业务的CRUD，高并发、分布式这些技术都用不上，做的时间长">
+<meta name="twitter:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/talke_about_active_passive_learning_02.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/11/essay/talke_about_active_passive_learning/"/>
+
+
+
+
+
+  <title>优秀程序员具备的高效习惯，你具备吗？ | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/11/essay/talke_about_active_passive_learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">优秀程序员具备的高效习惯，你具备吗？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-11T18:06:16+08:00">
+                2018-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/生活随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">生活随笔</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/11/essay/talke_about_active_passive_learning/" class="leancloud_visitors" data-flag-title="优秀程序员具备的高效习惯，你具备吗？">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我在<a href="www.cnblogs.com/chanshuyi/p/alibaba_review_3_level.html">《聊聊阿里面试的三个层次》</a>中说到阿里的面试要求，其中有一个读者看完觉得很困惑，觉得这些知识点平时都用不着，如何去学习这些知识才能保证学习质量呢？</p>
+<blockquote>
+<p>我有个迷茫的地方在于，这些知识点如果在工作中都用不上，应该怎么保证学习的效果呢，面试的时候又该怎么聊呢。例如很多软件系统(ERP、财务、税务等内部信息系统)其实核心在于实现业务逻辑，就是基于业务的CRUD，高并发、分布式这些技术都用不上，做的时间长了技术深度广度都没有。</p>
+</blockquote>
+<p>现实中确实存在像这位读者说的情况，但我们稍微仔细想一下我们身边的人，你会发现总会有几个人，他们能不断进步。虽然他们起点低，但是通过不断努力，却可以取得不错的成绩。那他们到底掌握了什么学习技巧，能让他们不断进步呢？</p>
+<p>答案很简单，那就是主动学习。</p>
+<h2 id="什么是主动学习"><a href="#什么是主动学习" class="headerlink" title="什么是主动学习"></a>什么是主动学习</h2><p>我的一个朋友小黑，他在公司里做的任务都是一些业务性的需求，并且都是增删改查类型的，对于技术方面的历练比较少。但小黑并不因此而闷闷不乐，反而细致地把每一个需求都做好，并且需求做完都会思考怎么才能做得更好。</p>
+<p>而在工作之余，他也主动地学习 Spring、Dubbo 等开源框架的源码，了解这些框架的原理。就这样过了一段时间，公司因为后台架构调整，成立了架构组自行研发技术框架，这时候小黑因为之前对于开源框架的深入研究，比其他人有了更深刻的理解，而进入了架构组。</p>
+<p>从小黑身上我们可以看到，一个主动学习的人，他并不会局限于公司的层面，他除了学习公司本身的技术之外，还会思考怎么样去优化项目的技术，业界有什么更好的解决方案，从而不断学习不断成长。</p>
+<p>与主动学习密切相关的，是被动学习。</p>
+<h2 id="什么是被动学习"><a href="#什么是被动学习" class="headerlink" title="什么是被动学习"></a>什么是被动学习</h2><p>当小黑进入架构组之后，他会发现自己之前学习的东西还远远不够，要自行研发框架所需要学习更多的知识。于是在这样的压力之下，小黑又不断地学习更多的资料，更加深入地研究各个框架的源码。<strong>在外界（项目、排期、工作）的压迫之下，你不得不去学习的成长方式，就是被动学习。</strong></p>
+<p>如果一个人只会被公司的项目推着走，公司需要什么知识，他就只学什么知识，那么久而久之他会发现自己一直处于原地踏步的状态，没有进步。这个时候如果遇到一些技术变动或者人事变动，就很容易产生辞职的念头。</p>
+<p>从小黑的例子来看，你会发现其实主动学习和被动学习都是相辅相成的。当你没有高并发的相关经验的时候，你需要主动地学习相关的理论知识，争取比别人掌握更多。而机会来临的时候，你能抓住这样一个机会，从而在实践中被动地掌握更多的知识。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/talke_about_active_passive_learning_02.png" alt=""> </p>
+<h2 id="如何改变"><a href="#如何改变" class="headerlink" title="如何改变"></a>如何改变</h2><p>就像文章开头的那位同学一样，也有许多人都跟我说：你说的我都懂，但是我看了没几天源码，我就看不下去了。</p>
+<p>而且我感觉这样学习效果都无法保证，自己看完之后还是懵懵懂懂的。</p>
+<p>那么我们到底应该如何去改变这一切，让自己习得「主动学习」这个搞笑的习惯呢？</p>
+<p>在这里我给大家几个建议，都是实实在在的能帮助大家改变的。</p>
+<h3 id="改变对于工作的认识"><a href="#改变对于工作的认识" class="headerlink" title="改变对于工作的认识"></a>改变对于工作的认识</h3><p>与一些刚入行的朋友沟通，我们了解到很多人期望从工作中学到一切，希望公司给与他们更好的学习机会。于是这些朋友一直没有找到很好的公司，很多都是没过几年就换一家公司。</p>
+<p>之所以会如此，是因为这种想法本身就是错误的。公司雇佣你是让你解决问题，不是让你来学习的。学习与成长，只是解决问题之后顺带的结果，而不是目标。如果你无法接受这个观点，那么你永远无法找到正确的学习通道。</p>
+<p>公司给你钱，你帮公司解决问题，其他的都是扯淡。成熟的公司为了留住员工，会建立一系列的培训机制，但这并不代表你就该把这种学习和成长当成理所当然。</p>
+<h3 id="建立自己的学习圈子"><a href="#建立自己的学习圈子" class="headerlink" title="建立自己的学习圈子"></a>建立自己的学习圈子</h3><p>当你接受这个观点之后，你自己会明白，工作不应该成为我学习的唯一渠道，我应该有自己的学习渠道，应该有我自己的学习圈子。而这个学习圈子才是一直伴随着你，能跟随你一直走下去的，无论你在 A 公司，还是在 B 公司，你都能不断进步。</p>
+<p>公司的成长是短期的，而学习圈子的成长是长久的。这两者的关系就像被动学习与主动学习一样，互相促进，相互融合。所以如果你希望长期不断进步，那么你就要建立自己的圈子，认识更多比自己厉害的人，跟着他们一起学习，一起成长。</p>
+<p><strong>技术路上是非常枯燥无味的，找到趣味相投的人一起学习，能让你们更容易坚持下去。</strong>这条真理无论对于新手还是大神都是适用的，没有人会排斥与别人交流。像我一样，无论在哪个公司，我都会跟比我厉害的人学习，跟他们加微信探讨问题。现在我把他们都拉入了一个微信群，我们经常在里面探讨技术问题。很多时候一些很难解决的问题，就在你我讨论之间就解决了。</p>
+<h3 id="努力、努力、再努力"><a href="#努力、努力、再努力" class="headerlink" title="努力、努力、再努力"></a>努力、努力、再努力</h3><p>很多朋友其实都不明白自己为什么做技术，甚至不知道喜不喜欢做技术。其实我一开始也不清楚，也是因为生计而选择了开发这一行，我也一直迷茫要不要一直做下去。每次看到「面试基础题」里列出的一大串技术要点，我也困惑，到底要学到什么时候啊。</p>
+<p>其实很多人之所以厌恶做开发，是因为国内企业的加班成风，使得本来很有创造性的开发变得死气沉沉。但我们生活在这，我们可能在很长时间里无法去改变这种现状，我们只能调整自己的心态，让自己变得更加优秀，让自己热爱技术。当你技术达到一定高度的时候，或许你也不需要再加班，而能真正享受编程的乐趣了。</p>
+<p>但在那之前，你还必须调整自己的状态，让自己努力下去。<strong>即使在难搞的日子，也要笑出声来！</strong></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>比起技术知识上的积累，思维方式的改变更加重要。从现在停止幻想，拓宽自己的学习渠道，主动学习更多的知识，建立自己的学习圈子吧。</p>
+<p>如果你也是一个对技术有热情，希望不断精进自己技术的小伙伴，那就赶紧加入我的技术圈子，与众多优秀的小伙伴一起学习成长吧！（关注微信公众号获取入群二维码）</p>
+<p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：<a href="https://cloud.tencent.com/developer/support-plan?invite_code=jgpjhcggl6be" target="_blank" rel="noopener">https://cloud.tencent.com/developer/support-plan?invite_code=jgpjhcggl6be</a> </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/11/essay/alibaba_review_3_level/" rel="next" title="聊聊阿里面试的三个层次">
+                <i class="fa fa-chevron-left"></i> 聊聊阿里面试的三个层次
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/11/essay/the_important_of_soa_from_douyin/" rel="prev" title="从抖音关闭评论，看服务治理的重要性">
+                从抖音关闭评论，看服务治理的重要性 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是主动学习"><span class="nav-number">1.</span> <span class="nav-text">什么是主动学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是被动学习"><span class="nav-number">2.</span> <span class="nav-text">什么是被动学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何改变"><span class="nav-number">3.</span> <span class="nav-text">如何改变</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#改变对于工作的认识"><span class="nav-number">3.1.</span> <span class="nav-text">改变对于工作的认识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建立自己的学习圈子"><span class="nav-number">3.2.</span> <span class="nav-text">建立自己的学习圈子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#努力、努力、再努力"><span class="nav-number">3.3.</span> <span class="nav-text">努力、努力、再努力</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

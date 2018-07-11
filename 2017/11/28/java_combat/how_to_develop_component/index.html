@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在软件开发过程中，大到业务模块的划分，小到技术组件的开发，都属于组件化的思考范畴内。很多时候我们到网上搜索「组件化」关键词，都只会看到关于前端组件化的资料，而对于后台开发组件化的资料却很少，那这是不是代表后台组件化没有意义呢？ 后台组件化肯定是有非常大的价值的，对于业务开发人员也有非常大的效率提升。所以本文我将通过自己做组件化的一些经验，谈谈我对后端组件化的一些看法，以及如何进行组件化开发，希望对">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何通过组件化提高开发效率？">
+<meta property="og:url" content="http://yoursite.com/2017/11/28/java_combat/how_to_develop_component/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="在软件开发过程中，大到业务模块的划分，小到技术组件的开发，都属于组件化的思考范畴内。很多时候我们到网上搜索「组件化」关键词，都只会看到关于前端组件化的资料，而对于后台开发组件化的资料却很少，那这是不是代表后台组件化没有意义呢？ 后台组件化肯定是有非常大的价值的，对于业务开发人员也有非常大的效率提升。所以本文我将通过自己做组件化的一些经验，谈谈我对后端组件化的一些看法，以及如何进行组件化开发，希望对">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-07-11T10:04:25.239Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何通过组件化提高开发效率？">
+<meta name="twitter:description" content="在软件开发过程中，大到业务模块的划分，小到技术组件的开发，都属于组件化的思考范畴内。很多时候我们到网上搜索「组件化」关键词，都只会看到关于前端组件化的资料，而对于后台开发组件化的资料却很少，那这是不是代表后台组件化没有意义呢？ 后台组件化肯定是有非常大的价值的，对于业务开发人员也有非常大的效率提升。所以本文我将通过自己做组件化的一些经验，谈谈我对后端组件化的一些看法，以及如何进行组件化开发，希望对">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/28/java_combat/how_to_develop_component/"/>
+
+
+
+
+
+  <title>如何通过组件化提高开发效率？ | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/28/java_combat/how_to_develop_component/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">如何通过组件化提高开发效率？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-28T18:17:29+08:00">
+                2017-11-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/生活随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">生活随笔</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/11/28/java_combat/how_to_develop_component/" class="leancloud_visitors" data-flag-title="如何通过组件化提高开发效率？">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在软件开发过程中，大到业务模块的划分，小到技术组件的开发，都属于组件化的思考范畴内。很多时候我们到网上搜索「组件化」关键词，都只会看到关于前端组件化的资料，而对于后台开发组件化的资料却很少，那这是不是代表后台组件化没有意义呢？</p>
+<p>后台组件化肯定是有非常大的价值的，对于业务开发人员也有非常大的效率提升。所以本文我将通过自己做组件化的一些经验，谈谈我对后端组件化的一些看法，以及如何进行组件化开发，希望对在一线开发的工程师们有所帮助。</p>
+<p>希望通过组件化的方式，能帮助一线工程师们减少对于重复业务代码的编写，提高开发效率，将更多时间和精力放在创新开发上。</p>
+<h2 id="如何发现组件化需求？"><a href="#如何发现组件化需求？" class="headerlink" title="如何发现组件化需求？"></a>如何发现组件化需求？</h2><p>组件化，顾名思义，其实是通过将重复的业务操作统一起来，对外提供统一的接口，调用方不需要操心内部实现。通过组件化的方式，能统一业务代码规范，减少冗余代码，提高开发效率。</p>
+<p>在软件开发的组件化里，要发现需求，你必须深入到具体的业务过程中去，了解整个业务流程。只有这样，你才能知道哪些东西需要优化，哪些东西是重复的。</p>
+<p>当我刚刚进入珍爱网的时候，公司开启了精细化运营的需求，很多时候同一个需求对广东地区开放，而对湖南地区不开放。而当需求呈现正向积极效果的时候，需要对更多省份开放。</p>
+<p>而这时候如果需要修改开放的测试地区，则需要开发、测试重新参与一次开发，并且走一遍开发流程。不仅仅效率低下，对于开发人员和测试的正常工作也是一种打扰。</p>
+<p>针对这种情况，我试探性地开发出了开关服务。只需要再第一次开发的时候预埋上开关，之后如果需要修改测试省份就可以直接在管理后台进行修改，实时生效。</p>
+<p>通过这种方式，你会发现原本需要开发和测试参与，耗时将近一天的开发流程。现在只需要产品自己操作，并且只需要几秒钟就能完成，几乎提高了100%的效率。</p>
+<p>所以说发现组件化需求的关键，是参与到具体的业务开发中，发现重复的，可统一的业务。</p>
+<h2 id="如何开发组件？"><a href="#如何开发组件？" class="headerlink" title="如何开发组件？"></a>如何开发组件？</h2><p>当你发现一个可以进行优化的需求后，你下一步需要做的其实就是进行全方位的调研以及设计，从而保证你设计出来的组件能解决问题，并且能为广大需求方所接受。</p>
+<p>根据我的经验，我一般将组件分为下面三种：服务、组件、后台管理系统。</p>
+<p><strong>服务。</strong>这种类型的组件提供一个通用的服务，提供给内部的其他系统调用，从而让其他系统的开发更加快捷。例如之前提到过的开发服务就是这样的。通过服务接口的方式提供出去，调用方能更加方便地使用，并且其中心化的特性也便于后期升级。</p>
+<p><strong>组件。</strong>这种类型的组件一般是与业务无关的组件，其通过引入 Jar 包的方式提供给其他系统使用。例如我做过的一个 SysCode 组件就是这样的，只需要引入相应 Jar 包，实现特定接口注入数据，就可以调用工具类进行 SysCode 操作。</p>
+<p><strong>后台管理系统。</strong>这种类型的组件其实就是一个管理后台，你发现客服部门经常用到某个功能，于是你将这个功能做到管理后台里，下次发生同样的问题时，他们就可以自己解决。这也是组件的其中一种。</p>
+<p>对于这三种类型的组件，在设计的时候侧重点都略有不同。</p>
+<p>服务类型的组件，在设计的时候需要对暴露出去的接口定义非常谨慎，因为接口一旦确定，后期就不能再变化，否则会导致原有使用方调用出错。</p>
+<p>而组件类型的，在设计的时候需要考虑的是使用的时候是不是很方便，使用的路径会不会很长。</p>
+<h1 id="文章首发于【博客园-陈树义】，点击跳转到原文《如何通过组件化提高开发效率？》http-www-cnblogs-com-chanshuyi-p-how-to-develop-component-html"><a href="#文章首发于【博客园-陈树义】，点击跳转到原文《如何通过组件化提高开发效率？》http-www-cnblogs-com-chanshuyi-p-how-to-develop-component-html" class="headerlink" title="文章首发于【博客园-陈树义】，点击跳转到原文《如何通过组件化提高开发效率？》http://www.cnblogs.com/chanshuyi/p/how_to_develop_component.html"></a>文章首发于<a href="http://www.cnblogs.com/chanshuyi" target="_blank" rel="noopener">【博客园-陈树义】</a>，点击跳转到原文<a href="http://www.cnblogs.com/chanshuyi/p/how_to_develop_component.html" target="_blank" rel="noopener">《如何通过组件化提高开发效率？》</a><a href="http://www.cnblogs.com/chanshuyi/p/how_to_develop_component.html" target="_blank" rel="noopener">http://www.cnblogs.com/chanshuyi/p/how_to_develop_component.html</a></h1><h2 id="如何推广组件？"><a href="#如何推广组件？" class="headerlink" title="如何推广组件？"></a>如何推广组件？</h2><p>当你把组件做出来后，作为组件的开发者，你肩负着推广组件的作用。</p>
+<p>首先，你肯定要让别人知道你为什么做这个组件，做这个组件的背景是什么，用这个组件有什么价值，最后就是怎么用？</p>
+<p>而要回答上面所说到的问题，你不可能每个人问你的时候你都从头到尾说一遍，所以你需要针对你的组件写一个文档。我比较推荐的一种做法是写成一个 GitBook，这种呈现方式简单明了，方便阅读。</p>
+<p>当你做好 GitBook 文档后，你以为就这样结束了么？</p>
+<p>Naive！</p>
+<p>这只是一个开始，你需要不断地在日常的开发中去向你的同事推销你的东西，把自己想象成一个热爱工作的销售，把组件当成是你的孩子，见人就说这个东西好，让更多人知道他。</p>
+<p>之所以将组件化的推广说得如此艰辛的原因，我相信许多做过组件的人都明白。一开始做的东西别人都不愿意去尝试，因为谁知道你这里面有什么坑呢，我还不如自己弄呢。所以一开始的推广使用注定是很艰辛的，甚至是很苦逼。</p>
+<p>所以不要以为做出组件，写完文档就结束了，这其实只是一个开始。</p>
+<h2 id="不断迭代！"><a href="#不断迭代！" class="headerlink" title="不断迭代！"></a>不断迭代！</h2><p>鲁迅先生说过：好文章不是写出来的，而是改出来的。</p>
+<p>在这里我也要说：好组件不是写出来的，而是改出来的。</p>
+<p>私以为所有做组件的人，都应该抱有不断迭代的精神去做组件。</p>
+<p>因为很多时候你刚刚做出来的东西都是非常简单的，虽然能解决问题，但是对于业务抽象的理解不够深刻，而且会存在多多少少的问题。</p>
+<p>这时候你需要在不断推广和反馈中去优化你的组件，让你的组件做得更好。之后再不断地收集反馈，再优化，再反馈。</p>
+<p>就这样，也许经过三四个轮回，你对组件的理解就趋于稳定了。</p>
+<p>这个时候，你才可以说这个组件做完了！</p>
+<h1 id="文章首发于【博客园-陈树义】，点击跳转到原文《如何通过组件化提高开发效率？》http-www-cnblogs-com-chanshuyi-p-how-to-develop-component-html-1"><a href="#文章首发于【博客园-陈树义】，点击跳转到原文《如何通过组件化提高开发效率？》http-www-cnblogs-com-chanshuyi-p-how-to-develop-component-html-1" class="headerlink" title="文章首发于【博客园-陈树义】，点击跳转到原文《如何通过组件化提高开发效率？》http://www.cnblogs.com/chanshuyi/p/how_to_develop_component.html"></a>文章首发于<a href="http://www.cnblogs.com/chanshuyi" target="_blank" rel="noopener">【博客园-陈树义】</a>，点击跳转到原文<a href="http://www.cnblogs.com/chanshuyi/p/how_to_develop_component.html" target="_blank" rel="noopener">《如何通过组件化提高开发效率？》</a><a href="http://www.cnblogs.com/chanshuyi/p/how_to_develop_component.html" target="_blank" rel="noopener">http://www.cnblogs.com/chanshuyi/p/how_to_develop_component.html</a></h1>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/28/java_combat/the_story_of_push_03/" rel="next" title="官方老爹之痛：为什么苹果能收到推送，而安卓不行？">
+                <i class="fa fa-chevron-left"></i> 官方老爹之痛：为什么苹果能收到推送，而安卓不行？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/28/java_combat/the_story_of_push_01/" rel="prev" title="测试妹子的呐喊：为什么总是收不到推送？">
+                测试妹子的呐喊：为什么总是收不到推送？ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何发现组件化需求？"><span class="nav-number">1.</span> <span class="nav-text">如何发现组件化需求？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何开发组件？"><span class="nav-number">2.</span> <span class="nav-text">如何开发组件？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文章首发于【博客园-陈树义】，点击跳转到原文《如何通过组件化提高开发效率？》http-www-cnblogs-com-chanshuyi-p-how-to-develop-component-html"><span class="nav-number"></span> <span class="nav-text">文章首发于【博客园-陈树义】，点击跳转到原文《如何通过组件化提高开发效率？》http://www.cnblogs.com/chanshuyi/p/how_to_develop_component.html</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何推广组件？"><span class="nav-number">1.</span> <span class="nav-text">如何推广组件？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不断迭代！"><span class="nav-number">2.</span> <span class="nav-text">不断迭代！</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文章首发于【博客园-陈树义】，点击跳转到原文《如何通过组件化提高开发效率？》http-www-cnblogs-com-chanshuyi-p-how-to-develop-component-html-1"><span class="nav-number"></span> <span class="nav-text">文章首发于【博客园-陈树义】，点击跳转到原文《如何通过组件化提高开发效率？》http://www.cnblogs.com/chanshuyi/p/how_to_develop_component.html</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
