@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Shell,Linux," />
+  <meta name="keywords" content="Java," />
 
 
 
@@ -79,18 +79,28 @@
 
 
 
-<meta name="description" content="文件测试运算符用于检测文件的各种状态和属性，目前支持的运算符如下：  -b file：是否块设备文件 -c file：是否字符设别文件 -d file：是否目录 -f file：是否普通文件 -g file：文件是否设置了 SGID 位 -k file：是否设置了粘着位 -p file：文件是否有名管道 -u file：文件是否设置了 SUID 位 -r file：文件是否可读 -w file：文">
-<meta name="keywords" content="Shell,Linux">
+<meta name="description" content="ImageMagick介绍ImageMagick是一个免费的创建、编辑、合成图片的软件，可以实现图片切割、颜色替换、图片缩略图、图片水印等各种效果。ImageMagick是免费开源软件，支持大多数操作系统，包括Linux、Windows操作系统。ImageMagick的大多数功能的使用都来源于命令行工具。 ImageMagick快速入门安装ImageMagick到官网下载相应的安装包。  在安装过">
+<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Shell 快速入门（十六）：如何进行文件判断">
-<meta property="og:url" content="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_16_file_judge/index.html">
+<meta property="og:title" content="Java 图片处理解决方案：ImageMagick 快速入门教程">
+<meta property="og:url" content="http://yoursite.com/2018/07/11/quick_start_of_coding/quick_start_of_image_magick/index.html">
 <meta property="og:site_name" content="陈树义">
-<meta property="og:description" content="文件测试运算符用于检测文件的各种状态和属性，目前支持的运算符如下：  -b file：是否块设备文件 -c file：是否字符设别文件 -d file：是否目录 -f file：是否普通文件 -g file：文件是否设置了 SGID 位 -k file：是否设置了粘着位 -p file：文件是否有名管道 -u file：文件是否设置了 SUID 位 -r file：文件是否可读 -w file：文">
+<meta property="og:description" content="ImageMagick介绍ImageMagick是一个免费的创建、编辑、合成图片的软件，可以实现图片切割、颜色替换、图片缩略图、图片水印等各种效果。ImageMagick是免费开源软件，支持大多数操作系统，包括Linux、Windows操作系统。ImageMagick的大多数功能的使用都来源于命令行工具。 ImageMagick快速入门安装ImageMagick到官网下载相应的安装包。  在安装过">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-04T15:15:02.440Z">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161352492-857944833.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161417414-1492018287.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161402382-88938975.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161431164-1867974504.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161442476-728370357.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161500226-1848968693.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161528789-150651576.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161612679-1322019538.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161500226-1848968693.png">
+<meta property="og:updated_time" content="2018-07-11T07:36:39.158Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Shell 快速入门（十六）：如何进行文件判断">
-<meta name="twitter:description" content="文件测试运算符用于检测文件的各种状态和属性，目前支持的运算符如下：  -b file：是否块设备文件 -c file：是否字符设别文件 -d file：是否目录 -f file：是否普通文件 -g file：文件是否设置了 SGID 位 -k file：是否设置了粘着位 -p file：文件是否有名管道 -u file：文件是否设置了 SUID 位 -r file：文件是否可读 -w file：文">
+<meta name="twitter:title" content="Java 图片处理解决方案：ImageMagick 快速入门教程">
+<meta name="twitter:description" content="ImageMagick介绍ImageMagick是一个免费的创建、编辑、合成图片的软件，可以实现图片切割、颜色替换、图片缩略图、图片水印等各种效果。ImageMagick是免费开源软件，支持大多数操作系统，包括Linux、Windows操作系统。ImageMagick的大多数功能的使用都来源于命令行工具。 ImageMagick快速入门安装ImageMagick到官网下载相应的安装包。  在安装过">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161352492-857944833.png">
 
 
 
@@ -120,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_16_file_judge/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/07/11/quick_start_of_coding/quick_start_of_image_magick/"/>
 
 
 
 
 
-  <title>Shell 快速入门（十六）：如何进行文件判断 | 陈树义</title>
+  <title>Java 图片处理解决方案：ImageMagick 快速入门教程 | 陈树义</title>
   
 
 
@@ -282,7 +292,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_16_file_judge/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/11/quick_start_of_coding/quick_start_of_image_magick/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -299,7 +309,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Shell 快速入门（十六）：如何进行文件判断</h1>
+          <h1 class="post-title" itemprop="name headline">Java 图片处理解决方案：ImageMagick 快速入门教程</h1>
         
 
         <div class="post-meta">
@@ -311,8 +321,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T23:16:26+08:00">
-                2018-07-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-11T15:36:32+08:00">
+                2018-07-11
               </time>
             
 
@@ -334,8 +344,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Shell快速入门系列/" itemprop="url" rel="index">
-                    <span itemprop="name">Shell快速入门系列</span>
+                  <a href="/categories/Java实战/" itemprop="url" rel="index">
+                    <span itemprop="name">Java实战</span>
                   </a>
                 </span>
 
@@ -351,7 +361,7 @@
 
           
           
-             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_16_file_judge/" class="leancloud_visitors" data-flag-title="Shell 快速入门（十六）：如何进行文件判断">
+             <span id="/2018/07/11/quick_start_of_coding/quick_start_of_image_magick/" class="leancloud_visitors" data-flag-title="Java 图片处理解决方案：ImageMagick 快速入门教程">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -382,28 +392,55 @@
       
 
       
-        <p>文件测试运算符用于检测文件的各种状态和属性，目前支持的运算符如下：</p>
+        <h2 id="ImageMagick介绍"><a href="#ImageMagick介绍" class="headerlink" title="ImageMagick介绍"></a>ImageMagick介绍</h2><p>ImageMagick是一个免费的<strong>创建、编辑、合成图片</strong>的软件，可以实现图片切割、颜色替换、图片缩略图、图片水印等各种效果。ImageMagick是免费开源软件，支持大多数操作系统，包括<strong>Linux、Windows</strong>操作系统。ImageMagick的大多数功能的使用都来源于<strong>命令行工具</strong>。</p>
+<h2 id="ImageMagick快速入门"><a href="#ImageMagick快速入门" class="headerlink" title="ImageMagick快速入门"></a>ImageMagick快速入门</h2><h3 id="安装ImageMagick"><a href="#安装ImageMagick" class="headerlink" title="安装ImageMagick"></a>安装ImageMagick</h3><p>到<a href="http://www.imagemagick.org/script/download.php" target="_blank" rel="noopener">官网</a>下载相应的安装包。</p>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161352492-857944833.png" alt="下载"></p>
+<p>在安装过程中记得勾选<code>Install legacy utilities(e.g. convert)</code>选项。</p>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161417414-1492018287.png" alt="安装注意"></p>
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p>将ImageMagick安装目录设置到PATH系统变量中</p>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161402382-88938975.png" alt="设置PATH路径"></p>
+<p>打开命令行运行<code>magick -help</code>测试是否配置成功</p>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161431164-1867974504.png" alt="测试配置是否成功"></p>
+<h3 id="使用ImageMagick实现旋转"><a href="#使用ImageMagick实现旋转" class="headerlink" title="使用ImageMagick实现旋转"></a>使用ImageMagick实现旋转</h3><p>ImageMagick图片处理命令的格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">imagick deal_type origin_pic_path deal_param dest_pic_path</span><br></pre></td></tr></table></figure>
 <ul>
-<li><code>-b file</code>：是否块设备文件</li>
-<li><code>-c file</code>：是否字符设别文件</li>
-<li><code>-d file</code>：是否目录</li>
-<li><code>-f file</code>：是否普通文件</li>
-<li><code>-g file</code>：文件是否设置了 SGID 位</li>
-<li><code>-k file</code>：是否设置了粘着位</li>
-<li><code>-p file</code>：文件是否有名管道</li>
-<li><code>-u file</code>：文件是否设置了 SUID 位</li>
-<li><code>-r file</code>：文件是否可读</li>
-<li><code>-w file</code>：文件是否可写</li>
-<li><code>-x file</code>：文件是否可执行</li>
-<li><code>-s file</code>：文件是否为空（文件大小是否大于0），不为空返回 true。</li>
-<li><code>-e file</code>：文件（包括目录）是否存在</li>
+<li><strong>deal_type：</strong>图片处理类型。ImageMagick提供了几十种图片处理类型，包括：decorate（边框）、convert（转换）、montage（拼接）、animation（动画）等，你可以在<a href="http://www.imagemagick.org/script/index.php" target="_blank" rel="noopener">Features and Capabilities</a>查看更多图片处理类型。</li>
+<li><strong>origin_pic_path：</strong>源图片路径。</li>
+<li><strong>deal_param：</strong>处理参数。不同的图片处理类型有不同的处理参数。</li>
+<li><strong>dest_pic_path：</strong>目标图片路径。</li>
 </ul>
-<p>要特别注意的是<code>-s file</code>判断文件是否为空时，不为空才返回true。</p>
-<p>变量 file 表示文件 <code>/User/chenshuyi/hello.sh</code>，它的大小为 52 字节，具有 rwx 权限。下面的代码，将检测该文件的各种属性：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># author:陈树义</span><br><span class="line"># site:http://www.shuyi.me</span><br><span class="line"></span><br><span class="line">file=&quot;/User/chenshuyi/hello.sh&quot;</span><br><span class="line">if [ -r $file ]</span><br><span class="line">then</span><br><span class="line">   echo &quot;文件可读&quot;</span><br><span class="line">else</span><br><span class="line">   echo &quot;文件不可读&quot;</span><br><span class="line">fi</span><br><span class="line">if [ -w $file ]</span><br><span class="line">then</span><br><span class="line">   echo &quot;文件可写&quot;</span><br><span class="line">else</span><br><span class="line">   echo &quot;文件不可写&quot;</span><br><span class="line">fi</span><br><span class="line">if [ -x $file ]</span><br><span class="line">then</span><br><span class="line">   echo &quot;文件可执行&quot;</span><br><span class="line">else</span><br><span class="line">   echo &quot;文件不可执行&quot;</span><br><span class="line">fi</span><br><span class="line">if [ -f $file ]</span><br><span class="line">then</span><br><span class="line">   echo &quot;文件为普通文件&quot;</span><br><span class="line">else</span><br><span class="line">   echo &quot;文件为特殊文件&quot;</span><br><span class="line">fi</span><br><span class="line">if [ -d $file ]</span><br><span class="line">then</span><br><span class="line">   echo &quot;文件是个目录&quot;</span><br><span class="line">else</span><br><span class="line">   echo &quot;文件不是个目录&quot;</span><br><span class="line">fi</span><br><span class="line">if [ -s $file ]</span><br><span class="line">then</span><br><span class="line">   echo &quot;文件不为空&quot;</span><br><span class="line">else</span><br><span class="line">   echo &quot;文件为空&quot;</span><br><span class="line">fi</span><br><span class="line">if [ -e $file ]</span><br><span class="line">then</span><br><span class="line">   echo &quot;文件存在&quot;</span><br><span class="line">else</span><br><span class="line">   echo &quot;文件不存在&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
-<p>输出结果为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">文件可读</span><br><span class="line">文件可写</span><br><span class="line">文件可执行</span><br><span class="line">文件为普通文件</span><br><span class="line">文件不是个目录</span><br><span class="line">文件不为空</span><br><span class="line">文件存在</span><br></pre></td></tr></table></figure>
+<p>运行下面的命令将图片顺时针旋转90度：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">magick doraemon.jpg -rotate 90 doraemon_rotate.jpg</span><br></pre></td></tr></table></figure>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161442476-728370357.png" alt="图片旋转代码"></p>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161500226-1848968693.png" alt="ImageMagick快速入门之图片旋转效果"></p>
+<h2 id="在Java中使用ImageMagick"><a href="#在Java中使用ImageMagick" class="headerlink" title="在Java中使用ImageMagick"></a>在Java中使用ImageMagick</h2><p>开始前请先确认JDK、Maven正确安装：</p>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161528789-150651576.png" alt="JDK、MAVEN安装确认"></p>
+<h3 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h3><p>IM4Java是ImageMagick的Java API包，它将Java代码转化成对ImageMagick的命令行调用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.im4java&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;im4java&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.4.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="调用IM4Java实现旋转"><a href="#调用IM4Java实现旋转" class="headerlink" title="调用IM4Java实现旋转"></a>调用IM4Java实现旋转</h3><p>IM4Java的作用是将Java代码转成对ImageMagick的命令行调用，因此IM4Java API与ImageMagick的命令有一一对应的关系。</p>
+<ul>
+<li>ImageMagick的图片处理类型（deal_type）对应xxxCmd，如：<code>convert</code>处理类型对应<code>ConvertCmd</code>，<code>montage</code>处理类型对应<code>MontageCmd</code>。</li>
+<li>ImageMagick的图片处理参数（deal_param）对应IMOperation方法，如：<code>-rotate 90</code>参数对应<code>operation.rotate(90d)</code>，<code>-resize 900x600</code>参数对应<code>operation.resize(900,600)</code>。</li>
+</ul>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161612679-1322019538.png" alt="API和命令行参数对比"></p>
+<p>运行以下代码可以将图片顺时针旋转90度。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">IMOperation operation = new IMOperation();</span><br><span class="line">operation.addImage(&quot;C:\\Users\\Administrator\\Desktop\\imagemagick\\doraemon.jpg&quot;);</span><br><span class="line">operation.rotate(90d);</span><br><span class="line">operation.addImage(&quot;C:\\Users\\Administrator\\Desktop\\imagemagick\\doraemon_rotate.jpg&quot;);</span><br><span class="line"></span><br><span class="line">ConvertCmd cmd = new ConvertCmd();</span><br><span class="line">cmd.setSearchPath(&quot;C:\\Program Files\\ImageMagick-7.0.5-Q16&quot;);  //Windows需要设置，Linux不需要</span><br><span class="line">cmd.run(operation);</span><br></pre></td></tr></table></figure>
+<p>运行程序后可以看到图片已经旋转90度。</p>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161500226-1848968693.png" alt="ImageMagick入门旋转效果对比"></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>1.<a href="http://www.imagemagick.org" target="_blank" rel="noopener">ImageMagick官网</a></li>
+<li>2.<a href="http://www.imagemagick.org/script/index.php#features" target="_blank" rel="noopener">ImageMagick支持的图片处理操作列表</a></li>
+<li>3.<a href="http://co63oc.blog.51cto.com/904636/328997/" target="_blank" rel="noopener">选择ImageMagick还是GraphicMagick</a></li>
+</ul>
+<h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><p><code>Java 图片处理</code> <code>Java 图片处理解决方案</code> <code>Java 图片加水印</code> <code>Java 图片圆角</code> <code>Java 图片裁切</code> <code>Java 图片等比缩小</code> <code>ImageMagick GraphicsMagick 区别</code> <code>ImageMagick 旋转</code></p>
+<!-- 
 
+- ![ImageMagick常用操作](http://www.360doc.com/content/14/1119/14/11029609_426407658.shtml)
+- ![ImageMagick与GraphicMagick对比](http://co63oc.blog.51cto.com/904636/328997/)
+- 其他解决方案：`Java Graphic`、`Thumbnailator`、`ImageMagick/GraphicsMagick`
+- Thumbnailator：http://www.cnblogs.com/fomeiherz/p/5882643.html
+
+-->
       
     </div>
     
@@ -420,9 +457,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Shell/" rel="tag"># Shell</a>
-          
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
           
         </div>
       
@@ -435,8 +470,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_15_io_redirect/" rel="next" title="Shell 快速入门（十五）：输出重定向">
-                <i class="fa fa-chevron-left"></i> Shell 快速入门（十五）：输出重定向
+              <a href="/2018/07/11/java_basic/the_dynamic_proxy_of_bread_store/" rel="next" title="Java动态代理：一个面包店的动态代理帝国">
+                <i class="fa fa-chevron-left"></i> Java动态代理：一个面包店的动态代理帝国
               </a>
             
           </div>
@@ -444,10 +479,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_21_arithmetic_operator/" rel="prev" title="Shell 快速入门（二十一）：算术运算符的使用">
-                Shell 快速入门（二十一）：算术运算符的使用 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -499,8 +530,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -600,6 +640,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ImageMagick介绍"><span class="nav-number">1.</span> <span class="nav-text">ImageMagick介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ImageMagick快速入门"><span class="nav-number">2.</span> <span class="nav-text">ImageMagick快速入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装ImageMagick"><span class="nav-number">2.1.</span> <span class="nav-text">安装ImageMagick</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置环境变量"><span class="nav-number">2.2.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用ImageMagick实现旋转"><span class="nav-number">2.3.</span> <span class="nav-text">使用ImageMagick实现旋转</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Java中使用ImageMagick"><span class="nav-number">3.</span> <span class="nav-text">在Java中使用ImageMagick</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引入依赖"><span class="nav-number">3.1.</span> <span class="nav-text">引入依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用IM4Java实现旋转"><span class="nav-number">3.2.</span> <span class="nav-text">调用IM4Java实现旋转</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词"><span class="nav-number">5.</span> <span class="nav-text">关键词</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
