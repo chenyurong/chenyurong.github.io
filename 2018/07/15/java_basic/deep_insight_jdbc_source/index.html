@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前面一篇文章，我们通过一个「歌曲解析框架」项目认识到了 Java SPI 机制的技巧之处。但其实这些都是模仿 Java JDBC 源码去实现的，今天我们就来看看 Java 源码是如何实现 JDBC 功能的。 为了能 debug 代码，我们写一个 demo 来调用 JDBC 的源码。 12Connection conn = DriverManager.getConnection(DB_URL,USE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="带你一行行深入解析JDBC源码">
+<meta property="og:url" content="http://yoursite.com/2018/07/15/java_basic/deep_insight_jdbc_source/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="前面一篇文章，我们通过一个「歌曲解析框架」项目认识到了 Java SPI 机制的技巧之处。但其实这些都是模仿 Java JDBC 源码去实现的，今天我们就来看看 Java 源码是如何实现 JDBC 功能的。 为了能 debug 代码，我们写一个 demo 来调用 JDBC 的源码。 12Connection conn = DriverManager.getConnection(DB_URL,USE">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_01.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_02.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_03.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_04.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_05.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_06.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_07.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_08.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_09.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_10.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_11.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_12.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_13.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_14.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_15.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_16.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_17.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_18.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_19.png">
+<meta property="og:updated_time" content="2018-07-15T11:03:50.209Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="带你一行行深入解析JDBC源码">
+<meta name="twitter:description" content="前面一篇文章，我们通过一个「歌曲解析框架」项目认识到了 Java SPI 机制的技巧之处。但其实这些都是模仿 Java JDBC 源码去实现的，今天我们就来看看 Java 源码是如何实现 JDBC 功能的。 为了能 debug 代码，我们写一个 demo 来调用 JDBC 的源码。 12Connection conn = DriverManager.getConnection(DB_URL,USE">
+<meta name="twitter:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/15/java_basic/deep_insight_jdbc_source/"/>
+
+
+
+
+
+  <title>带你一行行深入解析JDBC源码 | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/15/java_basic/deep_insight_jdbc_source/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">带你一行行深入解析JDBC源码</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-15T18:58:14+08:00">
+                2018-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java基础/" itemprop="url" rel="index">
+                    <span itemprop="name">Java基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/15/java_basic/deep_insight_jdbc_source/" class="leancloud_visitors" data-flag-title="带你一行行深入解析JDBC源码">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前面一篇文章，我们通过一个「歌曲解析框架」项目认识到了 Java SPI 机制的技巧之处。但其实这些都是模仿 Java JDBC 源码去实现的，今天我们就来看看 Java 源码是如何实现 JDBC 功能的。</p>
+<p>为了能 debug 代码，我们写一个 demo 来调用 JDBC 的源码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);</span><br><span class="line">Statement stmt = conn.createStatement();</span><br></pre></td></tr></table></figure>
+<p>因为源码层级较多，因此我们使用时序图来表明类之间的调用关系。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_01.png" alt=""></p>
+<p>在<strong>第1个调用</strong>中，调用 DriverManager.getConnection() 静态方法获取到了一个 Connection 对象。</p>
+<p>了解 Java 类加载机制的朋友应该知道：调用一个类的静态方法时，如果这个类还未进行初始化，那么会触发该类的初始化。也就是说，在执行 DriverManager.getConnection() 方法之前，会首先进行 DriverManager 类的初始化。而对一个类初始化首先会执行该类的静态代码块以及静态变量的赋值，在 DriverManager 类中有下面的静态代码块。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">static &#123;</span><br><span class="line">    loadInitialDrivers();</span><br><span class="line">    println(&quot;JDBC DriverManager initialized&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们在上面的代码打个断点，可以看到代码执行到这里了。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_02.png" alt=""></p>
+<p>所以接下来会进入我们时序图中的<strong>第2个调用</strong>，我们进入 loadInitialDrivers() 方法里看看。从名字我们可以知道其是进行驱动的初始化。 在loadInitialDrivers() 方法中，最重要的是下面这段代码。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_03.png" alt=""></p>
+<p>我们可以看到这段核心代码里，首先使用了 ServiceLoader.load() 方法获取了一个类型为 Driver 的 ServiceLoader 对象。我们如果深入查看ServiceLoader.load() 方法，我们会发现里面只是进行了一些初始化操作，其中比较重要的是其在 reload 方法中将一个 provider 属性清空。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_04.png" alt=""></p>
+<p>当获取到 ServiceLoader 对象之后，又获取到了其 Iterator 对象，并对其进行遍历。首先判断下个位置是否有值，也就是这句代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">driversIterator.hasNext()</span><br></pre></td></tr></table></figure>
+<p>其实这句代码调用的是 ServiceLoader 里声明的一个匿名 Iterator 对象：</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_05.png" alt=""></p>
+<p>我们打断点会发现执行到上面代码的 hasNext() 方法。在这个方法中，首先判断是否已经有存在的服务实现，如果有则直接返回，如果没有则判断 lookupIterator 对象是否有下个对象。在这里 knownProviders.hasNext() 肯定返回 false，因为在之前的代码将 providers 对象清空了。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_06.png" alt=""></p>
+<p>我们继续进入 lookupIterator.hasNext() 方法中查看。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_07.png" alt=""></p>
+<p>在 lookupIterator.hasNext() 方法中我们会发现其又会调用 hasNextService() 方法。在这个方法中，我们貌似看到了一些真正的逻辑操作。在上面这段代码中，其会去加载<code>META-INF/services/java.sql.Driver</code>目录下的资源文件，并且将解析结果放在 configs 对象里。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_08.png" alt=""></p>
+<p>之后调用 parse() 方法对结果进行解析，parse() 方法我们可以看到解析的是 SQLServer 数据库的驱动 Jar 包。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_09.png" alt=""></p>
+<p>从最后 parse() 方法的返回值可以看到，其返回了 SQLServer 驱动包的关键类路径。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_10.png" alt=""></p>
+<p>我们返回 hasNextService() 方法，我们会看到其最后就是将获取到的 SQLServer 驱动包的关键类路径赋值给 nextName 属性。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_11.png" alt=""></p>
+<p>之后程序继续返回 DriverManager 类，执行 driversIterator.next() 代码。这个同样是调用的是 Iterator 匿名类的方法。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_12.png" alt=""></p>
+<p>同样地，因为 providers 被清空了，所以这里的<code>knownProviders.hasNext()</code>肯定为 false，所以会调用 lookupIterator.next() 方法。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_13.png" alt=""></p>
+<p>而在 next() 方法中又调用了 nextService() 方法。而在 nextService() 方法中，我们可以看到这里使用反射将对应的数据库驱动主类进行初始化。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_14.png" alt=""></p>
+<p>我们打开 MySQL 数据库驱动的 Jar 包查看这个类的内容。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_15.png" alt=""></p>
+<p>可以看到这个类调用了 DriverManager.registerDriver() 方法对驱动进行注册。接下来我们去 registerDriver() 方法里看看。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_16.png" alt=""></p>
+<p>我们可以看到 registerDriver() 方法里主要就是将驱动信息放到一个 registerDrivers 的 CopyOnWriteArrayList 对象里。</p>
+<p>到这里为止，DriverManager 类的初始化就算是完成了，接下来就会进去 DriverManager.getConnection() 方法里去获取对应的 Connection 对象。从下面的代码可以看到，getConnection() 方法里对 registerDrivers 进行遍历，取出对应的驱动信息，并调用对应驱动包的 driver.connect() 方法连接数据库。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_17.png" alt=""></p>
+<p>getConnection() 方法执行完毕后，我们可以看到获取到的 Connection 对象的地址就是 mysql 对应的数据库连接地址。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_18.png" alt=""></p>
+<p>到这里，我们就可以用该 Connection 对象进行数据库操作了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>让我们再次从时序图来看看 Java JDBC 源码的整个流程。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jdbc_source_19.png" alt=""></p>
+<p>从时序图中我们可以了解到，Java JDBC 源码是通过 DriverManager 这个类进行数据接口的开放。而在 Java SPI 机制则是通过 ServiceLoader 类进行特定配置文件的扫描和读取，从而实现框架扩展的功能。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/15/awesome_tech_article_collection/" rel="next" title="全网优秀技术文章汇总">
+                <i class="fa fa-chevron-left"></i> 全网优秀技术文章汇总
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/15/java_basic/deep_insight_java_spi/" rel="prev" title="我是 SPI，我让框架更加优雅了！">
+                我是 SPI，我让框架更加优雅了！ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
