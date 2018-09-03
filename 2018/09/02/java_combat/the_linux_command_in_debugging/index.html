@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java,Linux," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="众所周知计算机的几大组成部分是：CPU、内存、磁盘、网络。那么线上机器出现问题的时候，很多时候也是这几样东西出现了问题。所以排查线上问题的关键，就是观察这几块资源的使用情况。 CPU查看CPU使用情况有许多命令，其中用得最多的还是top命令。它不仅可以列出每个CPU的使用情况，还可以列出内存使用情况以及各个进程的资源使用占比。 top 命令的使用方式为互动模式，即输入命令之后进入显示模式，在显示模">
+<meta name="keywords" content="Java,Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线上问题的常用排查命令">
+<meta property="og:url" content="http://yoursite.com/2018/09/02/java_combat/the_linux_command_in_debugging/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="众所周知计算机的几大组成部分是：CPU、内存、磁盘、网络。那么线上机器出现问题的时候，很多时候也是这几样东西出现了问题。所以排查线上问题的关键，就是观察这几块资源的使用情况。 CPU查看CPU使用情况有许多命令，其中用得最多的还是top命令。它不仅可以列出每个CPU的使用情况，还可以列出内存使用情况以及各个进程的资源使用占比。 top 命令的使用方式为互动模式，即输入命令之后进入显示模式，在显示模">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_01.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_02.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_03.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_04.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_05.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_06.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_07.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_08.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_09.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_10.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_11.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_12.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_13.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_14.png">
+<meta property="og:updated_time" content="2018-09-02T11:01:54.274Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="线上问题的常用排查命令">
+<meta name="twitter:description" content="众所周知计算机的几大组成部分是：CPU、内存、磁盘、网络。那么线上机器出现问题的时候，很多时候也是这几样东西出现了问题。所以排查线上问题的关键，就是观察这几块资源的使用情况。 CPU查看CPU使用情况有许多命令，其中用得最多的还是top命令。它不仅可以列出每个CPU的使用情况，还可以列出内存使用情况以及各个进程的资源使用占比。 top 命令的使用方式为互动模式，即输入命令之后进入显示模式，在显示模">
+<meta name="twitter:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/02/java_combat/the_linux_command_in_debugging/"/>
+
+
+
+
+
+  <title>线上问题的常用排查命令 | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/02/java_combat/the_linux_command_in_debugging/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">线上问题的常用排查命令</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-02T18:57:50+08:00">
+                2018-09-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java实战/" itemprop="url" rel="index">
+                    <span itemprop="name">Java实战</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/02/java_combat/the_linux_command_in_debugging/" class="leancloud_visitors" data-flag-title="线上问题的常用排查命令">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>众所周知计算机的几大组成部分是：<strong>CPU、内存、磁盘、网络</strong>。那么线上机器出现问题的时候，很多时候也是这几样东西出现了问题。所以排查线上问题的关键，就是观察这几块资源的使用情况。</p>
+<h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><p>查看CPU使用情况有许多命令，其中用得最多的还是top命令。它不仅可以列出每个CPU的使用情况，还可以列出内存使用情况以及各个进程的资源使用占比。</p>
+<p>top 命令的使用方式为互动模式，即输入命令之后进入显示模式，在显示模式下再次输入相关关键词进行操作。</p>
+<p>top 命令的显示信息可以分为两大部分：<strong>系统资源信息、进程信息。</strong></p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_01.png" alt=""></p>
+<h3 id="系统资源信息"><a href="#系统资源信息" class="headerlink" title="系统资源信息"></a>系统资源信息</h3><p>在这块区域里，显示了机器的系统概况、任务概况、CPU占用、内存占用、虚拟内存占用。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_02.png" alt=""></p>
+<ul>
+<li><strong>系统概况。</strong>第一行显示的是系统概况，它表示该机器到现在为止已经运行了 122 天 10 个小时 31 分钟，一共有 1 个用户活动，并且 1、5、15 分钟内的系统平均负载为 0.00、0.01、0.05。</li>
+<li><strong>任务概况。</strong>第二行显示的是任务概况，它表示该机器一共有 62 个运行的任务，其中 1 个而在运行， 61 个在休眠，0 个停止，0 个僵尸进程。</li>
+<li><strong>CPU占用。</strong>第三行显示的是CPU占用情况，它表示当前用户使用的 CPU 比率为 0.0%，内核使用的 CPU 比率为 0.3%，空闲的 CPU 为 99.7%。其中因 IO 等待（wa）而占用 CPU 的百分比为 0.0%，因硬中断而占用 CPU 的百分比为 0.0%，因软中断而占用 CPU 的百分比为 0.0%。</li>
+<li><strong>内存占用。</strong>第四行显示的是内存占用情况，它表示目前物理内存总量为 1016412 KB，空闲内存为 98608 KB，使用内存为 73220 KB，缓存的内存为 844584 KB。</li>
+<li><strong>虚拟内存占用。</strong>第五行表示虚拟内存占用情况，共有 0 KB 虚拟内存，0 KB 空闲内存，0 KB 正在使用，有 757892 KB 可用。</li>
+</ul>
+<h3 id="进程信息"><a href="#进程信息" class="headerlink" title="进程信息"></a>进程信息</h3><p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_03.png" alt=""></p>
+<p>进程信息的信息比较简单，分别有下面几列数据：</p>
+<ul>
+<li>PID：进程PID</li>
+<li>USER：进程所有者</li>
+<li>PR：进程优先级</li>
+<li>NI：nice值。负值表示优先级越高，正值表示优先级越低。</li>
+<li>VIRT：进程使用的虚拟内存总量，单位kb。</li>
+<li>RES：进程使用的、未被换出的物理内存大小，单位kb。</li>
+<li>SHR：共享内存大小，单位kb。</li>
+<li>S：进程状态，D 为不可中断的睡眠状态，R 为运行状态，S 睡眠状态，T 跟踪/停止状态，Z 僵尸进程。</li>
+<li>%CPU：上次更新到现在的CPU时间占用百分比。</li>
+<li>%MEM：进程使用的物理内存百分比。</li>
+<li>TIME+：进程使用的CPU时间总计，单位1/100秒。</li>
+<li>COMMAND：进程名称（命令名）</li>
+</ul>
+<p>上述两个区域就是 top 命令在显示模式下的所有信息，但除了上面这些信息，我们还可以输入相关命令去查看更多信息。</p>
+<h3 id="查看每个CPU核心的占用情况"><a href="#查看每个CPU核心的占用情况" class="headerlink" title="查看每个CPU核心的占用情况"></a>查看每个CPU核心的占用情况</h3><p>在显示模式下，输入数字 1 可以在「系统资源信息」区域看到每个 CPU 的占用信息，非常直观。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_04.png" alt=""></p>
+<h3 id="查看「进程信息」默认排序列"><a href="#查看「进程信息」默认排序列" class="headerlink" title="查看「进程信息」默认排序列"></a>查看「进程信息」默认排序列</h3><p>在默认情况下，top 命令的「进程信息」区域是按照 CPU 占用比例排序的。</p>
+<p>按下「x」键可以高亮目前排序的列。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_05.png" alt=""></p>
+<h3 id="改变「进程信息」排序方式"><a href="#改变「进程信息」排序方式" class="headerlink" title="改变「进程信息」排序方式"></a>改变「进程信息」排序方式</h3><p>在默认情况下，top 命令的「进程信息」区域是按照 CPU 占用比例排序的。如果需要，你可以使用「Shift + &gt;」或「Shift + &lt;」组合键来改变排序的列。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_06.png" alt=""></p>
+<h3 id="只查看某个进程的信息"><a href="#只查看某个进程的信息" class="headerlink" title="只查看某个进程的信息"></a>只查看某个进程的信息</h3><p>当我们通过排序了解到某个进程占用率特别高的时候，我们可能只想查看该进程的变化，那么这时候可以用：<code>top -c PID</code>来查看。</p>
+<p>例如我们通过上图知道了 mysql 这个进程的内存使用率最高，那么我们输入<code>top -c 14170</code>单独查看该进程的信息：</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_07.png" alt=""></p>
+<h3 id="设置更新间隔"><a href="#设置更新间隔" class="headerlink" title="设置更新间隔"></a>设置更新间隔</h3><p>top 命令在显示模式下会自动刷新，我们也可以通过 -d 命令来设置更新间隔。例如输入<code>top -d 3</code>表示每 3 秒更新一次。</p>
+<p>其实关于 top 命令还有更多命令，这里就不一一介绍了。通过上面的介绍，相信大家对 top 命令也有一个大概的认识，如果命令不够用了，再去网上搜索一下即可。</p>
+<h2 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h2><p>一般来说，查看内存信息可以用：top、vmsatat、free 三个命令。其中：</p>
+<ul>
+<li>free 命令和 top 命令查看内存占用情况。</li>
+<li>vmstat 则可以查看更加详细的内存使用情况。</li>
+</ul>
+<h3 id="free-命令"><a href="#free-命令" class="headerlink" title="free 命令"></a>free 命令</h3><p>我们也经常用 free 命令来查看内存的使用情况：</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_08.png" alt=""></p>
+<p>从上面可以清晰地看出内存的使用情况。 </p>
+<h3 id="vmstat-命令"><a href="#vmstat-命令" class="headerlink" title="vmstat 命令"></a>vmstat 命令</h3><p>虽然 free 命令可以查看内存使用情况，但是没有更加详细的信息。如果要查看更加详细的信息，则可以用 vmstat 命令。</p>
+<p>vmstat 是 Virtual Meomory Statistics（虚拟内存统计）的缩写，通过 vmstat 除了可以看到 top 命令的信息之外，还能看到 IO 磁盘和£™系统信息。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_09.png" alt=""></p>
+<p>上面的信息含义如下：</p>
+<ul>
+<li><strong>任务信息。</strong>r/b 分别表示运行中和阻塞的任务数。</li>
+<li><strong>内存信息。</strong>swpd 表示使用虚拟内存大小、free 表示可用内存大小、buff 表示用作缓冲的内存大小，cache 表示用作缓存的内存大小。</li>
+<li><em>*虚拟内存信息。</em> si 表示每秒从交换区写到内存的大小，so 表示每秒写入交换区的内存大小。</li>
+<li><strong>IO信息。</strong>bi: 每秒读取的块数，bo: 每秒写入的块数。（现在的Linux版本块的大小为1024bytes）</li>
+<li><strong>系统信息。</strong>in: 每秒中断数，包括时钟中断。cs: 每秒上下文切换数。</li>
+<li><strong>CPU信息。</strong>us: 用户进程执行时间(user time)，sy: 系统进程执行时间(system time)。id: 空闲时间(包括IO等待时间),中央处理器的空闲时间 。以百分比表示。wa: 等待IO时间。</li>
+</ul>
+<p>我们最常使用的 vmstat 命令组合有下面几条：</p>
+<p><strong>定时定量刷新信息</strong></p>
+<p>我们可以设定刷新时间以及显示的次数来方便我们查看信息，例如下面的这条命令规定每 1 秒刷新一次，一共统计 5 次。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmstat 1 5</span><br></pre></td></tr></table></figure>
+<p>当然你也可以只设置刷新间隔，不设置统计次数，这样的话程序便会一直统计。例如下面的命令规定每 1 秒刷新一次，并不断统计。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmstat 1</span><br></pre></td></tr></table></figure>
+<h2 id="磁盘"><a href="#磁盘" class="headerlink" title="磁盘"></a>磁盘</h2><p>查看磁盘的信息一般有三个命令：</p>
+<ul>
+<li>df 查看容量使用情况</li>
+<li>vmstat 查看读写信息</li>
+<li>iostat 查看读写速度</li>
+</ul>
+<h3 id="df-命令"><a href="#df-命令" class="headerlink" title="df 命令"></a>df 命令</h3><p>我们还可以使用 df 属性来查看磁盘的使用信息：</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_10.png" alt=""></p>
+<p>从上面可以看到<code>/dev/vda1</code>这个磁盘，使用了 7% 的容量，还有 36G左右的容量可以使用。</p>
+<h3 id="vmstat-命令-1"><a href="#vmstat-命令-1" class="headerlink" title="vmstat 命令"></a>vmstat 命令</h3><p>此外还能用 vmstat 来查看磁盘的读写情况。</p>
+<h3 id="查看磁盘读写信息"><a href="#查看磁盘读写信息" class="headerlink" title="查看磁盘读写信息"></a>查看磁盘读写信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmstat -d</span><br></pre></td></tr></table></figure>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_11.png" alt=""></p>
+<h3 id="查看具体磁盘的读写信息"><a href="#查看具体磁盘的读写信息" class="headerlink" title="查看具体磁盘的读写信息"></a>查看具体磁盘的读写信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmstat -p /dev/sda1</span><br></pre></td></tr></table></figure>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_12.png" alt=""></p>
+<p>上面的命令查看<code>/dev/vda1</code>磁盘的读写信息。</p>
+<h3 id="iostat-命令"><a href="#iostat-命令" class="headerlink" title="iostat 命令"></a>iostat 命令</h3><p>除了 vmstat 之外，iostat 也常用来查看磁盘信息。</p>
+<p>Linux系统中的 iostat是 IO statistics（输入/输出统计）的缩写，iostat工具将对系统的磁盘操作活动进行监视。它的特点是汇报磁盘活动统计情况，同时也会汇报出CPU使用情况。</p>
+<p><strong>定时定量刷新信息</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iostat 2 3</span><br></pre></td></tr></table></figure>
+<p>每 2 秒刷新一次，一共显示 3 次。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_13.png" alt=""></p>
+<p><strong>显示指定磁盘信息</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iostat -d /dev/vda1</span><br></pre></td></tr></table></figure>
+<p>上述命令显示指定查看<code>/dev/vda1</code>磁盘的信息。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_14.png" alt=""></p>
+<h2 id="网络情况"><a href="#网络情况" class="headerlink" title="网络情况"></a>网络情况</h2><p>netstat命令用于显示与IP、TCP、UDP和ICMP协议相关的统计数据，一般用于检验本机各端口的网络连接情况。</p>
+<h3 id="显示网络统计信息"><a href="#显示网络统计信息" class="headerlink" title="显示网络统计信息"></a>显示网络统计信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -s</span><br></pre></td></tr></table></figure>
+<h3 id="列出所有-tcp-端口"><a href="#列出所有-tcp-端口" class="headerlink" title="列出所有 tcp 端口"></a>列出所有 tcp 端口</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -at</span><br></pre></td></tr></table></figure>
+<h3 id="找出程序运行的端口"><a href="#找出程序运行的端口" class="headerlink" title="找出程序运行的端口"></a>找出程序运行的端口</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ap | grep ssh</span><br></pre></td></tr></table></figure>
+<h3 id="找出运行在指定端口的进程"><a href="#找出运行在指定端口的进程" class="headerlink" title="找出运行在指定端口的进程"></a>找出运行在指定端口的进程</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -anpt | grep &apos;:16064&apos;</span><br></pre></td></tr></table></figure>
+<p>此外还有查看网络流量的 dstat 命令，跟踪进程栈的 pstack 命令，跟踪底层系统调用的 strace 等命令，有兴趣的可以进一步深入学习。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/02/java_combat/the_four_scope_of_spring/" rel="next" title="Spring Bean 的四个作用域">
+                <i class="fa fa-chevron-left"></i> Spring Bean 的四个作用域
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU"><span class="nav-number">1.</span> <span class="nav-text">CPU</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#系统资源信息"><span class="nav-number">1.1.</span> <span class="nav-text">系统资源信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程信息"><span class="nav-number">1.2.</span> <span class="nav-text">进程信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看每个CPU核心的占用情况"><span class="nav-number">1.3.</span> <span class="nav-text">查看每个CPU核心的占用情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看「进程信息」默认排序列"><span class="nav-number">1.4.</span> <span class="nav-text">查看「进程信息」默认排序列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改变「进程信息」排序方式"><span class="nav-number">1.5.</span> <span class="nav-text">改变「进程信息」排序方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#只查看某个进程的信息"><span class="nav-number">1.6.</span> <span class="nav-text">只查看某个进程的信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置更新间隔"><span class="nav-number">1.7.</span> <span class="nav-text">设置更新间隔</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存"><span class="nav-number">2.</span> <span class="nav-text">内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#free-命令"><span class="nav-number">2.1.</span> <span class="nav-text">free 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vmstat-命令"><span class="nav-number">2.2.</span> <span class="nav-text">vmstat 命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#磁盘"><span class="nav-number">3.</span> <span class="nav-text">磁盘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#df-命令"><span class="nav-number">3.1.</span> <span class="nav-text">df 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vmstat-命令-1"><span class="nav-number">3.2.</span> <span class="nav-text">vmstat 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看磁盘读写信息"><span class="nav-number">3.3.</span> <span class="nav-text">查看磁盘读写信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看具体磁盘的读写信息"><span class="nav-number">3.4.</span> <span class="nav-text">查看具体磁盘的读写信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iostat-命令"><span class="nav-number">3.5.</span> <span class="nav-text">iostat 命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络情况"><span class="nav-number">4.</span> <span class="nav-text">网络情况</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#显示网络统计信息"><span class="nav-number">4.1.</span> <span class="nav-text">显示网络统计信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列出所有-tcp-端口"><span class="nav-number">4.2.</span> <span class="nav-text">列出所有 tcp 端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#找出程序运行的端口"><span class="nav-number">4.3.</span> <span class="nav-text">找出程序运行的端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#找出运行在指定端口的进程"><span class="nav-number">4.4.</span> <span class="nav-text">找出运行在指定端口的进程</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
