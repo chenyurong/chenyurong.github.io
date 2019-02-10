@@ -463,9 +463,9 @@
 <p>我们最常使用的 vmstat 命令组合有下面几条：</p>
 <p><strong>定时定量刷新信息</strong></p>
 <p>我们可以设定刷新时间以及显示的次数来方便我们查看信息，例如下面的这条命令规定每 1 秒刷新一次，一共统计 5 次。</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmstat 1 5</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmstat 1 5</span><br></pre></td></tr></table></figure>
 <p>当然你也可以只设置刷新间隔，不设置统计次数，这样的话程序便会一直统计。例如下面的命令规定每 1 秒刷新一次，并不断统计。</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmstat 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmstat 1</span><br></pre></td></tr></table></figure>
 <h2 id="磁盘"><a href="#磁盘" class="headerlink" title="磁盘"></a>磁盘</h2><p>查看磁盘的信息一般有三个命令：</p>
 <ul>
 <li>df 查看容量使用情况</li>
@@ -476,26 +476,26 @@
 <p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_10.png" alt=""></p>
 <p>从上面可以看到<code>/dev/vda1</code>这个磁盘，使用了 7% 的容量，还有 36G左右的容量可以使用。</p>
 <h3 id="vmstat-命令-1"><a href="#vmstat-命令-1" class="headerlink" title="vmstat 命令"></a>vmstat 命令</h3><p>此外还能用 vmstat 来查看磁盘的读写情况。</p>
-<h3 id="查看磁盘读写信息"><a href="#查看磁盘读写信息" class="headerlink" title="查看磁盘读写信息"></a>查看磁盘读写信息</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmstat -d</span><br></pre></td></tr></table></figure>
+<h3 id="查看磁盘读写信息"><a href="#查看磁盘读写信息" class="headerlink" title="查看磁盘读写信息"></a>查看磁盘读写信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmstat -d</span><br></pre></td></tr></table></figure>
 <p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_11.png" alt=""></p>
-<h3 id="查看具体磁盘的读写信息"><a href="#查看具体磁盘的读写信息" class="headerlink" title="查看具体磁盘的读写信息"></a>查看具体磁盘的读写信息</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmstat -p /dev/sda1</span><br></pre></td></tr></table></figure>
+<h3 id="查看具体磁盘的读写信息"><a href="#查看具体磁盘的读写信息" class="headerlink" title="查看具体磁盘的读写信息"></a>查看具体磁盘的读写信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmstat -p /dev/sda1</span><br></pre></td></tr></table></figure>
 <p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_12.png" alt=""></p>
 <p>上面的命令查看<code>/dev/vda1</code>磁盘的读写信息。</p>
 <h3 id="iostat-命令"><a href="#iostat-命令" class="headerlink" title="iostat 命令"></a>iostat 命令</h3><p>除了 vmstat 之外，iostat 也常用来查看磁盘信息。</p>
 <p>Linux系统中的 iostat是 IO statistics（输入/输出统计）的缩写，iostat工具将对系统的磁盘操作活动进行监视。它的特点是汇报磁盘活动统计情况，同时也会汇报出CPU使用情况。</p>
 <p><strong>定时定量刷新信息</strong></p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iostat 2 3</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iostat 2 3</span><br></pre></td></tr></table></figure>
 <p>每 2 秒刷新一次，一共显示 3 次。</p>
 <p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_13.png" alt=""></p>
 <p><strong>显示指定磁盘信息</strong></p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iostat -d /dev/vda1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iostat -d /dev/vda1</span><br></pre></td></tr></table></figure>
 <p>上述命令显示指定查看<code>/dev/vda1</code>磁盘的信息。</p>
 <p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_linux_command_in_debugging_14.png" alt=""></p>
 <h2 id="网络情况"><a href="#网络情况" class="headerlink" title="网络情况"></a>网络情况</h2><p>netstat命令用于显示与IP、TCP、UDP和ICMP协议相关的统计数据，一般用于检验本机各端口的网络连接情况。</p>
-<h3 id="显示网络统计信息"><a href="#显示网络统计信息" class="headerlink" title="显示网络统计信息"></a>显示网络统计信息</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -s</span><br></pre></td></tr></table></figure>
-<h3 id="列出所有-tcp-端口"><a href="#列出所有-tcp-端口" class="headerlink" title="列出所有 tcp 端口"></a>列出所有 tcp 端口</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -at</span><br></pre></td></tr></table></figure>
-<h3 id="找出程序运行的端口"><a href="#找出程序运行的端口" class="headerlink" title="找出程序运行的端口"></a>找出程序运行的端口</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ap | grep ssh</span><br></pre></td></tr></table></figure>
-<h3 id="找出运行在指定端口的进程"><a href="#找出运行在指定端口的进程" class="headerlink" title="找出运行在指定端口的进程"></a>找出运行在指定端口的进程</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -anpt | grep &apos;:16064&apos;</span><br></pre></td></tr></table></figure>
+<h3 id="显示网络统计信息"><a href="#显示网络统计信息" class="headerlink" title="显示网络统计信息"></a>显示网络统计信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -s</span><br></pre></td></tr></table></figure>
+<h3 id="列出所有-tcp-端口"><a href="#列出所有-tcp-端口" class="headerlink" title="列出所有 tcp 端口"></a>列出所有 tcp 端口</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -at</span><br></pre></td></tr></table></figure>
+<h3 id="找出程序运行的端口"><a href="#找出程序运行的端口" class="headerlink" title="找出程序运行的端口"></a>找出程序运行的端口</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ap | grep ssh</span><br></pre></td></tr></table></figure>
+<h3 id="找出运行在指定端口的进程"><a href="#找出运行在指定端口的进程" class="headerlink" title="找出运行在指定端口的进程"></a>找出运行在指定端口的进程</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -anpt | grep &apos;:16064&apos;</span><br></pre></td></tr></table></figure>
 <p>此外还有查看网络流量的 dstat 命令，跟踪进程栈的 pstack 命令，跟踪底层系统调用的 strace 等命令，有兴趣的可以进一步深入学习。</p>
 
       
@@ -618,7 +618,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -640,7 +640,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

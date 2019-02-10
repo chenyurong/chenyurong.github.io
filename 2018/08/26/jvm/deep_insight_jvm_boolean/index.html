@@ -389,13 +389,13 @@
       
         <p>最近在系统回顾学习 Java 虚拟机方面的知识，其中想到一个很有意思的问题：布尔型在虚拟机中到底是什么类型？</p>
 <p>要想解答这个问题，我们看 JDK 的源码是无法解决源码的，我们必须深入到 class 文件中才能解决问题。于是他给出了这么一道题：</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class Foo&#123;</span><br><span class="line">    static boolean flag;</span><br><span class="line">    public static void main(String[] args)&#123;</span><br><span class="line">        flag = true;    </span><br><span class="line">        if(flag)&#123;</span><br><span class="line">            System.out.println(&quot;Hello, Java!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        if(flag == true)&#123;</span><br><span class="line">            System.out.println(&quot;Hello, JVM!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class Foo&#123;</span><br><span class="line">    static boolean flag;</span><br><span class="line">    public static void main(String[] args)&#123;</span><br><span class="line">        flag = true;    </span><br><span class="line">        if(flag)&#123;</span><br><span class="line">            System.out.println(&quot;Hello, Java!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        if(flag == true)&#123;</span><br><span class="line">            System.out.println(&quot;Hello, JVM!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这道题很简单，结果是输出：</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Hello, Java!</span><br><span class="line">Hello, JVM!</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Hello, Java!</span><br><span class="line">Hello, JVM!</span><br></pre></td></tr></table></figure>
 <p>但我们要深入到 class 文件中去看看 JVM 对于这段代码，它到底是怎么执行字节码指令的。于是我们使用 javac 命令得到它的 class 字节码文件：</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javac Foo.java</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javac Foo.java</span><br></pre></td></tr></table></figure>
 <p>字节码文件都是十六进制的字符集合，我们一般可以用 javap 命令来实现反汇编工作。但这次我们使用另一个工具，即 asmtools。它是 OpenJDK 提供的另一个反汇编工具。</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -cp /path/to/asmtools.jar org.openjdk.asmtools.jdis.Main Foo.class &gt; Foo.jasm.1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -cp /path/to/asmtools.jar org.openjdk.asmtools.jdis.Main Foo.class &gt; Foo.jasm.1</span><br></pre></td></tr></table></figure>
 <p>注：上面需要下载 asmtools 这个 Jar 包，下载地址：<a href="https://wiki.openjdk.java.net/display/CodeTools/asmtools" target="_blank" rel="noopener">asmtools - Code Tools - OpenJDK Wiki</a></p>
 <p>上面这行命令其实就是把字节码文件反汇编一下，然后存在 Foo.jasm.1 文件里。我们打开 Foo.jasm.1 文件可以看到下面的内容：</p>
 <p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jvm_boolean_01" alt=""></p>
@@ -403,15 +403,15 @@
 <p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jvm_boolean_02.png" alt=""></p>
 <p>（放大图片查看每个指令集的作用）</p>
 <p>其实这几行的逻辑对应下面这块源码：</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if(flag)&#123;</span><br><span class="line">    System.out.println(&quot;Hello, Java!&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if(flag)&#123;</span><br><span class="line">    System.out.println(&quot;Hello, Java!&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>而第二部分的字节码指令的分析：</p>
 <p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jvm_boolean_03.png" alt=""></p>
 <p>（放大图片查看每个指令集的作用）</p>
 <p>这几行的逻辑对应下面这块源码：</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if(flag == true)&#123;</span><br><span class="line">    System.out.println(&quot;Hello, JVM!&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if(flag == true)&#123;</span><br><span class="line">    System.out.println(&quot;Hello, JVM!&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>经过这么一分析，你会发现在 Java 虚拟机中是不存在布尔值这一类型的，他们都被整型来替代了。</p>
 <p>其实还有一个方法可以很直观地看出布尔型是使用整型表示的，那就是将 Foo.jasm 文件恢复成 class 文件。运行下面的命令，将其恢复成 class 文件：</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -cp asmtools.jar org.openjdk.asmtools.jasm.Main Foo.jasm</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -cp asmtools.jar org.openjdk.asmtools.jasm.Main Foo.jasm</span><br></pre></td></tr></table></figure>
 <p>你会发现目录下生成了一个 Foo.class 文件，我们使用 JD-GUI 工具打开它：</p>
 <p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/deep_insight_jvm_boolean_04.png" alt=""></p>
 <p>你会发现原来是布尔型的变量，现在变成了整型。原来的 true 现在是 1 了。</p>
@@ -526,7 +526,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -548,7 +548,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

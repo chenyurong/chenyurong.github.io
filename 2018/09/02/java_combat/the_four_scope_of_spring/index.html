@@ -388,12 +388,12 @@
 <p>Spring 框架支持以下五个作用域：</p>
 <p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_four_scope_of_spring_01.png" alt=""></p>
 <h2 id="singleton作用域"><a href="#singleton作用域" class="headerlink" title="singleton作用域"></a>singleton作用域</h2><p>如果一个 bean 的作用域被声明为 singleton，那么 Spring IoC 容器将只创建一个该对象的实例，并将其存储在缓存中。每次请求该 bean 时，都会返回该缓存对象。Singleton 作用域是所有 bean 的默认作用域。</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- A bean definition with singleton scope --&gt;</span><br><span class="line">&lt;bean id=&quot;...&quot; class=&quot;...&quot; scope=&quot;singleton&quot;&gt;</span><br><span class="line">    &lt;!-- collaborators and configuration for this bean go here --&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- A bean definition with singleton scope --&gt;</span><br><span class="line">&lt;bean id=&quot;...&quot; class=&quot;...&quot; scope=&quot;singleton&quot;&gt;</span><br><span class="line">    &lt;!-- collaborators and configuration for this bean go here --&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
 <h2 id="prototype作用域"><a href="#prototype作用域" class="headerlink" title="prototype作用域"></a>prototype作用域</h2><p>如果一个 bean 的作用域被声明为 prototype，那么每次请求该 bean 时，Spring IoC 都会返回一个新的实例。</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- A bean definition with singleton scope --&gt;</span><br><span class="line">&lt;bean id=&quot;...&quot; class=&quot;...&quot; scope=&quot;prototype&quot;&gt;</span><br><span class="line">   &lt;!-- collaborators and configuration for this bean go here --&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- A bean definition with singleton scope --&gt;</span><br><span class="line">&lt;bean id=&quot;...&quot; class=&quot;...&quot; scope=&quot;prototype&quot;&gt;</span><br><span class="line">   &lt;!-- collaborators and configuration for this bean go here --&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
 <h2 id="request作用域"><a href="#request作用域" class="headerlink" title="request作用域"></a>request作用域</h2><p>该作用域只在 Spring ApplicationContext 的上下文中有效。如果一个 bean 的作用域被声明为 request，就表示其只在此次请求内有效。</p>
 <p>对于 request 作用域，查看如下Bean定义：</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;loginAction&quot; class=&quot;com.abc.LoginAction&quot; scope=&quot;request&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;loginAction&quot; class=&quot;com.abc.LoginAction&quot; scope=&quot;request&quot; /&gt;</span><br></pre></td></tr></table></figure>
 <p>针对每次HTTP请求，Spring 器会根据 LoginAction 定义创建一个全新的 LoginAction 实例，且该 LoginAction 实例仅在当前 HTTP Request 内有效。如果程序需要，完全可以自由更改 Bean 实例的内部状态，其他请求所获得的loginAction 实例无法感觉到这种内部状态的改变。当处理请求结束时，request 作用域的 Bean 将会被销毁。</p>
 <h2 id="session作用域"><a href="#session作用域" class="headerlink" title="session作用域"></a>session作用域</h2><p>该作用域只在 Spring ApplicationContext 的上下文中有效。如果一个 bean 的作用域被声明为 session，就表示其只在此次会话（session）内有效。</p>
 <p>session 用域与 request 作用域完全类似，区别在于：request 作用域的 Bean对于每次 HTTP 请求有效，而 session 作用域的 Bean 对于每次 Session 有效。即如果用户没有关闭浏览器，那么后一次请求可以得到上一次请求的信息。</p>
@@ -520,7 +520,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -542,7 +542,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

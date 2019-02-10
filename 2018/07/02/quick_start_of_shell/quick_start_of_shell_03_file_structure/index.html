@@ -388,16 +388,16 @@
 <li>文件注释。这部分是对这个文件业务逻辑的注释，一个好的注释可以让别人一眼看懂该文件的目的。</li>
 <li>Shell代码。这部分就是具体的业务代码了。</li>
 </ul>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># author:陈树义</span><br><span class="line"># site:http://shuyi.me</span><br><span class="line">echo &quot;Hello Shell&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># author:陈树义</span><br><span class="line"># site:http://shuyi.me</span><br><span class="line">echo &quot;Hello Shell&quot;</span><br></pre></td></tr></table></figure>
 <p>在注释部分，建议分为两个部分：</p>
 <ul>
 <li>顶层注释。顶层注释主要是对其内容进行简要概述。版权声明和作者信息是可选的。例如：</li>
 </ul>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">#</span><br><span class="line"># 备份数据库User表</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">#</span><br><span class="line"># 备份数据库User表</span><br></pre></td></tr></table></figure>
 <ul>
 <li>功能注释。其他人通过阅读注释就能够学会如何使用你的程序或库函数，而不需要阅读代码。例如：</li>
 </ul>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#######################################</span><br><span class="line"># 连接指定数据数据库</span><br><span class="line"># 全局变量:</span><br><span class="line">#   BACKUP_DIR</span><br><span class="line">#   ORACLE_SID</span><br><span class="line"># 参数:</span><br><span class="line">#   None</span><br><span class="line"># 返回值:</span><br><span class="line">#   None</span><br><span class="line">#######################################</span><br><span class="line">connect()&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#######################################</span><br><span class="line"># 连接指定数据数据库</span><br><span class="line"># 全局变量:</span><br><span class="line">#   BACKUP_DIR</span><br><span class="line">#   ORACLE_SID</span><br><span class="line"># 参数:</span><br><span class="line">#   None</span><br><span class="line"># 返回值:</span><br><span class="line">#   None</span><br><span class="line">#######################################</span><br><span class="line">connect()&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>综合以上的建议，整理了一个 Shell 脚本的文件结构范例。下次你要写 Shell 脚本的时候可以直接拷贝过去，修改相关注释以及函数名就可以，即规范又简便。</p>
 <pre><code class="bash"><span class="meta">#!/bin/bash</span>
 <span class="comment">#</span>
@@ -528,7 +528,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -550,7 +550,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

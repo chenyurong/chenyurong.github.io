@@ -417,7 +417,7 @@
 <p><strong>Canal Client端。</strong>Canal Client端接收到Canal Server的消息后直接将消息存到Kafka指定Partition中，并将最新的binlogid发送给zookeeper集群保存。</p>
 <h2 id="Kafka消息消费端"><a href="#Kafka消息消费端" class="headerlink" title="Kafka消息消费端"></a>Kafka消息消费端</h2><p>Canal技术变更平台在获取到对应的数据库变更消息后会将其放到指定的Kafka分片里，具体的业务项目需要到指定的Kafka片区里消费对应的数据变更消息，之后根据具体的业务需求进行处理。</p>
 <p>因为Canal变化是根据表为最小单位进行地，因此我在实现方面定义了一个以表为处理单位的<code>MsgDealer</code>接口：</p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">MsgDealer</span> </span>&#123;</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">deal</span><span class="hljs-params">(CanalMsgVo canalMsgVo)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MsgDealer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">deal</span><span class="params">(CanalMsgVo canalMsgVo)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>搜索库涉及对5个表的监视，因此我实现了5个对应的处理类：</p>
 <p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/elasticsearch_canal_search_platform_03.png" alt="ElasticSearch + Canal 开发千万级的实时搜索系统"></p>
 <p>针对不同表的数据变化，自动调用不同的实现类进行处理。</p>
@@ -540,7 +540,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -562,7 +562,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
