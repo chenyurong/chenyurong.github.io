@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Shell,Linux," />
+  <meta name="keywords" content="Linux,Shell," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="在 Shell 中进行数据运算是一件很头疼的事情，因为 Shell 的数学运算和我们高级语言中的语法完全不一样。例如在 Java 中下面一个简单的算术： 1int a = 10 + 5; 你以为是这么写的： 123#!/bin/basha=10+5echo $a 但实际上上面的输出是：10+5。我们在第四小节的时候说过，Shell 中把所有东西都当成是一个字符串，所以这里它并不知道我们要它进行数学">
-<meta name="keywords" content="Shell,Linux">
+<meta name="keywords" content="Linux,Shell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Shell 快速入门（九）：如何进行数学运算">
 <meta property="og:url" content="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_09_arithmetic/index.html">
@@ -383,15 +383,15 @@
 
       
         <p>在 Shell 中进行数据运算是一件很头疼的事情，因为 Shell 的数学运算和我们高级语言中的语法完全不一样。例如在 Java 中下面一个简单的算术：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">10</span> + <span class="number">5</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">int</span> a = <span class="hljs-number">10</span> + <span class="hljs-number">5</span>;</span><br></pre></td></tr></table></figure>
 <p>你以为是这么写的：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">a=10+5</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$a</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#!/bin/bash</span></span><br><span class="line">a=10+5</span><br><span class="line"><span class="hljs-built_in">echo</span> <span class="hljs-variable">$a</span></span><br></pre></td></tr></table></figure>
 <p>但实际上上面的输出是：<code>10+5</code>。我们在第四小节的时候说过，Shell 中把所有东西都当成是一个字符串，所以这里它并不知道我们要它进行数学运算。实际上在 Shell 中你要进行这样的数学运算，你应该这么写：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">a=`expr 10 + 5`</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$a</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#!/bin/bash</span></span><br><span class="line">a=`expr 10 + 5`</span><br><span class="line"><span class="hljs-built_in">echo</span> <span class="hljs-variable">$a</span></span><br></pre></td></tr></table></figure>
 <p>当然了，你还可以这么写：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">let</span> a=10+5</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$a</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#!/bin/bash</span></span><br><span class="line"><span class="hljs-built_in">let</span> a=10+5</span><br><span class="line"><span class="hljs-built_in">echo</span> <span class="hljs-variable">$a</span></span><br></pre></td></tr></table></figure>
 <p>这两种方式都可以实现简单的数学运算。但相比这两种，我更推荐用下面这种形式：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(( a = 10 + 5 ))</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$a</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(( a = 10 + 5 ))</span><br><span class="line"><span class="hljs-built_in">echo</span> <span class="hljs-variable">$a</span></span><br></pre></td></tr></table></figure>
 <p>即将需要运算的内容放在两对中括号里面。因为这种方式更加简洁，并且功能也是最为完整，也是最为接近高级语言的写法。</p>
 
       
@@ -410,9 +410,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Shell/" rel="tag"># Shell</a>
-          
             <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/Shell/" rel="tag"># Shell</a>
           
         </div>
       
@@ -505,7 +505,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-count">74</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -604,7 +604,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

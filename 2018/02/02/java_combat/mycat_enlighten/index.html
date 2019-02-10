@@ -401,13 +401,13 @@
 <p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/mycat_enlighten_04.png" alt=""></p>
 <p>我们通过数据库主从同步实现了读写分离，将所有读操作都引导到从库进行，将所有写操作都引导到主库进行。</p>
 <p>因为我们对数据库层进行了改造，规定所有读数据库操作要访问从库，所有写数据库操作要访问主库，那么我们就必须对原来的代码进行改造。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public User selectUser()&#123;</span><br><span class="line">    dataTemplate.selectById(...);</span><br><span class="line">&#125;</span><br><span class="line">public User insertUser()&#123;</span><br><span class="line">    dataTemplate.insert(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public User selectUser()&#123;</span><br><span class="line">    dataTemplate.selectById(...);</span><br><span class="line">&#125;</span><br><span class="line">public User insertUser()&#123;</span><br><span class="line">    dataTemplate.insert(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上面是改造前的代码，无论是读操作还是写操作，我们都使用同一个数据源进行操作。但为了适应新的数据库架构，我们必须在代码中手动判断应该请求哪个数据源。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public User selectUser()&#123;</span><br><span class="line">    readTemplate.selectById(...);</span><br><span class="line">&#125;</span><br><span class="line">public User insertUser()&#123;</span><br><span class="line">    writeTemplate.insert(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public User selectUser()&#123;</span><br><span class="line">    readTemplate.selectById(...);</span><br><span class="line">&#125;</span><br><span class="line">public User insertUser()&#123;</span><br><span class="line">    writeTemplate.insert(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>经过修改后的代码，开发根据自身经验判断应该选择哪个数据源进行操作。当是读操作的时候，我们选择 readTemplate。当是写操作的时候，我们选择 writeTemplate。</p>
 <p>但作为一个程序员，我们隐隐约约觉得识别应该用哪个数据源这个判断不应该人工判断，而应该自动让代码去判断。毕竟这个判断的模式很简单 —— 如果是 select 那么就用读的数据源，如果是其他那么就用写的数据源。</p>
 <p><strong>其实这个就是 MyCat 的用途之一，即作为一个数据库中间件去解决数据源判断问题。</strong>如果我们使用 MyCat 作为数据库中间件，那么我们不需要关心我应该使用哪个数据源。MyCat 帮我们屏蔽了不同数据源的差异，对于我们来说就只有一个数据源，这个数据源能处理写操作，也能处理读操作。上面查询和插入的代码就可以变成下面这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public User selectUser()&#123;</span><br><span class="line">    dataTemplate.selectById(...);</span><br><span class="line">&#125;</span><br><span class="line">public User insertUser()&#123;</span><br><span class="line">    dataTemplate.insert(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public User selectUser()&#123;</span><br><span class="line">    dataTemplate.selectById(...);</span><br><span class="line">&#125;</span><br><span class="line">public User insertUser()&#123;</span><br><span class="line">    dataTemplate.insert(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>实现了主从数据库架构，再使用 MyCat，你发现我们并不需要去修改太多的代码，只需要将数据源改为 MyCat 地址即可。MyCat 自动把我们所有的语句发送给后端的 MySQL 服务器。</p>
 <p>当我们使用了主从数据库架构之后，我们会发现我们能支撑更多的用户访问和请求了。但随着业务的进一步发展，其实可以发现会存在一些问题：</p>
 <ul>
@@ -561,7 +561,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-count">74</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -676,7 +676,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -396,7 +396,7 @@
 <h2 id="DNS轮询"><a href="#DNS轮询" class="headerlink" title="DNS轮询"></a>DNS轮询</h2><p>DNS轮询指的是服务提供者在运营商针对某一域名配置了多个提供服务的服务器IP，当用户请求改域名的接口时，运营商将随机挑选出一个服务器响应用户请求。下图的例子是：有3台联通服务器、3台电信服务器，要实现“联通用户流量分摊到3台联通服务器、其他用户流量分摊到电信服务器”这个效果的设置。</p>
 <p><img src="http://images2015.cnblogs.com/blog/595137/201704/595137-20170411110710094-1372998016.png" alt=""></p>
 <p>DNS由于成本较低，所以一般在小型的网站用的比较多。但是大型的网站一般也会将用它和其他负载均衡的方式结合起来一起使用，DNS轮询方式提供的IP地址，在大型网站中往往是一个集群的地址，可能是均衡交换机也可能是均衡服务器。我们可以通过<code>nslookup</code>命令来查询域名的DNS配置情况：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Administrator&gt;nslookup www.baidu.com</span><br><span class="line">服务器:  UnKnown</span><br><span class="line">Address:  10.10.121.11</span><br><span class="line"></span><br><span class="line">非权威应答:</span><br><span class="line">名称:    www.a.shifen.com</span><br><span class="line">Addresses:  58.217.200.113</span><br><span class="line">          58.217.200.112</span><br><span class="line">Aliases:  www.baidu.com</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Administrator&gt;nslookup www.baidu.com</span><br><span class="line">服务器:  UnKnown</span><br><span class="line">Address:  10.10.121.11</span><br><span class="line"></span><br><span class="line">非权威应答:</span><br><span class="line">名称:    www.a.shifen.com</span><br><span class="line">Addresses:  58.217.200.113</span><br><span class="line">          58.217.200.112</span><br><span class="line">Aliases:  www.baidu.com</span><br></pre></td></tr></table></figure>
 <p>DNS轮询的优点是成本低、操作简单，但是其缺点也是明显的：</p>
 <ul>
 <li>服务不稳定。如果某台服务器宕机，DNS服务器是无法知晓的，仍旧会将访问分配到此服务器。修改DNS记录全部生效一般要1-3小时，甚至更久。这就可能会导致某些用户在服务器发生故障的时候完全无法访问。</li>
@@ -651,7 +651,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-count">74</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -766,7 +766,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

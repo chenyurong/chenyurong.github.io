@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Shell,Linux," />
+  <meta name="keywords" content="Linux,Shell," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="在 Shell 中，利用 expr 命令再加上算术运算符可以实现数值运算。目前支持的算术运算符有：  +：加法 -：减法 *：乘法 /：除法 %：取余 =：赋值 ==：相等 !=：不相等  在 Java 中，我们可以这样实现一个算术运算： 123int a = 12;int b = 10;int c = a + b; 但在 Shell 中，我们不能这么操作。因为在 原生 Bash 不支持简单的数学">
-<meta name="keywords" content="Shell,Linux">
+<meta name="keywords" content="Linux,Shell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Shell 快速入门（二十一）：算术运算符的使用">
 <meta property="og:url" content="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_21_arithmetic_operator/index.html">
@@ -394,9 +394,9 @@
 <li><code>!=</code>：不相等</li>
 </ul>
 <p>在 Java 中，我们可以这样实现一个算术运算：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">12</span>;</span><br><span class="line"><span class="keyword">int</span> b = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> c = a + b;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">int</span> a = <span class="hljs-number">12</span>;</span><br><span class="line"><span class="hljs-keyword">int</span> b = <span class="hljs-number">10</span>;</span><br><span class="line"><span class="hljs-keyword">int</span> c = a + b;</span><br></pre></td></tr></table></figure>
 <p>但在 Shell 中，我们不能这么操作。因为在 原生 Bash 不支持简单的数学运算，所以在 Shell 语言中的运算都是通过其他命令来实现的，其中最常用的就是 expr 命令。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">val=`expr 2 + 2`</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Total value : <span class="variable">$val</span>"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#!/bin/sh</span></span><br><span class="line">val=`expr 2 + 2`</span><br><span class="line"><span class="hljs-built_in">echo</span> <span class="hljs-string">"Total value : <span class="hljs-variable">$val</span>"</span></span><br></pre></td></tr></table></figure>
 <p>输出结果：<code>Total value : 4</code>。</p>
 <p>上面的 ` 符号叫做反引号，作用是将符号内的命令结果赋值给左边的变量。 </p>
 
@@ -416,9 +416,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Shell/" rel="tag"># Shell</a>
-          
             <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/Shell/" rel="tag"># Shell</a>
           
         </div>
       
@@ -431,8 +431,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_16_file_judge/" rel="next" title="Shell 快速入门（十六）：如何进行文件判断">
-                <i class="fa fa-chevron-left"></i> Shell 快速入门（十六）：如何进行文件判断
+              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_17_array/" rel="next" title="Shell 快速入门（十七）：如何使用数组">
+                <i class="fa fa-chevron-left"></i> Shell 快速入门（十七）：如何使用数组
               </a>
             
           </div>
@@ -441,8 +441,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_17_array/" rel="prev" title="Shell 快速入门（十七）：如何使用数组">
-                Shell 快速入门（十七）：如何使用数组 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_18_special_syntax/" rel="prev" title="Shell 快速入门（十八）：特殊符号的使用">
+                Shell 快速入门（十八）：特殊符号的使用 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -511,7 +511,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-count">74</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -610,7 +610,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

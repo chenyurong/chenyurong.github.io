@@ -392,12 +392,12 @@
 <p><img src="https://images2018.cnblogs.com/blog/595137/201806/595137-20180619160029441-1617517241.png" alt=""></p>
 <p>我们可以看到所有的堆栈都指向了一个名为 validateUrl 的方法，这样的报错信息在堆栈中一共超过 100 处。通过排查代码，我们知道这个方法的主要功能是校验 URL 是否合法。</p>
 <p>很奇怪，一个正则表达式怎么会导致 CPU 利用率居高不下。为了弄清楚复现问题，我们将其中的关键代码摘抄出来，做了个简单的单元测试。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    String badRegex = &quot;^([hH][tT]&#123;2&#125;[pP]://|[hH][tT]&#123;2&#125;[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\\\/])+$&quot;;</span><br><span class="line">    String bugUrl = &quot;http://www.fapiao.com/dddp-web/pdf/download?request=6e7JGxxxxx4ILd-kExxxxxxxqJ4-CHLmqVnenXC692m74H38sdfdsazxcUmfcOH2fAfY1Vw__%5EDadIfJgiEf&quot;;</span><br><span class="line">    if (bugUrl.matches(badRegex)) &#123;</span><br><span class="line">        System.out.println(&quot;match!!&quot;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        System.out.println(&quot;no match!!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    String badRegex = &quot;^([hH][tT]&#123;2&#125;[pP]://|[hH][tT]&#123;2&#125;[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\\\/])+$&quot;;</span><br><span class="line">    String bugUrl = &quot;http://www.fapiao.com/dddp-web/pdf/download?request=6e7JGxxxxx4ILd-kExxxxxxxqJ4-CHLmqVnenXC692m74H38sdfdsazxcUmfcOH2fAfY1Vw__%5EDadIfJgiEf&quot;;</span><br><span class="line">    if (bugUrl.matches(badRegex)) &#123;</span><br><span class="line">        System.out.println(&quot;match!!&quot;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        System.out.println(&quot;no match!!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>当我们运行上面这个例子的时候，通过资源监视器可以看到有一个名为 java 的进程 CPU 利用率直接飙升到了 91.4% 。</p>
 <p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_regex_backtracking_02.png" alt=""></p>
 <p>看到这里，我们基本可以推断，这个正则表达式就是导致 CPU 利用率居高不下的凶手！</p>
 <p>于是，我们将排错的重点放在了那个正则表达式上：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^([hH][tT]&#123;2&#125;[pP]://|[hH][tT]&#123;2&#125;[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+$</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^([hH][tT]&#123;2&#125;[pP]://|[hH][tT]&#123;2&#125;[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+$</span><br></pre></td></tr></table></figure>
 <p>这个正则表达式看起来没什么问题，可以分为三个部分：</p>
 <p>第一部分匹配 http 和 https 协议，第二部分匹配 www. 字符，第三部分匹配许多字符。我看着这个表达式发呆了许久，也没发现没有什么大的问题。</p>
 <p>其实这里导致 CPU 使用率高的关键原因就是：<strong>Java 正则表达式使用的引擎实现是 NFA 自动机，这种正则表达式引擎在进行字符匹配时会发生回溯（backtracking）。</strong>而一旦发生回溯，那其消耗的时间就会变得很长，有可能是几分钟，也有可能是几个小时，时间长短取决于回溯的次数和复杂度。</p>
@@ -405,7 +405,7 @@
 <h2 id="正则表达式引擎"><a href="#正则表达式引擎" class="headerlink" title="正则表达式引擎"></a>正则表达式引擎</h2><p>正则表达式是一个很方便的匹配符号，但要实现这么复杂，功能如此强大的匹配语法，就必须要有一套算法来实现，而实现这套算法的东西就叫做正则表达式引擎。简单地说，实现正则表达式引擎的有两种方式：<strong>DFA 自动机</strong>（Deterministic Final Automata 确定型有穷自动机）和 <strong>NFA 自动机</strong>（Non deterministic Finite Automaton 不确定型有穷自动机）。</p>
 <p>对于这两种自动机，他们有各自的区别，这里并不打算深入将它们的原理。简单地说，DFA 自动机的时间复杂度是线性的，更加稳定，但是功能有限。而 NFA 的时间复杂度比较不稳定，有时候很好，有时候不怎么好，好不好取决于你写的正则表达式。但是胜在 NFA 的功能更加强大，所以包括 Java 、.NET、Perl、Python、Ruby、PHP 等语言都使用了 NFA 去实现其正则表达式。</p>
 <p>那 NFA 自动机到底是怎么进行匹配的呢？我们以下面的字符和表达式来举例说明。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">text=&quot;Today is a nice day.&quot;</span><br><span class="line">regex=&quot;day&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">text=&quot;Today is a nice day.&quot;</span><br><span class="line">regex=&quot;day&quot;</span><br></pre></td></tr></table></figure>
 <p>要记住一个很重要的点，即：NFA 是以正则表达式为基准去匹配的。也就是说，NFA 自动机会读取正则表达式的一个一个字符，然后拿去和目标字符串匹配，匹配成功就换正则表达式的下一个字符，否则继续和目标字符串的下一个字符比较。或许你们听不太懂，没事，接下来我们以上面的例子一步步解析。</p>
 <ul>
 <li>首先，拿到正则表达式的第一个匹配符：d。于是那去和字符串的字符进行比较，字符串的第一个字符是 T，不匹配，换下一个。第二个是 o，也不匹配，再换下一个。第三个是 d，匹配了，那么就读取正则表达式的第二个字符：a。</li>
@@ -414,7 +414,7 @@
 </ul>
 <p>上面这个匹配过程就是 NFA 自动机的匹配过程，但实际上的匹配过程会比这个复杂非常多，但其原理是不变的。</p>
 <h2 id="NFA自动机的回溯"><a href="#NFA自动机的回溯" class="headerlink" title="NFA自动机的回溯"></a>NFA自动机的回溯</h2><p>了解了 NFA 是如何进行字符串匹配的，接下来我们就可以讲讲这篇文章的重点了：回溯。为了更好地解释回溯，我们同样以下面的例子来讲解。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">text=&quot;abbc&quot;</span><br><span class="line">regex=&quot;ab&#123;1,3&#125;c&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">text=&quot;abbc&quot;</span><br><span class="line">regex=&quot;ab&#123;1,3&#125;c&quot;</span><br></pre></td></tr></table></figure>
 <p>上面的这个例子的目的比较简单，匹配以 a 开头，以 c 结尾，中间有 1-3 个 b 字符的字符串。NFA 对其解析的过程是这样子的：</p>
 <ul>
 <li>首先，读取正则表达式第一个匹配符 a 和 字符串第一个字符 a 比较，匹配了。于是读取正则表达式第二个字符。</li>
@@ -422,9 +422,9 @@
 <li>发生回溯是怎么操作呢？发生回溯后，我们已经读取的字符串第四个字符 c 将被吐出去，指针回到第三个字符串的位置。之后，程序读取正则表达式的下一个操作符 c，读取当前指针的下一个字符 c 进行对比，发现匹配。于是读取下一个操作符，但这里已经结束了。</li>
 </ul>
 <p>下面我们回过头来看看前面的那个校验 URL 的正则表达式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^([hH][tT]&#123;2&#125;[pP]://|[hH][tT]&#123;2&#125;[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+$</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^([hH][tT]&#123;2&#125;[pP]://|[hH][tT]&#123;2&#125;[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+$</span><br></pre></td></tr></table></figure>
 <p>出现问题的 URL 是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.fapiao.com/dzfp-web/pdf/download?request=6e7JGm38jfjghVrv4ILd-kEn64HcUX4qL4a4qJ4-CHLmqVnenXC692m74H5oxkjgdsYazxcUmfcOH2fAfY1Vw__%5EDadIfJgiEf</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.fapiao.com/dzfp-web/pdf/download?request=6e7JGm38jfjghVrv4ILd-kEn64HcUX4qL4a4qJ4-CHLmqVnenXC692m74H5oxkjgdsYazxcUmfcOH2fAfY1Vw__%5EDadIfJgiEf</span><br></pre></td></tr></table></figure>
 <p>我们把这个正则表达式分为三个部分：</p>
 <ul>
 <li>第一部分：校验协议。<code>^([hH][tT]{2}[pP]://|[hH][tT]{2}[pP][sS]://)</code>。</li>
@@ -441,17 +441,17 @@
 <p>另外一个问题是在正则表达式的第三部分，我们发现出现问题的 URL 是有下划线（_）和百分号（%）的，但是对应第三部分的正则表达式里面却没有。这样就会导致前面匹配了一长串的字符之后，发现不匹配，最后回溯回去。</p>
 <p>这是这个正则表达式存在的第二个问题。</p>
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>明白了回溯是导致问题的原因之后，其实就是减少这种回溯，你会发现如果我在第三部分加上下划线和百分号之后，程序就正常了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    String badRegex = &quot;^([hH][tT]&#123;2&#125;[pP]://|[hH][tT]&#123;2&#125;[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~_%\\\\/])+$&quot;;</span><br><span class="line">    String bugUrl = &quot;http://www.fapiao.com/dddp-web/pdf/download?request=6e7JGxxxxx4ILd-kExxxxxxxqJ4-CHLmqVnenXC692m74H38sdfdsazxcUmfcOH2fAfY1Vw__%5EDadIfJgiEf&quot;;</span><br><span class="line">    if (bugUrl.matches(badRegex)) &#123;</span><br><span class="line">        System.out.println(&quot;match!!&quot;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        System.out.println(&quot;no match!!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    String badRegex = &quot;^([hH][tT]&#123;2&#125;[pP]://|[hH][tT]&#123;2&#125;[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~_%\\\\/])+$&quot;;</span><br><span class="line">    String bugUrl = &quot;http://www.fapiao.com/dddp-web/pdf/download?request=6e7JGxxxxx4ILd-kExxxxxxxqJ4-CHLmqVnenXC692m74H38sdfdsazxcUmfcOH2fAfY1Vw__%5EDadIfJgiEf&quot;;</span><br><span class="line">    if (bugUrl.matches(badRegex)) &#123;</span><br><span class="line">        System.out.println(&quot;match!!&quot;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        System.out.println(&quot;no match!!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>运行上面的程序，立刻就会打印出<code>match!!</code>。</p>
 <p>但这是不够的，如果以后还有其他 URL 包含了乱七八糟的字符呢，我们难不成还再修改一遍。肯定不现实嘛！</p>
 <p>其实在正则表达式中有这么三种模式：<strong>贪婪模式、懒惰模式、独占模式。</strong></p>
 <p>在关于数量的匹配中，有 <code>+ ? * {min,max}</code> 四种两次，如果只是单独使用，那么它们就是贪婪模式。</p>
 <p><strong>如果在他们之后加多一个 ? 符号，那么原先的贪婪模式就会变成懒惰模式，即尽可能少地匹配。</strong>但是懒惰模式还是会发生回溯现象的。例如下面这个例子：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">text=&quot;abbc&quot;</span><br><span class="line">regex=&quot;ab&#123;1,3&#125;?c&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">text=&quot;abbc&quot;</span><br><span class="line">regex=&quot;ab&#123;1,3&#125;?c&quot;</span><br></pre></td></tr></table></figure>
 <p>正则表达式的第一个操作符 a 与 字符串第一个字符 a 匹配，匹配成功。于是正则表达式的第二个操作符 b{1,3}? 和 字符串第二个字符 b 匹配，匹配成功。因为最小匹配原则，所以拿正则表达式第三个操作符 c 与字符串第三个字符 b 匹配，发现不匹配。于是回溯回去，拿正则表达式第二个操作符 b{1,3}? 和字符串第三个字符 b 匹配，匹配成功。于是再拿正则表达式第三个操作符 c 与字符串第四个字符 c 匹配，匹配成功。于是结束。</p>
 <p><strong>如果在他们之后加多一个 + 符号，那么原先的贪婪模式就会变成独占模式，即尽可能多地匹配，但是不回溯。</strong></p>
 <p>于是乎，如果要彻底解决问题，就要在保证功能的同时确保不发生回溯。我将上面校验 URL 的正则表达式的第二部分后面加多了个 + 号，即变成这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">^([hH][tT]&#123;2&#125;[pP]:\/\/|[hH][tT]&#123;2&#125;[pP][sS]:\/\/)</span><br><span class="line">(([A-Za-z0-9-~]+).)++    ---&gt;&gt;&gt; （这里加了个+号）</span><br><span class="line">([A-Za-z0-9-~_%\\\/])+$</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">^([hH][tT]&#123;2&#125;[pP]:\/\/|[hH][tT]&#123;2&#125;[pP][sS]:\/\/)</span><br><span class="line">(([A-Za-z0-9-~]+).)++    ---&gt;&gt;&gt; （这里加了个+号）</span><br><span class="line">([A-Za-z0-9-~_%\\\/])+$</span><br></pre></td></tr></table></figure>
 <p>这样之后，运行原有的程序就没有问题了。</p>
 <p>最后推荐一个网站，这个网站可以检查你写的正则表达式和对应的字符串匹配时会不会有问题。</p>
 <p><a href="https://regex101.com/" target="_blank" rel="noopener">Online regex tester and debugger: PHP, PCRE, Python, Golang and JavaScript</a></p>
@@ -461,7 +461,7 @@
 <p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_regex_backtracking_04.png" alt=""></p>
 <p>本文中的这个正则表达式在进行了 11 万步尝试之后，自动停止了。这说明这个正则表达式确实存在问题，需要改进。</p>
 <p>但是当我用我们修改过的正则表达式进行测试，即下面这个正则表达式。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^([hH][tT]&#123;2&#125;[pP]:\/\/|[hH][tT]&#123;2&#125;[pP][sS]:\/\/)(([A-Za-z0-9-~]+).)++([A-Za-z0-9-~\\\/])+$</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^([hH][tT]&#123;2&#125;[pP]:\/\/|[hH][tT]&#123;2&#125;[pP][sS]:\/\/)(([A-Za-z0-9-~]+).)++([A-Za-z0-9-~\\\/])+$</span><br></pre></td></tr></table></figure>
 <p>工具提示只用了 58 步就完成了检查。</p>
 <p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_regex_backtracking_05.png" alt=""></p>
 <p>一个字符的差别，性能就差距了好几万倍。</p>
@@ -589,7 +589,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-count">74</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -704,7 +704,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

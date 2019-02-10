@@ -392,7 +392,7 @@
 <p>所以从本质上来说，第三方厂商最后还是通过 DeviceToken 去识别要推送到哪个设备的哪个 App 的。</p>
 <p>而这个别名，一般情况下也是要能唯一标识一个用户。所以很多时候我们都用用户ID来作为别名，将其和 DeviceToken 绑定在一起。</p>
 <p>小树听完之后 发觉可以画一个流程图来梳理一下整个流程了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">App启动 -&gt; 启动第三方推送服务 -&gt; 注册别名和DeviceToken -&gt; 等待推送消息</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">App启动 -&gt; 启动第三方推送服务 -&gt; 注册别名和DeviceToken -&gt; 等待推送消息</span><br></pre></td></tr></table></figure>
 <p>画得很不错，非常清晰地表达了第三方推送的流程，小黑说道。</p>
 <p>而对于后台开发小哥来说，如果要发送一条推送给用户，只需要将别名和推送内容作为参数调用第三方厂商的接口即可。</p>
 <p>但这貌似还没回答之前的问题呢，为什么 iOS 设备在 App 进程被杀掉时能收到推送，而 Android 设备却不行呢？</p>
@@ -460,8 +460,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/11/28/java_combat/the_story_of_push_02/" rel="prev" title="开发小哥的困惑：为何要用第三方推送？">
-                开发小哥的困惑：为何要用第三方推送？ <i class="fa fa-chevron-right"></i>
+              <a href="/2017/11/28/java_combat/open_source_china_district_syscode/" rel="prev" title="开源项目 —— 中国行政区划数据">
+                开源项目 —— 中国行政区划数据 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -530,7 +530,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-count">74</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -629,7 +629,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

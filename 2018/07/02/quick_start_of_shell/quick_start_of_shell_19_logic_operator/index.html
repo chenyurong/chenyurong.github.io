@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Shell,Linux," />
+  <meta name="keywords" content="Linux,Shell," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="逻辑运算符有三个，分别是：非运算、或运算、与运算。  !：非运算符。 -o：或运算符。 -a：与运算符。  因为 Shell 中并没有布尔类型，所以非运算符主要是对表达式取反。 1234567891011121314151617181920#!/bin/bash# author:陈树义# site:www.chenshuyi.coma=10b=20# 非运算if !(( a == b ))then">
-<meta name="keywords" content="Shell,Linux">
+<meta name="keywords" content="Linux,Shell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Shell 快速入门（十九）：逻辑运算符的使用">
 <meta property="og:url" content="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_19_logic_operator/index.html">
@@ -389,9 +389,9 @@
 <li><code>-a</code>：与运算符。</li>
 </ul>
 <p>因为 Shell 中并没有布尔类型，所以非运算符主要是对表达式取反。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># author:陈树义</span></span><br><span class="line"><span class="comment"># site:www.chenshuyi.com</span></span><br><span class="line">a=10</span><br><span class="line">b=20</span><br><span class="line"><span class="comment"># 非运算</span></span><br><span class="line"><span class="keyword">if</span> !(( a == b ))</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">   <span class="built_in">echo</span> <span class="string">"a is not equal to b"</span> </span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="comment"># 或运算</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> -lt 100 -o <span class="variable">$b</span> -gt 100 ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">   <span class="built_in">echo</span> <span class="string">"a &lt; 100 or b &gt; 100"</span> </span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="comment"># 与运算</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> -lt 100 -a <span class="variable">$b</span> -gt 15 ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">   <span class="built_in">echo</span> <span class="string">"a &lt; 100 and b &gt; 15"</span> </span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#!/bin/bash</span></span><br><span class="line"><span class="hljs-comment"># author:陈树义</span></span><br><span class="line"><span class="hljs-comment"># site:www.chenshuyi.com</span></span><br><span class="line">a=10</span><br><span class="line">b=20</span><br><span class="line"><span class="hljs-comment"># 非运算</span></span><br><span class="line"><span class="hljs-keyword">if</span> !(( a == b ))</span><br><span class="line"><span class="hljs-keyword">then</span></span><br><span class="line">   <span class="hljs-built_in">echo</span> <span class="hljs-string">"a is not equal to b"</span> </span><br><span class="line"><span class="hljs-keyword">fi</span></span><br><span class="line"><span class="hljs-comment"># 或运算</span></span><br><span class="line"><span class="hljs-keyword">if</span> [ <span class="hljs-variable">$a</span> -lt 100 -o <span class="hljs-variable">$b</span> -gt 100 ]</span><br><span class="line"><span class="hljs-keyword">then</span></span><br><span class="line">   <span class="hljs-built_in">echo</span> <span class="hljs-string">"a &lt; 100 or b &gt; 100"</span> </span><br><span class="line"><span class="hljs-keyword">fi</span></span><br><span class="line"><span class="hljs-comment"># 与运算</span></span><br><span class="line"><span class="hljs-keyword">if</span> [ <span class="hljs-variable">$a</span> -lt 100 -a <span class="hljs-variable">$b</span> -gt 15 ]</span><br><span class="line"><span class="hljs-keyword">then</span></span><br><span class="line">   <span class="hljs-built_in">echo</span> <span class="hljs-string">"a &lt; 100 and b &gt; 15"</span> </span><br><span class="line"><span class="hljs-keyword">fi</span></span><br></pre></td></tr></table></figure>
 <p>值得注意的是，因为 Shell 语言并没有布尔型。所以如果你尝试在非运算符后面跟上一个「布尔值」，那么你会得到错误的结果。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># author:陈树义</span></span><br><span class="line"><span class="comment"># site:http://www.shuyi.me</span></span><br><span class="line"></span><br><span class="line">result=<span class="literal">true</span></span><br><span class="line"><span class="keyword">if</span> [ !<span class="variable">$result</span> ]</span><br><span class="line"><span class="keyword">then</span> </span><br><span class="line">  <span class="built_in">echo</span> <span class="string">"Hello"</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#!/bin/bash</span></span><br><span class="line"><span class="hljs-comment"># author:陈树义</span></span><br><span class="line"><span class="hljs-comment"># site:http://www.shuyi.me</span></span><br><span class="line"></span><br><span class="line">result=<span class="hljs-literal">true</span></span><br><span class="line"><span class="hljs-keyword">if</span> [ !<span class="hljs-variable">$result</span> ]</span><br><span class="line"><span class="hljs-keyword">then</span> </span><br><span class="line">  <span class="hljs-built_in">echo</span> <span class="hljs-string">"Hello"</span></span><br><span class="line"><span class="hljs-keyword">fi</span></span><br></pre></td></tr></table></figure>
 <p>按照我们的理解，上面的例子应该不会打印出 Hello 字符，但实际结果是会打印。这是因为 Shell 中根本就没有布尔类型的值，所以 if 表达式中的字符串会被当成是一个字符串，字符串肯定就是 true 了，所以就会打印 Hello。其实如果我们随便输入一串字符，结果还是会输出 Hello。</p>
 
       
@@ -410,9 +410,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Shell/" rel="tag"># Shell</a>
-          
             <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/Shell/" rel="tag"># Shell</a>
           
         </div>
       
@@ -505,7 +505,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-count">74</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -604,7 +604,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

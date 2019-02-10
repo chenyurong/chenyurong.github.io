@@ -396,7 +396,7 @@
 <p>其实上面这个问题就是缓存击穿的问题，它发生在缓存KEY的过期瞬间。对于这种情况，现在常用的解决方式有这么两种：<strong>互斥锁、永远不过期。</strong></p>
 <h3 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h3><p>互斥锁指的是在缓存KEY过期去更新的时候，先让程序去获取锁，只有获取到锁的线程才有资格去更新缓存KEY。其他没有获取到锁的线程则休眠片刻之后再次去获取最新的缓存数据。通过这种方式，同一时刻永远只有一个线程会去读取数据库，这样也就避免了海量数据库请求对于数据库的冲击。</p>
 <p>而对于上面说到的锁，我们可以使用缓存提供的一些原则操作来完成。例如对于 redis 缓存来说，我们可以使用其 SETNX 命令来完成。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public String get(key) &#123;  </span><br><span class="line">    String value = redis.get(key);  </span><br><span class="line">    if (value == null) &#123; //缓存过期  </span><br><span class="line">        if (redis.setnx(key_mutex, 1, 1 * 60) == 1) &#123;   </span><br><span class="line">                value = db.get(key);  </span><br><span class="line">                redis.set(key, value, expireTime);  </span><br><span class="line">                redis.del(key_mutex);  </span><br><span class="line">            &#125; else &#123;  </span><br><span class="line">                //休眠片刻后重试</span><br><span class="line">                sleep(50);  </span><br><span class="line">                get(key);   </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125; else &#123;  </span><br><span class="line">            return value;        </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public String get(key) &#123;  </span><br><span class="line">    String value = redis.get(key);  </span><br><span class="line">    if (value == null) &#123; //缓存过期  </span><br><span class="line">        if (redis.setnx(key_mutex, 1, 1 * 60) == 1) &#123;   </span><br><span class="line">                value = db.get(key);  </span><br><span class="line">                redis.set(key, value, expireTime);  </span><br><span class="line">                redis.del(key_mutex);  </span><br><span class="line">            &#125; else &#123;  </span><br><span class="line">                //休眠片刻后重试</span><br><span class="line">                sleep(50);  </span><br><span class="line">                get(key);   </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125; else &#123;  </span><br><span class="line">            return value;        </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上面的 key_mutex 其实就是一个普通的 KEY-VALUE 值，我们使用 setnx 命令去设置其值为 1。如果这时候已经有人在更新缓存KEY了，那么 setnx 命令会返回 0，表示设置失败。</p>
 <h3 id="永远不过期"><a href="#永远不过期" class="headerlink" title="永远不过期"></a>永远不过期</h3><p>从缓存的角度来看，如果你设置了永远不过期，那么就不会有海量请求数据库的情形出现。此时我们一般通过新起一个线程的方式去<strong>定时将数据库中的数据更新到缓存中</strong>，更加成熟的方式是通过<strong>定时任务去同步缓存和数据库的数据。</strong></p>
 <p>但这种方案会出现数据的延迟问题，也就是线程读取到的数据并不是最新的数据。但对于一般的互联网功能来说，些许的延迟还是能接受的。</p>
@@ -530,7 +530,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-count">74</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -645,7 +645,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Shell,Linux," />
+  <meta name="keywords" content="Linux,Shell," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="Shell 语言作为类 Unix 系统的原生脚本，有着非常实用的价值。但对于很多刚刚接触 Shell 脚本的同学来说，搞懂 Shell 语言的语法却是一件非常困难的事情。甚至有人吐槽，或许没有谁能清楚地说明白 Shell 的语法。  例如下面这两个 Shell 脚本： 12345678#!/bin/basha=10if [ $a = 10 ]then 	echo &quot;a is 10&quot;else 	ec">
-<meta name="keywords" content="Shell,Linux">
+<meta name="keywords" content="Linux,Shell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何快速学好Shell脚本？">
 <meta property="og:url" content="http://yoursite.com/2018/07/03/quick_start_of_coding/quick_start_of_shell/index.html">
@@ -384,17 +384,17 @@
       
         <p>Shell 语言作为类 Unix 系统的原生脚本，有着非常实用的价值。但对于很多刚刚接触 Shell 脚本的同学来说，搞懂 Shell 语言的语法却是一件非常困难的事情。甚至有人吐槽，或许没有谁能清楚地说明白 Shell 的语法。</p>
 <p> 例如下面这两个 Shell 脚本：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">a=10</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> = 10 ]</span><br><span class="line"><span class="keyword">then</span> </span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"a is 10"</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"> 	<span class="built_in">echo</span> <span class="string">"a is not 10"</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">a=10</span><br><span class="line"><span class="keyword">if</span> [<span class="variable">$a</span> = 10 ]  <span class="comment"># $a 前没有加空格，非法</span></span><br><span class="line"><span class="keyword">then</span> </span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"a is 10"</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"> 	<span class="built_in">echo</span> <span class="string">"a is not 10"</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#!/bin/bash</span></span><br><span class="line">a=10</span><br><span class="line"><span class="hljs-keyword">if</span> [ <span class="hljs-variable">$a</span> = 10 ]</span><br><span class="line"><span class="hljs-keyword">then</span> </span><br><span class="line">	<span class="hljs-built_in">echo</span> <span class="hljs-string">"a is 10"</span></span><br><span class="line"><span class="hljs-keyword">else</span></span><br><span class="line"> 	<span class="hljs-built_in">echo</span> <span class="hljs-string">"a is not 10"</span></span><br><span class="line"><span class="hljs-keyword">fi</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#!/bin/bash</span></span><br><span class="line">a=10</span><br><span class="line"><span class="hljs-keyword">if</span> [<span class="hljs-variable">$a</span> = 10 ]  <span class="hljs-comment"># $a 前没有加空格，非法</span></span><br><span class="line"><span class="hljs-keyword">then</span> </span><br><span class="line">	<span class="hljs-built_in">echo</span> <span class="hljs-string">"a is 10"</span></span><br><span class="line"><span class="hljs-keyword">else</span></span><br><span class="line"> 	<span class="hljs-built_in">echo</span> <span class="hljs-string">"a is not 10"</span></span><br><span class="line"><span class="hljs-keyword">fi</span></span><br></pre></td></tr></table></figure>
 <p>这两个脚本的区别只是 if 中的判断表达式，一个有空格，一个没有空格而已。但在 Shell 语法中，第二个没有在<code>$a</code>前加空格的脚本是非法的。再举一个例子：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a=10</span><br><span class="line">a = 10</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a=10</span><br><span class="line">a = 10</span><br></pre></td></tr></table></figure>
 <p>在我们看来这两个表达式没有什么区别嘛，都是给 a 变量赋值 10。但实际上在 Shell 语法中，第一个表达式<code>a=10</code>表示赋值，第二个表达式<code>a = 10</code>表示判断（判断 a 是否等于 10）。</p>
 <p>又例如 Shell 中我们要进行数学运算，其实有很多种方式可以实现，例如：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">a=`expr 10 + 5`</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$a</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#!/bin/bash</span></span><br><span class="line">a=`expr 10 + 5`</span><br><span class="line"><span class="hljs-built_in">echo</span> <span class="hljs-variable">$a</span></span><br></pre></td></tr></table></figure>
 <p>当然了，你还可以这么写：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">let</span> a=10+5</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$a</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#!/bin/bash</span></span><br><span class="line"><span class="hljs-built_in">let</span> a=10+5</span><br><span class="line"><span class="hljs-built_in">echo</span> <span class="hljs-variable">$a</span></span><br></pre></td></tr></table></figure>
 <p>这两种方式都可以实现简单的数学运算。但相比这两种，我更推荐用下面这种形式：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(( a = 10 + 5 ))</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$a</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(( a = 10 + 5 ))</span><br><span class="line"><span class="hljs-built_in">echo</span> <span class="hljs-variable">$a</span></span><br></pre></td></tr></table></figure>
 <p>即将需要运算的内容放在两对中括号里面。因为这种方式更加简洁，并且功能也是最为完整，也是最为接近高级语言的写法。</p>
 <p>正是因为 Shell 中的语法问题以及实现的多样性，许多初学者（包括我）都会对 Shell 语法感到迷惑。因此我有了写一个 Shell 快速入门系列的想法。</p>
 <h2 id="写作思路"><a href="#写作思路" class="headerlink" title="写作思路"></a>写作思路</h2><p>为了能快速上手 Shell 语法，在很多时候我会对一些不是很重要的内容进行舍弃。这些内容则会作为补充内容在后续的文章中说明。例如在 Shell 中有许多种循环结构：for 循环、while 循环、util 循环，但实际上 while 循环和 until 循环基本上是一样的。在这种情况下我舍弃对于 until 循环这个语法的介绍。</p>
@@ -447,9 +447,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Shell/" rel="tag"># Shell</a>
-          
             <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/Shell/" rel="tag"># Shell</a>
           
         </div>
       
@@ -551,7 +551,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-count">74</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -666,7 +666,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

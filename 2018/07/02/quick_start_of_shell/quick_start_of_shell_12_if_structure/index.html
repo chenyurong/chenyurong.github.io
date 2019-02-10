@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Shell,Linux," />
+  <meta name="keywords" content="Linux,Shell," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="与其他语言一样 Shell 也有 IF-ELSE 以及 IF-ELSE-IF-ELSE 的选择结构。 IF ELSE 结构Shell 语言中的 IF - ELSE 选择结构语法格式如下： 123456789if conditionthen    command1     command2    ...    commandNelse    commandfi 例如： 123456a=10b=10i">
-<meta name="keywords" content="Shell,Linux">
+<meta name="keywords" content="Linux,Shell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Shell 快速入门（十二）：选择结构怎么写">
 <meta property="og:url" content="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_12_if_structure/index.html">
@@ -384,15 +384,15 @@
       
         <p>与其他语言一样 Shell 也有 IF-ELSE 以及 IF-ELSE-IF-ELSE 的选择结构。</p>
 <h2 id="IF-ELSE-结构"><a href="#IF-ELSE-结构" class="headerlink" title="IF ELSE 结构"></a>IF ELSE 结构</h2><p>Shell 语言中的 IF - ELSE 选择结构语法格式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">if condition</span><br><span class="line">then</span><br><span class="line">    command1 </span><br><span class="line">    command2</span><br><span class="line">    ...</span><br><span class="line">    commandN</span><br><span class="line">else</span><br><span class="line">    command</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">if condition</span><br><span class="line">then</span><br><span class="line">    command1 </span><br><span class="line">    command2</span><br><span class="line">    ...</span><br><span class="line">    commandN</span><br><span class="line">else</span><br><span class="line">    command</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
 <p>例如：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a=10</span><br><span class="line">b=10</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> = <span class="variable">$b</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">"a equals b"</span>	<span class="comment"># 输出这里</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a=10</span><br><span class="line">b=10</span><br><span class="line"><span class="hljs-keyword">if</span> [ <span class="hljs-variable">$a</span> = <span class="hljs-variable">$b</span> ]</span><br><span class="line"><span class="hljs-keyword">then</span></span><br><span class="line">  <span class="hljs-built_in">echo</span> <span class="hljs-string">"a equals b"</span>	<span class="hljs-comment"># 输出这里</span></span><br><span class="line"><span class="hljs-keyword">fi</span></span><br></pre></td></tr></table></figure>
 <h2 id="IF-ELSE-IF-ELSE-结构"><a href="#IF-ELSE-IF-ELSE-结构" class="headerlink" title="IF ELSE-IF ELSE 结构"></a>IF ELSE-IF ELSE 结构</h2><p>Shell 语言中的 IF ELSE-IF ELSE 结构语法格式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">if condition1</span><br><span class="line">then</span><br><span class="line">    command1</span><br><span class="line">elif condition2 </span><br><span class="line">then </span><br><span class="line">    command2</span><br><span class="line">else</span><br><span class="line">    commandN</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">if condition1</span><br><span class="line">then</span><br><span class="line">    command1</span><br><span class="line">elif condition2 </span><br><span class="line">then </span><br><span class="line">    command2</span><br><span class="line">else</span><br><span class="line">    commandN</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
 <p>例如：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">a=9 </span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> = 10 ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">"a == 10"</span></span><br><span class="line"><span class="keyword">elif</span> [ <span class="variable">$a</span> -lt 10 ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">"a &lt; 10"</span>	<span class="comment"># 输出这里</span></span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">  <span class="built_in">echo</span> <span class="string">"a &gt; 10"</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">a=9 </span><br><span class="line"><span class="hljs-keyword">if</span> [ <span class="hljs-variable">$a</span> = 10 ]</span><br><span class="line"><span class="hljs-keyword">then</span></span><br><span class="line">  <span class="hljs-built_in">echo</span> <span class="hljs-string">"a == 10"</span></span><br><span class="line"><span class="hljs-keyword">elif</span> [ <span class="hljs-variable">$a</span> -lt 10 ]</span><br><span class="line"><span class="hljs-keyword">then</span></span><br><span class="line">  <span class="hljs-built_in">echo</span> <span class="hljs-string">"a &lt; 10"</span>	<span class="hljs-comment"># 输出这里</span></span><br><span class="line"><span class="hljs-keyword">else</span> </span><br><span class="line">  <span class="hljs-built_in">echo</span> <span class="hljs-string">"a &gt; 10"</span></span><br><span class="line"><span class="hljs-keyword">fi</span></span><br></pre></td></tr></table></figure>
 <p><strong>特别需要注意的是 if 后面的表达式，其左右两边都要留有一个空格，这是 Shell 的语法。</strong>如果没有空格，那么 Shell 执行的时候会报错。例如下面的 Shell 就会报错：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a=10 </span><br><span class="line"><span class="keyword">if</span> [<span class="variable">$a</span> = 10 ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">"a is <span class="variable">$a</span>"</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a=10 </span><br><span class="line"><span class="hljs-keyword">if</span> [<span class="hljs-variable">$a</span> = 10 ]</span><br><span class="line"><span class="hljs-keyword">then</span></span><br><span class="line">  <span class="hljs-built_in">echo</span> <span class="hljs-string">"a is <span class="hljs-variable">$a</span>"</span></span><br><span class="line"><span class="hljs-keyword">fi</span></span><br></pre></td></tr></table></figure>
 <p>执行之后，输出错误：<code>-bash: [9: command not found</code>。出错原因就是因为在 if 后面的表达式<code>$a</code>前面少了一个空格。</p>
 
       
@@ -411,9 +411,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Shell/" rel="tag"># Shell</a>
-          
             <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/Shell/" rel="tag"># Shell</a>
           
         </div>
       
@@ -515,7 +515,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-count">74</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -630,7 +630,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

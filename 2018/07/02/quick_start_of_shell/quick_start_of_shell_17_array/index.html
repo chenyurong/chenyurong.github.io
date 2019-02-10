@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Shell,Linux," />
+  <meta name="keywords" content="Linux,Shell," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="Shell 中有数组这个概念，数组中可以存放多个值。但 Shell 只支持一维数组，不支持多维数组，初始化时不需要定义数组大小。与大部分编程语言类似，数组元素的下标由0开始。 Shell 数组用括号来表示，元素用「空格」符号分割开，语法格式如下： 1array_name=(value1 ... valuen) 例如： 12345#!/bin/bash# author:陈树义# site:http:">
-<meta name="keywords" content="Shell,Linux">
+<meta name="keywords" content="Linux,Shell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Shell 快速入门（十七）：如何使用数组">
 <meta property="og:url" content="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_17_array/index.html">
@@ -384,23 +384,23 @@
       
         <p>Shell 中有数组这个概念，数组中可以存放多个值。但 Shell 只支持一维数组，不支持多维数组，初始化时不需要定义数组大小。与大部分编程语言类似，数组元素的下标由0开始。</p>
 <p>Shell 数组用括号来表示，元素用「空格」符号分割开，语法格式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array_name=(value1 ... valuen)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array_name=(value1 ... valuen)</span><br></pre></td></tr></table></figure>
 <p>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># author:陈树义</span><br><span class="line"># site:http://www.shuyi.me</span><br><span class="line"></span><br><span class="line">my_array=(A B &quot;C&quot; D)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># author:陈树义</span><br><span class="line"># site:http://www.shuyi.me</span><br><span class="line"></span><br><span class="line">my_array=(A B &quot;C&quot; D)</span><br></pre></td></tr></table></figure>
 <p>我们也可以使用下标来定义数组：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array_name[0]=value0</span><br><span class="line">array_name[1]=value1</span><br><span class="line">array_name[2]=value2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array_name[0]=value0</span><br><span class="line">array_name[1]=value1</span><br><span class="line">array_name[2]=value2</span><br></pre></td></tr></table></figure>
 <p>读取数组元素值的一般格式是：<code>${array_name[index]}</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># author:陈树义</span><br><span class="line"># site:http://www.shuyi.me</span><br><span class="line"></span><br><span class="line">my_array=(A B &quot;C&quot; D)</span><br><span class="line"></span><br><span class="line">echo &quot;第一个元素为: $&#123;my_array[0]&#125;&quot;</span><br><span class="line">echo &quot;第二个元素为: $&#123;my_array[1]&#125;&quot;</span><br><span class="line">echo &quot;第三个元素为: $&#123;my_array[2]&#125;&quot;</span><br><span class="line">echo &quot;第四个元素为: $&#123;my_array[3]&#125;&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># author:陈树义</span><br><span class="line"># site:http://www.shuyi.me</span><br><span class="line"></span><br><span class="line">my_array=(A B &quot;C&quot; D)</span><br><span class="line"></span><br><span class="line">echo &quot;第一个元素为: $&#123;my_array[0]&#125;&quot;</span><br><span class="line">echo &quot;第二个元素为: $&#123;my_array[1]&#125;&quot;</span><br><span class="line">echo &quot;第三个元素为: $&#123;my_array[2]&#125;&quot;</span><br><span class="line">echo &quot;第四个元素为: $&#123;my_array[3]&#125;&quot;</span><br></pre></td></tr></table></figure>
 <p>执行脚本，输出结果如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ chmod +x test.sh </span><br><span class="line">$ ./test.sh</span><br><span class="line">第一个元素为: A</span><br><span class="line">第二个元素为: B</span><br><span class="line">第三个元素为: C</span><br><span class="line">第四个元素为: D</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ chmod +x test.sh </span><br><span class="line">$ ./test.sh</span><br><span class="line">第一个元素为: A</span><br><span class="line">第二个元素为: B</span><br><span class="line">第三个元素为: C</span><br><span class="line">第四个元素为: D</span><br></pre></td></tr></table></figure>
 <p>获取数组中的所有元素<br>使用@ 或 * 可以获取数组中的所有元素，例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># author:陈树义</span><br><span class="line"># site:http://www.shuyi.me</span><br><span class="line"></span><br><span class="line">my_array[0]=A</span><br><span class="line">my_array[1]=B</span><br><span class="line">my_array[2]=C</span><br><span class="line">my_array[3]=D</span><br><span class="line"></span><br><span class="line">echo &quot;数组的元素为: $&#123;my_array[*]&#125;&quot;</span><br><span class="line">echo &quot;数组的元素为: $&#123;my_array[@]&#125;&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># author:陈树义</span><br><span class="line"># site:http://www.shuyi.me</span><br><span class="line"></span><br><span class="line">my_array[0]=A</span><br><span class="line">my_array[1]=B</span><br><span class="line">my_array[2]=C</span><br><span class="line">my_array[3]=D</span><br><span class="line"></span><br><span class="line">echo &quot;数组的元素为: $&#123;my_array[*]&#125;&quot;</span><br><span class="line">echo &quot;数组的元素为: $&#123;my_array[@]&#125;&quot;</span><br></pre></td></tr></table></figure>
 <p>执行脚本，输出结果如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ chmod +x test.sh </span><br><span class="line">$ ./test.sh</span><br><span class="line">数组的元素为: A B C D</span><br><span class="line">数组的元素为: A B C D</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ chmod +x test.sh </span><br><span class="line">$ ./test.sh</span><br><span class="line">数组的元素为: A B C D</span><br><span class="line">数组的元素为: A B C D</span><br></pre></td></tr></table></figure>
 <p>获取数组长度的方法与获取字符串长度的方法相同，例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># author:陈树义</span><br><span class="line"># site:http://www.shuyi.me</span><br><span class="line"></span><br><span class="line">my_array[0]=A</span><br><span class="line">my_array[1]=B</span><br><span class="line">my_array[2]=C</span><br><span class="line">my_array[3]=D</span><br><span class="line"></span><br><span class="line">echo &quot;数组元素个数为: $&#123;#my_array[*]&#125;&quot;</span><br><span class="line">echo &quot;数组元素个数为: $&#123;#my_array[@]&#125;&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># author:陈树义</span><br><span class="line"># site:http://www.shuyi.me</span><br><span class="line"></span><br><span class="line">my_array[0]=A</span><br><span class="line">my_array[1]=B</span><br><span class="line">my_array[2]=C</span><br><span class="line">my_array[3]=D</span><br><span class="line"></span><br><span class="line">echo &quot;数组元素个数为: $&#123;#my_array[*]&#125;&quot;</span><br><span class="line">echo &quot;数组元素个数为: $&#123;#my_array[@]&#125;&quot;</span><br></pre></td></tr></table></figure>
 <p>执行脚本，输出结果如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ chmod +x test.sh </span><br><span class="line">$ ./test.sh</span><br><span class="line">数组元素个数为: 4</span><br><span class="line">数组元素个数为: 4</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ chmod +x test.sh </span><br><span class="line">$ ./test.sh</span><br><span class="line">数组元素个数为: 4</span><br><span class="line">数组元素个数为: 4</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -418,9 +418,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Shell/" rel="tag"># Shell</a>
-          
             <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/Shell/" rel="tag"># Shell</a>
           
         </div>
       
@@ -433,8 +433,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_21_arithmetic_operator/" rel="next" title="Shell 快速入门（二十一）：算术运算符的使用">
-                <i class="fa fa-chevron-left"></i> Shell 快速入门（二十一）：算术运算符的使用
+              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_16_file_judge/" rel="next" title="Shell 快速入门（十六）：如何进行文件判断">
+                <i class="fa fa-chevron-left"></i> Shell 快速入门（十六）：如何进行文件判断
               </a>
             
           </div>
@@ -443,8 +443,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_18_special_syntax/" rel="prev" title="Shell 快速入门（十八）：特殊符号的使用">
-                Shell 快速入门（十八）：特殊符号的使用 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_21_arithmetic_operator/" rel="prev" title="Shell 快速入门（二十一）：算术运算符的使用">
+                Shell 快速入门（二十一）：算术运算符的使用 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -513,7 +513,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-count">74</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -612,7 +612,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
