@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Linux,Shell," />
+  <meta name="keywords" content="陈树义, Java, Spring, Dubbo, 源码阅读" />
 
 
 
@@ -79,18 +79,19 @@
 
 
 
-<meta name="description" content="Shell 中有数组这个概念，数组中可以存放多个值。但 Shell 只支持一维数组，不支持多维数组，初始化时不需要定义数组大小。与大部分编程语言类似，数组元素的下标由0开始。 Shell 数组用括号来表示，元素用「空格」符号分割开，语法格式如下： 1array_name=(value1 ... valuen) 例如： 12345#!/bin/bash# author:陈树义# site:http:">
-<meta name="keywords" content="Linux,Shell">
+<meta name="description" content="title: 5分钟带你了解Kafka的技术架构date: 2019-04-23 10:09:58categories:  消息队列tags: Kafka   大家都知道 Kafka 是一个非常牛逼的消息队列框架，阿里的 RocketMQ 也是在 Kafka 的基础上进行改进的。对于初学者来说，一开始面对这么一个庞然大物会不知道怎么入手。那么这篇文章就带你先了解一下 Kafka 的技术架构，让你">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Shell 快速入门（十七）：如何使用数组">
-<meta property="og:url" content="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_17_array/index.html">
+<meta property="og:title" content="陈树义">
+<meta property="og:url" content="http://yoursite.com/2018/08/26/mq/quick_start_of_kafka/index.html">
 <meta property="og:site_name" content="陈树义">
-<meta property="og:description" content="Shell 中有数组这个概念，数组中可以存放多个值。但 Shell 只支持一维数组，不支持多维数组，初始化时不需要定义数组大小。与大部分编程语言类似，数组元素的下标由0开始。 Shell 数组用括号来表示，元素用「空格」符号分割开，语法格式如下： 1array_name=(value1 ... valuen) 例如： 12345#!/bin/bash# author:陈树义# site:http:">
+<meta property="og:description" content="title: 5分钟带你了解Kafka的技术架构date: 2019-04-23 10:09:58categories:  消息队列tags: Kafka   大家都知道 Kafka 是一个非常牛逼的消息队列框架，阿里的 RocketMQ 也是在 Kafka 的基础上进行改进的。对于初学者来说，一开始面对这么一个庞然大物会不知道怎么入手。那么这篇文章就带你先了解一下 Kafka 的技术架构，让你">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-03T07:51:53.663Z">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15559844465646.jpg">
+<meta property="og:updated_time" content="2019-04-23T02:10:18.836Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Shell 快速入门（十七）：如何使用数组">
-<meta name="twitter:description" content="Shell 中有数组这个概念，数组中可以存放多个值。但 Shell 只支持一维数组，不支持多维数组，初始化时不需要定义数组大小。与大部分编程语言类似，数组元素的下标由0开始。 Shell 数组用括号来表示，元素用「空格」符号分割开，语法格式如下： 1array_name=(value1 ... valuen) 例如： 12345#!/bin/bash# author:陈树义# site:http:">
+<meta name="twitter:title" content="陈树义">
+<meta name="twitter:description" content="title: 5分钟带你了解Kafka的技术架构date: 2019-04-23 10:09:58categories:  消息队列tags: Kafka   大家都知道 Kafka 是一个非常牛逼的消息队列框架，阿里的 RocketMQ 也是在 Kafka 的基础上进行改进的。对于初学者来说，一开始面对这么一个庞然大物会不知道怎么入手。那么这篇文章就带你先了解一下 Kafka 的技术架构，让你">
+<meta name="twitter:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15559844465646.jpg">
 
 
 
@@ -120,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_17_array/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/08/26/mq/quick_start_of_kafka/"/>
 
 
 
 
 
-  <title>Shell 快速入门（十七）：如何使用数组 | 陈树义</title>
+  <title> | 陈树义</title>
   
 
 
@@ -282,7 +283,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_17_array/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/26/mq/quick_start_of_kafka/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -299,7 +300,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Shell 快速入门（十七）：如何使用数组</h1>
+          <h1 class="post-title" itemprop="name headline"></h1>
         
 
         <div class="post-meta">
@@ -311,8 +312,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T23:17:26+08:00">
-                2018-07-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-26T22:35:37+08:00">
+                2018-08-26
               </time>
             
 
@@ -322,28 +323,6 @@
           </span>
 
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Shell快速入门系列/" itemprop="url" rel="index">
-                    <span itemprop="name">Shell快速入门系列</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -351,7 +330,7 @@
 
           
           
-             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_17_array/" class="leancloud_visitors" data-flag-title="Shell 快速入门（十七）：如何使用数组">
+             <span id="/2018/08/26/mq/quick_start_of_kafka/" class="leancloud_visitors" data-flag-title="">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -382,25 +361,58 @@
       
 
       
-        <p>Shell 中有数组这个概念，数组中可以存放多个值。但 Shell 只支持一维数组，不支持多维数组，初始化时不需要定义数组大小。与大部分编程语言类似，数组元素的下标由0开始。</p>
-<p>Shell 数组用括号来表示，元素用「空格」符号分割开，语法格式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array_name=(value1 ... valuen)</span><br></pre></td></tr></table></figure>
-<p>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># author:陈树义</span><br><span class="line"># site:http://www.shuyi.me</span><br><span class="line"></span><br><span class="line">my_array=(A B &quot;C&quot; D)</span><br></pre></td></tr></table></figure>
-<p>我们也可以使用下标来定义数组：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array_name[0]=value0</span><br><span class="line">array_name[1]=value1</span><br><span class="line">array_name[2]=value2</span><br></pre></td></tr></table></figure>
-<p>读取数组元素值的一般格式是：<code>${array_name[index]}</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># author:陈树义</span><br><span class="line"># site:http://www.shuyi.me</span><br><span class="line"></span><br><span class="line">my_array=(A B &quot;C&quot; D)</span><br><span class="line"></span><br><span class="line">echo &quot;第一个元素为: $&#123;my_array[0]&#125;&quot;</span><br><span class="line">echo &quot;第二个元素为: $&#123;my_array[1]&#125;&quot;</span><br><span class="line">echo &quot;第三个元素为: $&#123;my_array[2]&#125;&quot;</span><br><span class="line">echo &quot;第四个元素为: $&#123;my_array[3]&#125;&quot;</span><br></pre></td></tr></table></figure>
-<p>执行脚本，输出结果如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ chmod +x test.sh </span><br><span class="line">$ ./test.sh</span><br><span class="line">第一个元素为: A</span><br><span class="line">第二个元素为: B</span><br><span class="line">第三个元素为: C</span><br><span class="line">第四个元素为: D</span><br></pre></td></tr></table></figure>
-<p>获取数组中的所有元素<br>使用@ 或 * 可以获取数组中的所有元素，例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># author:陈树义</span><br><span class="line"># site:http://www.shuyi.me</span><br><span class="line"></span><br><span class="line">my_array[0]=A</span><br><span class="line">my_array[1]=B</span><br><span class="line">my_array[2]=C</span><br><span class="line">my_array[3]=D</span><br><span class="line"></span><br><span class="line">echo &quot;数组的元素为: $&#123;my_array[*]&#125;&quot;</span><br><span class="line">echo &quot;数组的元素为: $&#123;my_array[@]&#125;&quot;</span><br></pre></td></tr></table></figure>
-<p>执行脚本，输出结果如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ chmod +x test.sh </span><br><span class="line">$ ./test.sh</span><br><span class="line">数组的元素为: A B C D</span><br><span class="line">数组的元素为: A B C D</span><br></pre></td></tr></table></figure>
-<p>获取数组长度的方法与获取字符串长度的方法相同，例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># author:陈树义</span><br><span class="line"># site:http://www.shuyi.me</span><br><span class="line"></span><br><span class="line">my_array[0]=A</span><br><span class="line">my_array[1]=B</span><br><span class="line">my_array[2]=C</span><br><span class="line">my_array[3]=D</span><br><span class="line"></span><br><span class="line">echo &quot;数组元素个数为: $&#123;#my_array[*]&#125;&quot;</span><br><span class="line">echo &quot;数组元素个数为: $&#123;#my_array[@]&#125;&quot;</span><br></pre></td></tr></table></figure>
-<p>执行脚本，输出结果如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ chmod +x test.sh </span><br><span class="line">$ ./test.sh</span><br><span class="line">数组元素个数为: 4</span><br><span class="line">数组元素个数为: 4</span><br></pre></td></tr></table></figure>
+        <hr>
+<p>title: 5分钟带你了解Kafka的技术架构<br>date: 2019-04-23 10:09:58<br>categories:</p>
+<ul>
+<li>消息队列<br>tags:</li>
+<li>Kafka</li>
+</ul>
+<hr>
+<p>大家都知道 Kafka 是一个非常牛逼的消息队列框架，阿里的 RocketMQ 也是在 Kafka 的基础上进行改进的。对于初学者来说，一开始面对这么一个庞然大物会不知道怎么入手。那么这篇文章就带你先了解一下 Kafka 的技术架构，让你从全局的视野认识 Kafka。了解了 Kafka 的整体架构和消息流程之后，脑海里就会有一个大致的结构，这时候再去学习每个部分就容易得多了。</p>
+<p>我们先来看一下 Kafka 的整体架构图：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15559844465646.jpg" alt=""></p>
+<p>Kafka 的架构图可以分为四个部分：</p>
+<ul>
+<li>Producer Cluster：生产者集群。一般由许多个实际的业务项目组成，其不断地往 Kafka 集群中写入数据。</li>
+<li>Kafka Cluster：Kafka 服务器集群。这里就是 Kafka 作为重要的一部分，这里负责接收生产者写入的数据，并将其持久化到文件里，最终将消息提供给 Consumer Cluster。</li>
+<li>Zookeeper Cluster：Zookeeper 集群。Zookeeper 负责维护整个 Kafka 集群的 Topic 信息、Kafka Controller 等信息。</li>
+<li>Consumer Cluster：消费者集群。与 Producer Cluster 一样，其一般是由许多个实际的业务项目组成，不断地从 Kafka Cluster 中读取数据。</li>
+</ul>
+<p>了解了 Kafka 的整体架构，那一个消息是怎么从生产者到 Kafka Server，又是如何从 Kafka Server 到消费者的呢？一般来说，一个消息的流转可以分为下面几个阶段：</p>
+<ul>
+<li>服务器启动阶段</li>
+<li>生产者发送消息阶段</li>
+<li>Kafka存储消息阶段</li>
+<li>消费者拉取消息阶段</li>
+</ul>
+<h2 id="服务器启动阶段"><a href="#服务器启动阶段" class="headerlink" title="服务器启动阶段"></a>服务器启动阶段</h2><p>首先，我们会启动 Zookeeper 服务器，作为集群管理服务器。接着，启动 Kafka Server。Kafka Server 会向 Zookeeper 服务器注册信息，接着启动线程池监听客户端的连接请求。最后，启动生产者和消费者，连接到 Zookeeper 服务器，从 Zookeeper 服务器获取到对应的 Kafka Server 信息[1]。</p>
+<h2 id="生产者发送消息阶段"><a href="#生产者发送消息阶段" class="headerlink" title="生产者发送消息阶段"></a>生产者发送消息阶段</h2><p>当需要将消息存入消息队列中时，生产者根据配置的分片算法，选择分到哪一个 partition 中。在发送一条消息时，可以指定这条消息的 key，Producer 根据这个 key 和 Partition 机制来判断应该将这条消息发送到哪个 Parition。</p>
+<p>Paritition 机制可以通过指定 Producer 的 paritition.class 这一参数来指定，该 class 必须实现 kafka.producer.Partitioner 接口。如果不实现 Partition 接口，那么会使用默认的分区算法，即根据根据 key 哈希后取余[2]。</p>
+<p>随后生产者与该 Partition Leader 建立联系，之后将消息发送至该 partition leader。之后生产者会根据设置的 request.required.acks 参数不同，选择等待或或直接发送下一条消息。</p>
+<ul>
+<li><strong>request.required.acks = 0</strong> 表示 Producer 不等待来自 Leader 的 ACK 确认，直接发送下一条消息。在这种情况下，如果 Leader 分片所在服务器发生宕机，那么这些已经发送的数据会丢失。</li>
+<li><strong>request.required.acks = 1</strong> 表示 Producer 等待来自 Leader 的 ACK 确认，当收到确认后才发送下一条消息。在这种情况下，消息一定会被写入到 Leader 服务器，但并不保证 Follow 节点已经同步完成。所以如果在消息已经被写入 Leader 分片，但是还未同步到 Follower 节点，此时Leader 分片所在服务器宕机了，那么这条消息也就丢失了，无法被消费到。</li>
+<li><strong>request.required.acks = -1</strong> 表示 Producer 等待来自 Leader 和所有 Follower 的 ACK 确认之后，才发送下一条消息。在这种情况下，除非 Leader 节点和所有 Follower 节点都宕机了，否则不会发生消息的丢失。</li>
+</ul>
+<h2 id="Kafka存储消息阶段"><a href="#Kafka存储消息阶段" class="headerlink" title="Kafka存储消息阶段"></a>Kafka存储消息阶段</h2><p>当 Kafka 接收到消息后，其并不直接将消息写入磁盘，而是先写入内存中。之后根据生产者设置参数的不同，选择是否回复 ack 给生产者。之后有一个线程会定期将内存中的数据刷入磁盘，这里有两个参数控制着这个过程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 数据达到多少条就将消息刷到磁盘</span><br><span class="line">#log.flush.interval.messages=10000</span><br><span class="line"># 多久将累积的消息刷到磁盘，任何一个达到指定值就触发写入</span><br><span class="line">#log.flush.interval.ms=1000</span><br></pre></td></tr></table></figure>
+<p>如果我们设置 log.flush.interval.messages=1，那么每次来一条消息，就会刷一次磁盘。通过这种方式，就可以达到消息绝对不丢失的目的，这种情况我们称之为同步刷盘。反之，我们称之为异步刷盘。</p>
+<p>于此同时，Kafka 服务器也会进行副本的复制，该 Partition 的 Follower 会从 Leader 节点拉取数据进行保存。然后将数据存储到 Partition 的 Follower 节点中。 </p>
+<h2 id="消费者拉取消息阶段"><a href="#消费者拉取消息阶段" class="headerlink" title="消费者拉取消息阶段"></a>消费者拉取消息阶段</h2><p>在消费者启动时，其会连接到 zk 注册节点，之后根据所连接 topic 的 partition 个数和消费者个数，进行 partition 分配。一个 partition 最多只能被一个线程消费，但一个线程可以消费多个 partition。其分配算法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 将目标 topic 下的所有 partirtion 排序，存于PT</span><br><span class="line">2. 对某 consumer group 下所有 consumer 排序，存于 CG，第 i 个consumer 记为 Ci</span><br><span class="line">3. N=size(PT)/size(CG)，向上取整</span><br><span class="line">4. 解除 Ci 对原来分配的 partition 的消费权（i从0开始）</span><br><span class="line">5. 将第i*N到（i+1）*N-1个 partition 分配给 Ci</span><br></pre></td></tr></table></figure>
+<p>我们用例子简单描述下这个算法的内容：假设我们连接的 topic 有 8 个 partition，此时有 3 个消费线程。那么 partition 的分配过程大致是这样的：</p>
+<ul>
+<li>8/3=2.667，向上取整就是3，也就是说每个consumer分配3个分区。</li>
+<li>那么给第一个消费者分配p0/p1/p2三个分区。</li>
+<li>给第二个消费者分配p3/p4/p5三个分区。</li>
+<li>给第三个消费者分配p6/p7两个分区。</li>
+</ul>
+<p>接着消费者连接对应分区的 Kafka Server，并从该分区服务器拉取数据。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这篇文章简单介绍了 Kafka 框架的技术架构以及消息流转过程，并介绍了其中的某些细节。通过这篇文章，相信大家对 Kafka 框架应该有个大致的了解。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://blog.csdn.net/LG772EF/article/details/72821616" target="_blank" rel="noopener">[1].kafka broker启动流程和server结构</a></li>
+<li><a href="https://leokongwq.github.io/2017/02/27/mq-kafka-producer-partitioner.html" target="_blank" rel="noopener">[2].kafka发送消息分区选择策略详解</a></li>
+</ul>
 
       
     </div>
@@ -416,14 +428,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
-          
-            <a href="/tags/Shell/" rel="tag"># Shell</a>
-          
-        </div>
-      
 
       
       
@@ -433,8 +437,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_16_file_judge/" rel="next" title="Shell 快速入门（十六）：如何进行文件判断">
-                <i class="fa fa-chevron-left"></i> Shell 快速入门（十六）：如何进行文件判断
+              <a href="/2018/08/25/reading/use_the_effective_way_to_study/1.1_why_you_do_not_have_money/" rel="next" title="你没钱，真的不是因为不努力">
+                <i class="fa fa-chevron-left"></i> 你没钱，真的不是因为不努力
               </a>
             
           </div>
@@ -443,8 +447,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_21_arithmetic_operator/" rel="prev" title="Shell 快速入门（二十一）：算术运算符的使用">
-                Shell 快速入门（二十一）：算术运算符的使用 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/08/26/jvm/deep_insight_jvm_boolean/" rel="prev" title="从字节码层面，解析 Java 布尔型的实现原理">
+                从字节码层面，解析 Java 布尔型的实现原理 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -497,8 +501,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -598,6 +611,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器启动阶段"><span class="nav-number">1.</span> <span class="nav-text">服务器启动阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生产者发送消息阶段"><span class="nav-number">2.</span> <span class="nav-text">生产者发送消息阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka存储消息阶段"><span class="nav-number">3.</span> <span class="nav-text">Kafka存储消息阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消费者拉取消息阶段"><span class="nav-number">4.</span> <span class="nav-text">消费者拉取消息阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
