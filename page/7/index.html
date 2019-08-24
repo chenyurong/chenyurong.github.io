@@ -279,7 +279,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_02_env/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_21_arithmetic_operator/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -298,7 +298,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_02_env/" itemprop="url">Shell 快速入门（二）：环境搭建</a></h1>
+                <a class="post-title-link" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_21_arithmetic_operator/" itemprop="url">Shell 快速入门（二十一）：算术运算符的使用</a></h1>
         
 
         <div class="post-meta">
@@ -310,7 +310,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T23:02:26+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T23:17:26+08:00">
                 2018-07-02
               </time>
             
@@ -350,7 +350,7 @@
 
           
           
-             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_02_env/" class="leancloud_visitors" data-flag-title="Shell 快速入门（二）：环境搭建">
+             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_21_arithmetic_operator/" class="leancloud_visitors" data-flag-title="Shell 快速入门（二十一）：算术运算符的使用">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -383,12 +383,23 @@
       
         
           
-          对于使用 Mac OSX 系统或者 Linux 系统的朋友来说，因其自带了基本的 Shell 环境，我们无需做任何操作即可进行 Shell 脚本的编写。但在 Windows 系统中，要运行 Shell 脚本，则需要做一些额外的工作。
-在 Windows 中运行 Linux 命令，我们可以通过 Git
+          在 Shell 中，利用 expr 命令再加上算术运算符可以实现数值运算。目前支持的算术运算符有：
+
++：加法
+-：减法
+*：乘法
+/：除法
+%：取余
+=：赋值
+==：相等
+!=：不相等
+
+在 Java 中，我们可以这样实现一个算术运算：
+123int a = 12;int b = 10;int c
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_02_env/#more" rel="contents">
+            <a class="btn" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_21_arithmetic_operator/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -441,7 +452,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_01_basic_concept/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_16_file_judge/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -460,7 +471,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_01_basic_concept/" itemprop="url">Shell 快速入门（一）：基础概念</a></h1>
+                <a class="post-title-link" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_16_file_judge/" itemprop="url">Shell 快速入门（十六）：如何进行文件判断</a></h1>
         
 
         <div class="post-meta">
@@ -472,7 +483,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T23:01:08+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T23:16:26+08:00">
                 2018-07-02
               </time>
             
@@ -512,7 +523,7 @@
 
           
           
-             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_01_basic_concept/" class="leancloud_visitors" data-flag-title="Shell 快速入门（一）：基础概念">
+             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_16_file_judge/" class="leancloud_visitors" data-flag-title="Shell 快速入门（十六）：如何进行文件判断">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -545,12 +556,19 @@
       
         
           
-          说起 Shell 语言，其实很多人习惯的叫法是叫做 Shell 脚本。或许你在还没学习之前就听说过，Shell 脚本、Shell 语言、Shell 环境等等名词。但是它们到底是什么，它们之间有什么区别？下面我们就逐个来解答一下。
-Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内存、硬
+          文件测试运算符用于检测文件的各种状态和属性，目前支持的运算符如下：
+
+-b file：是否块设备文件
+-c file：是否字符设别文件
+-d file：是否目录
+-f file：是否普通文件
+-g file：文件是否设置了 SGID 位
+-k file：是否设置了粘着位
+-p file：文件是否有名
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_01_basic_concept/#more" rel="contents">
+            <a class="btn" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_16_file_judge/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -603,7 +621,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_00_guide/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_15_io_redirect/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -622,7 +640,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_00_guide/" itemprop="url">Shell 快速入门（零）：目录</a></h1>
+                <a class="post-title-link" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_15_io_redirect/" itemprop="url">Shell 快速入门（十五）：输出重定向</a></h1>
         
 
         <div class="post-meta">
@@ -634,7 +652,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T23:00:08+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T23:15:26+08:00">
                 2018-07-02
               </time>
             
@@ -674,7 +692,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
 
           
           
-             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_00_guide/" class="leancloud_visitors" data-flag-title="Shell 快速入门（零）：目录">
+             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_15_io_redirect/" class="leancloud_visitors" data-flag-title="Shell 快速入门（十五）：输出重定向">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -707,12 +725,15 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
       
         
           
-          Shell 快速入门定位于快速帮助初学者掌握 Shell 的语法，快速编写 Shell 脚本。对于 Shell 学习者来说，应该将 Shell 当成是工具，掌握了基础的语法之后就直接使用。当后面需要一些更高级的语法或者功能时，再去查找相应的资料。
-这个系列与其他 Shell 入门教程不同的是：这个系
+          在写 Shell 脚本的时候，我们经常会想将命令的输出结果保存到文件中，或者将命令的执行结果保存到日志记录中。这时候就需要把命令的输出结果重定向。而要进行重定向，就要了解 Linux 的输入输出流。
+在 Linux 中有三个经常用到的输入输出流，他们分别是：
+
+标准输入（stdin）
+标准输出（st
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_00_guide/#more" rel="contents">
+            <a class="btn" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_15_io_redirect/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -765,7 +786,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/23/essay/what_can_we_learn_from_xiao_mi/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_14_function/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -784,7 +805,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/06/23/essay/what_can_we_learn_from_xiao_mi/" itemprop="url">从小米的成功，我们可以学到什么？</a></h1>
+                <a class="post-title-link" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_14_function/" itemprop="url">Shell 快速入门（十四）：函数的使用</a></h1>
         
 
         <div class="post-meta">
@@ -796,8 +817,8 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-23T13:31:20+08:00">
-                2018-06-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T23:14:26+08:00">
+                2018-07-02
               </time>
             
 
@@ -819,8 +840,8 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/生活随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">生活随笔</span>
+                  <a href="/categories/Shell快速入门系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Shell快速入门系列</span>
                   </a>
                 </span>
 
@@ -836,7 +857,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
 
           
           
-             <span id="/2018/06/23/essay/what_can_we_learn_from_xiao_mi/" class="leancloud_visitors" data-flag-title="从小米的成功，我们可以学到什么？">
+             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_14_function/" class="leancloud_visitors" data-flag-title="Shell 快速入门（十四）：函数的使用">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -869,12 +890,13 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
       
         
           
-          2018 年 6 月 21 日早间，小米公司创始人团队正式在香港进行上市路演。这意味着小米历史八年的创业之路暂时画上一个句号。回顾小米这八年来，你会发现小米虽然有失误的时候，但总体来说小米的发展思路都非常清晰。在所有手机厂商都还懵懵懂懂的时候，小米却已经早已布局物联网生态。
-在树义印象中，能和此有的
+          Linux Shell 可以用户定义函数，然后在shell脚本中可以随便调用。
+函数定义Shell 中的函数定义与 JavaScript 类似，格式如下：
+12345678function hello()&#123;    echo &quot;Hello SHell.&quot;;	  retur
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/06/23/essay/what_can_we_learn_from_xiao_mi/#more" rel="contents">
+            <a class="btn" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_14_function/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -927,7 +949,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/08/essay/the_hardest_thing_in_investment/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_13_loop_structure/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -946,7 +968,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/02/08/essay/the_hardest_thing_in_investment/" itemprop="url">读《投资中不简单的事》，走价值投资之路</a></h1>
+                <a class="post-title-link" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_13_loop_structure/" itemprop="url">Shell 快速入门（十三）：循环结构怎么写</a></h1>
         
 
         <div class="post-meta">
@@ -958,8 +980,8 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-08T12:43:35+08:00">
-                2018-02-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T23:13:26+08:00">
+                2018-07-02
               </time>
             
 
@@ -981,8 +1003,8 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/生活随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">生活随笔</span>
+                  <a href="/categories/Shell快速入门系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Shell快速入门系列</span>
                   </a>
                 </span>
 
@@ -998,7 +1020,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
 
           
           
-             <span id="/2018/02/08/essay/the_hardest_thing_in_investment/" class="leancloud_visitors" data-flag-title="读《投资中不简单的事》，走价值投资之路">
+             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_13_loop_structure/" class="leancloud_visitors" data-flag-title="Shell 快速入门（十三）：循环结构怎么写">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1031,11 +1053,13 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
       
         
           
-           《投资中不简单的事 (豆瓣)》可以看成是高毅资产成立以来的「传记」，分享了该私募平台自成立以来的各种投资心得。要说到读完之后印象最深刻的，那就是高毅资产将股市里不可控的千万变量浓缩成了相对可控的三大变量，即行业、公司、管理层。只要我们对这三个变量研究得比较透彻，我们就可以以不变应万变，见招拆招，坦
+          Shell 中的循环结构有 for、while、until、case 这四种，但是 while 和 until 的作用基本类似，所以我们重点关注 for、while、case  这三种循环结构即可。
+for 循环结构for 循环结构的语法如下：
+1234567for var in item1 ite
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/02/08/essay/the_hardest_thing_in_investment/#more" rel="contents">
+            <a class="btn" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_13_loop_structure/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1088,7 +1112,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/07/quick_start_of_coding/quick_start_of_mycat/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_12_if_structure/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -1107,7 +1131,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/02/07/quick_start_of_coding/quick_start_of_mycat/" itemprop="url">MyCat 入门：漫谈 MyCat 配置系统</a></h1>
+                <a class="post-title-link" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_12_if_structure/" itemprop="url">Shell 快速入门（十二）：选择结构怎么写</a></h1>
         
 
         <div class="post-meta">
@@ -1119,8 +1143,8 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-07T18:04:37+08:00">
-                2018-02-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T23:12:26+08:00">
+                2018-07-02
               </time>
             
 
@@ -1142,8 +1166,8 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/快速入门系列/" itemprop="url" rel="index">
-                    <span itemprop="name">快速入门系列</span>
+                  <a href="/categories/Shell快速入门系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Shell快速入门系列</span>
                   </a>
                 </span>
 
@@ -1159,7 +1183,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
 
           
           
-             <span id="/2018/02/07/quick_start_of_coding/quick_start_of_mycat/" class="leancloud_visitors" data-flag-title="MyCat 入门：漫谈 MyCat 配置系统">
+             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_12_if_structure/" class="leancloud_visitors" data-flag-title="Shell 快速入门（十二）：选择结构怎么写">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1192,17 +1216,13 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
       
         
           
-          上篇文章《MyCat 启蒙：分布式系统的数据库架构演变》中，我们通过一个项目从零到百万级访问的变化，展示了这个过程中的数据层架构变化。其中说到了数据层架构变化所带来的三个问题：
-
-读写数据源判断
-繁杂数据源地址
-分表判断
-
-而 MyCat 最初就是为了解决这个问题而存在的，它能集中管理项目涉及到的所
+          与其他语言一样 Shell 也有 IF-ELSE 以及 IF-ELSE-IF-ELSE 的选择结构。
+IF ELSE 结构Shell 语言中的 IF - ELSE 选择结构语法格式如下：
+123456789if conditionthen    command1     command2    ..
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/02/07/quick_start_of_coding/quick_start_of_mycat/#more" rel="contents">
+            <a class="btn" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_12_if_structure/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1255,7 +1275,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/02/java_combat/mycat_enlighten/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_11_string_compare/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -1274,7 +1294,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/02/02/java_combat/mycat_enlighten/" itemprop="url">MyCat 启蒙：分布式系统的数据库架构演变</a></h1>
+                <a class="post-title-link" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_11_string_compare/" itemprop="url">Shell 快速入门（十一）：如何进行字符串比较</a></h1>
         
 
         <div class="post-meta">
@@ -1286,8 +1306,8 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-02T18:04:19+08:00">
-                2018-02-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T23:11:26+08:00">
+                2018-07-02
               </time>
             
 
@@ -1309,8 +1329,8 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java实战/" itemprop="url" rel="index">
-                    <span itemprop="name">Java实战</span>
+                  <a href="/categories/Shell快速入门系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Shell快速入门系列</span>
                   </a>
                 </span>
 
@@ -1326,7 +1346,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
 
           
           
-             <span id="/2018/02/02/java_combat/mycat_enlighten/" class="leancloud_visitors" data-flag-title="MyCat 启蒙：分布式系统的数据库架构演变">
+             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_11_string_compare/" class="leancloud_visitors" data-flag-title="Shell 快速入门（十一）：如何进行字符串比较">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1359,13 +1379,17 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
       
         
           
-          单数据库架构一个项目在初期的时候，为了尽可能快地验证市场，其对业务系统的最大要求是快速实现。在这个阶段，代码开发人员为了能快速实现业务系统，一般都是将所有层级（MVC）的业务代码都写在同一个项目中，所有的业务数据都存放在同一个数据库中。此时，项目的整体架构图如下所示：
+          在 Shell 中进行字符串比较有专门的六个操作符，他们分别是：
 
-从上图可以看到，我们在一个项
+=：检测两个字符串是否相等，相等返回 true。
+!=：检两个字符串是否相等，不相等返回 true。
+-z：检测字符串长度是否为0，为 0 返回 true。
+-n：检测字符串长度是否为0，不为 0 返回 true。
+str：检测字符
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/02/02/java_combat/mycat_enlighten/#more" rel="contents">
+            <a class="btn" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_11_string_compare/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1418,7 +1442,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/23/java_basic/deep_insight_java_generic/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_10_arithmetic_compare/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -1437,7 +1461,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/23/java_basic/deep_insight_java_generic/" itemprop="url">深入理解Java泛型</a></h1>
+                <a class="post-title-link" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_10_arithmetic_compare/" itemprop="url">Shell 快速入门（十）：如何进行数值比较</a></h1>
         
 
         <div class="post-meta">
@@ -1449,8 +1473,8 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-23T18:17:29+08:00">
-                2018-01-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T23:10:26+08:00">
+                2018-07-02
               </time>
             
 
@@ -1472,8 +1496,8 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java基础/" itemprop="url" rel="index">
-                    <span itemprop="name">Java基础</span>
+                  <a href="/categories/Shell快速入门系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Shell快速入门系列</span>
                   </a>
                 </span>
 
@@ -1489,7 +1513,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
 
           
           
-             <span id="/2018/01/23/java_basic/deep_insight_java_generic/" class="leancloud_visitors" data-flag-title="深入理解Java泛型">
+             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_10_arithmetic_compare/" class="leancloud_visitors" data-flag-title="Shell 快速入门（十）：如何进行数值比较">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1522,12 +1546,12 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
       
         
           
-          泛型诞生的背景远在 JDK 1.4 版本的时候，那时候是没有泛型的概念的。当时 Java 程序员们写集合类的代码都是类似于下面这样：
-12345List list = new ArrayList();list.add(&quot;www.cnblogs.com&quot;);list.add(23)
+          学会了如何进行数学运算，但怎么进行数值运算呢。在 Java 中，我们进行数值运算是这样的：
+1234567int a = 15;int b = 10;if (a &gt;= b)&#123;  System.out.println("a &gt; b");&#125; else &#123;  Sy
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/01/23/java_basic/deep_insight_java_generic/#more" rel="contents">
+            <a class="btn" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_10_arithmetic_compare/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1580,7 +1604,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/28/java_combat/the_story_of_push_02/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_09_arithmetic/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -1599,7 +1623,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/28/java_combat/the_story_of_push_02/" itemprop="url">开发小哥的困惑：为何要用第三方推送？</a></h1>
+                <a class="post-title-link" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_09_arithmetic/" itemprop="url">Shell 快速入门（九）：如何进行数学运算</a></h1>
         
 
         <div class="post-meta">
@@ -1611,8 +1635,8 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-28T18:17:29+08:00">
-                2017-11-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T23:09:26+08:00">
+                2018-07-02
               </time>
             
 
@@ -1634,8 +1658,8 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java实战/" itemprop="url" rel="index">
-                    <span itemprop="name">Java实战</span>
+                  <a href="/categories/Shell快速入门系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Shell快速入门系列</span>
                   </a>
                 </span>
 
@@ -1651,7 +1675,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
 
           
           
-             <span id="/2017/11/28/java_combat/the_story_of_push_02/" class="leancloud_visitors" data-flag-title="开发小哥的困惑：为何要用第三方推送？">
+             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_09_arithmetic/" class="leancloud_visitors" data-flag-title="Shell 快速入门（九）：如何进行数学运算">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1684,13 +1708,15 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
       
         
           
-          在《测试妹子的呐喊：为什么总是收不到推送？》这篇文章中，小树解决了测试妹子收不到推送的反馈后，小树对推送就异常感兴趣，把项目里面所有有关推送的代码都阅读了一遍。
-但细心的小树发现这里面并没有请求苹果 APNS 接口的代码，只有一些类似于极光推送，友盟推送，腾讯信鸽等推送的注释。
-带着这些疑惑，小树又
+          在 Shell 中进行数据运算是一件很头疼的事情，因为 Shell 的数学运算和我们高级语言中的语法完全不一样。例如在 Java 中下面一个简单的算术：
+1int a = 10 + 5;
+你以为是这么写的：
+123#!/bin/basha=10+5echo $a
+但实际上上面的输出是：10+5。我们
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/11/28/java_combat/the_story_of_push_02/#more" rel="contents">
+            <a class="btn" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_09_arithmetic/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1743,7 +1769,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/28/java_combat/something_about_java_log_framework/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_08_print_string/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -1762,7 +1788,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/28/java_combat/something_about_java_log_framework/" itemprop="url">Java日志框架那些事儿</a></h1>
+                <a class="post-title-link" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_08_print_string/" itemprop="url">Shell 快速入门（八）：如何打印字符串</a></h1>
         
 
         <div class="post-meta">
@@ -1774,8 +1800,8 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-28T18:17:29+08:00">
-                2017-11-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T23:08:26+08:00">
+                2018-07-02
               </time>
             
 
@@ -1797,8 +1823,8 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java实战/" itemprop="url" rel="index">
-                    <span itemprop="name">Java实战</span>
+                  <a href="/categories/Shell快速入门系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Shell快速入门系列</span>
                   </a>
                 </span>
 
@@ -1814,7 +1840,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
 
           
           
-             <span id="/2017/11/28/java_combat/something_about_java_log_framework/" class="leancloud_visitors" data-flag-title="Java日志框架那些事儿">
+             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_08_print_string/" class="leancloud_visitors" data-flag-title="Shell 快速入门（八）：如何打印字符串">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1847,12 +1873,12 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
       
         
           
-          在项目开发过程中，我们可以通过 debug 查找问题。而在线上环境我们查找问题只能通过打印日志的方式查找问题。因此对于一个项目而言，日志记录是一个非常重要的问题。因此，如何选择一个合适的日志记录框架也非常重要。
-在Java开发中，常用的日志记录框架有JDKLog、Log4J、LogBack、SLF4
+          在 Shell 脚本中，我们可以使用 echo 命令或者 printf 命令来打印字符串。echo 适合用于简单的打印，而 printf 则适用于统一缩进的复杂打印。
+echo命令在 Shell 语言中，一般使用 echo 命令来打印字符串。而 echo 命令后面跟着的字符串有好几种形式：裸奔、单引
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/11/28/java_combat/something_about_java_log_framework/#more" rel="contents">
+            <a class="btn" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_08_print_string/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1895,7 +1921,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1941,7 +1967,7 @@ Shell我们知道对于所有计算机设备来说，它们都是由 CPU、内�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">94</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

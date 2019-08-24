@@ -279,7 +279,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/22/java_collection/java_collection_00_startup/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/24/java_collection/java_collection_15_tree_map/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -298,7 +298,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/08/22/java_collection/java_collection_00_startup/" itemprop="url">集合系列开篇：为什么要学集合？</a></h1>
+                <a class="post-title-link" href="/2019/08/24/java_collection/java_collection_15_tree_map/" itemprop="url">集合系列 Map（十五）：TreeMap</a></h1>
         
 
         <div class="post-meta">
@@ -310,8 +310,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-22T21:55:27+08:00">
-                2019-08-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-24T09:15:59+08:00">
+                2019-08-24
               </time>
             
 
@@ -350,7 +350,7 @@
 
           
           
-             <span id="/2019/08/22/java_collection/java_collection_00_startup/" class="leancloud_visitors" data-flag-title="集合系列开篇：为什么要学集合？">
+             <span id="/2019/08/24/java_collection/java_collection_15_tree_map/" class="leancloud_visitors" data-flag-title="集合系列 Map（十五）：TreeMap">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -383,12 +383,12 @@
       
         
           
-          集合可以说是学习 Java 中最重要的一块知识点了，无论做任何业务系统，集合总是最为基础的那块 API。我第一次接触集合，是在我大三的时候，那时候去面试，面试官问我：你了解过集合吗？可惜那时候没什么项目经验，所以基本没有了解过，因此也错失了机会。
-到了现在，我已经工作了5年了，也做过了大大小小十几个
+          TreeMap 是 Map 集合的有序实现，其底层是基于红黑树的实现，能够早 log(n) 时间内完成 get、put 和 remove 操作。
+123public class TreeMap&lt;K,V&gt;    extends AbstractMap&lt;K,V&gt;    imple
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/08/22/java_collection/java_collection_00_startup/#more" rel="contents">
+            <a class="btn" href="/2019/08/24/java_collection/java_collection_15_tree_map/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -441,7 +441,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/23/essay/take_about_my_java_tech_system/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/24/java_collection/java_collection_14_weaked_hash_map/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -460,7 +460,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/23/essay/take_about_my_java_tech_system/" itemprop="url">聊聊我的知识体系</a></h1>
+                <a class="post-title-link" href="/2019/08/24/java_collection/java_collection_14_weaked_hash_map/" itemprop="url">集合系列 Map（十四）：WeakedHashMap</a></h1>
         
 
         <div class="post-meta">
@@ -472,8 +472,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-23T08:34:07+08:00">
-                2019-04-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-24T09:14:59+08:00">
+                2019-08-24
               </time>
             
 
@@ -495,8 +495,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/生活随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">生活随笔</span>
+                  <a href="/categories/Java集合/" itemprop="url" rel="index">
+                    <span itemprop="name">Java集合</span>
                   </a>
                 </span>
 
@@ -512,7 +512,7 @@
 
           
           
-             <span id="/2019/04/23/essay/take_about_my_java_tech_system/" class="leancloud_visitors" data-flag-title="聊聊我的知识体系">
+             <span id="/2019/08/24/java_collection/java_collection_14_weaked_hash_map/" class="leancloud_visitors" data-flag-title="集合系列 Map（十四）：WeakedHashMap">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -545,14 +545,12 @@
       
         
           
-          不知不觉树义工作 6 年了，一路走来磕磕碰碰但总算有了自己的一点小体会。对于一个 Java 开发人员来说，到了 5 年的关键节点，需要掌握哪些知识点呢？经过我自己的总结，我列出了下面的思维导图。
-
-从上面的图片我们可以看出大致分为三个部分：JDK 源码、JVM 原理、框架源码。
-JDK源码JDK 源
+          WeakedHashMap 也是 Map 集合的哈希实现，但其余 HashMap 的不同之处在于。其每个节点的 value 引用是弱引用，可以方便 GC 回收。
+123public class WeakHashMap&lt;K,V&gt;    extends AbstractMap&lt;K,V&
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/04/23/essay/take_about_my_java_tech_system/#more" rel="contents">
+            <a class="btn" href="/2019/08/24/java_collection/java_collection_14_weaked_hash_map/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -605,7 +603,7 @@ JDK源码JDK 源
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/10/essay/how_to_combat_with_evil_boss/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/24/java_collection/java_collection_13_linked_hash_map/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -624,7 +622,7 @@ JDK源码JDK 源
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/10/essay/how_to_combat_with_evil_boss/" itemprop="url">写给程序员的裁员防身指南</a></h1>
+                <a class="post-title-link" href="/2019/08/24/java_collection/java_collection_13_linked_hash_map/" itemprop="url">集合系列 Map（十三）：LinkedHashMap</a></h1>
         
 
         <div class="post-meta">
@@ -636,8 +634,8 @@ JDK源码JDK 源
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-10T16:43:11+08:00">
-                2019-02-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-24T09:13:59+08:00">
+                2019-08-24
               </time>
             
 
@@ -659,8 +657,8 @@ JDK源码JDK 源
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/生活随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">生活随笔</span>
+                  <a href="/categories/Java集合/" itemprop="url" rel="index">
+                    <span itemprop="name">Java集合</span>
                   </a>
                 </span>
 
@@ -676,7 +674,7 @@ JDK源码JDK 源
 
           
           
-             <span id="/2019/02/10/essay/how_to_combat_with_evil_boss/" class="leancloud_visitors" data-flag-title="写给程序员的裁员防身指南">
+             <span id="/2019/08/24/java_collection/java_collection_13_linked_hash_map/" class="leancloud_visitors" data-flag-title="集合系列 Map（十三）：LinkedHashMap">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -709,13 +707,12 @@ JDK源码JDK 源
       
         
           
-          大家都知道 18 年底许多大公司都开始了「人员优化」动作，不仅仅美团等大厂有所行动，就连一些平时求贤若渴的小公司也有所动作。
-本来我以为关于劳动法的事情，许多人应该多多少少都应该了解。但最近在一些技术群众看到了不少被裁的同学，他们的第一反应是害怕、忧虑，但是就是不知道该怎么办。
-忽然间我意识到有必要
+          我们之前说过 LinkedHashMap 是在 HashMap 的基础上，增加了对插入元素的链表维护。那么其到底是怎么实现的呢？今天这篇文章就带我们来一探究竟。
+123public class LinkedHashMap&lt;K,V&gt;    extends HashMap&lt;K,V&gt
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/02/10/essay/how_to_combat_with_evil_boss/#more" rel="contents">
+            <a class="btn" href="/2019/08/24/java_collection/java_collection_13_linked_hash_map/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -768,7 +765,7 @@ JDK源码JDK 源
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/10/essay/how_duoshan_get_info_from_douyin/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/24/java_collection/java_collection_12_hash_map/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -787,7 +784,7 @@ JDK源码JDK 源
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/10/essay/how_duoshan_get_info_from_douyin/" itemprop="url">为抖音而生的多闪，如何获取抖音的用户数据？</a></h1>
+                <a class="post-title-link" href="/2019/08/24/java_collection/java_collection_12_hash_map/" itemprop="url">集合系列 Map（十二）：HashMap</a></h1>
         
 
         <div class="post-meta">
@@ -799,8 +796,8 @@ JDK源码JDK 源
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-10T16:42:21+08:00">
-                2019-02-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-24T09:12:59+08:00">
+                2019-08-24
               </time>
             
 
@@ -822,8 +819,8 @@ JDK源码JDK 源
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/生活随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">生活随笔</span>
+                  <a href="/categories/Java集合/" itemprop="url" rel="index">
+                    <span itemprop="name">Java集合</span>
                   </a>
                 </span>
 
@@ -839,7 +836,7 @@ JDK源码JDK 源
 
           
           
-             <span id="/2019/02/10/essay/how_duoshan_get_info_from_douyin/" class="leancloud_visitors" data-flag-title="为抖音而生的多闪，如何获取抖音的用户数据？">
+             <span id="/2019/08/24/java_collection/java_collection_12_hash_map/" class="leancloud_visitors" data-flag-title="集合系列 Map（十二）：HashMap">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -872,13 +869,12 @@ JDK源码JDK 源
       
         
           
-          一周前，多闪、马桶 MT 和聊天宝三款社交 App 同一天上线，被社交媒体渲染成「三英打战吕布」。但在这三款产品中，只有头条的「多闪」是稍有发展前景的，因为其有「抖音」的用户基础作为支撑。
-
-正如多闪的产品经理所说：多闪是短视频+社交的结合。所以多闪在一开始势必会通过抖音导入数据，那么作为技术人的我
+          HashMap 是 Map 基于哈希散列算法的实现，其在 JDK1.7 中采用了数组+链表的数据结构。在 JDK1.8 中为了提高查询效率，采用了数组+链表+红黑树的数据结构。本文所有讲解均基于 JDK1.8 进行讲解。
+12public class HashMap&lt;K,V&gt; exten
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/02/10/essay/how_duoshan_get_info_from_douyin/#more" rel="contents">
+            <a class="btn" href="/2019/08/24/java_collection/java_collection_12_hash_map/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -931,7 +927,7 @@ JDK源码JDK 源
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/10/reading/after_reading_the_survivor/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/24/java_collection/java_collection_11_array_deque/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -950,7 +946,7 @@ JDK源码JDK 源
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/10/reading/after_reading_the_survivor/" itemprop="url">读完《未来世界的幸存者》，我越来越悲观</a></h1>
+                <a class="post-title-link" href="/2019/08/24/java_collection/java_collection_11_array_deque/" itemprop="url">集合系列 Queue（十一）：ArrayDeque</a></h1>
         
 
         <div class="post-meta">
@@ -962,8 +958,8 @@ JDK源码JDK 源
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-10T16:35:02+08:00">
-                2019-02-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-24T09:11:59+08:00">
+                2019-08-24
               </time>
             
 
@@ -985,8 +981,8 @@ JDK源码JDK 源
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/阅读/" itemprop="url" rel="index">
-                    <span itemprop="name">阅读</span>
+                  <a href="/categories/Java集合/" itemprop="url" rel="index">
+                    <span itemprop="name">Java集合</span>
                   </a>
                 </span>
 
@@ -1002,7 +998,7 @@ JDK源码JDK 源
 
           
           
-             <span id="/2019/02/10/reading/after_reading_the_survivor/" class="leancloud_visitors" data-flag-title="读完《未来世界的幸存者》，我越来越悲观">
+             <span id="/2019/08/24/java_collection/java_collection_11_array_deque/" class="leancloud_visitors" data-flag-title="集合系列 Queue（十一）：ArrayDeque">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1035,12 +1031,12 @@ JDK源码JDK 源
       
         
           
-          《未来世界的幸存者》是阮一峰写的一本书，现在已经出版。说的是随着人类科技的发展，哪些人会被淘汰，哪些人能生存下来，而我们应该怎么做的话题。
-书里以 2016 年 AlphaGo 击败李世石为引子，慢慢聊了随着科技发展，个人的处境以及未来。其中有些认识还是非常深刻的，值得我们仔细思考，对未来自己的职业
+          从名字我们可以看出，其实一个双向队列实现，而且底层采用数组实现。
+12public class ArrayDeque&lt;E&gt; extends AbstractCollection&lt;E&gt;                           implements Deque&lt;
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/02/10/reading/after_reading_the_survivor/#more" rel="contents">
+            <a class="btn" href="/2019/08/24/java_collection/java_collection_11_array_deque/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1093,7 +1089,7 @@ JDK源码JDK 源
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/17/essay/the_bug_of_webkit_in_ios_make_iphone_reboot/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/24/java_collection/java_collection_10_linked_list/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -1112,7 +1108,7 @@ JDK源码JDK 源
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/17/essay/the_bug_of_webkit_in_ios_make_iphone_reboot/" itemprop="url">iOS最新漏洞，竟让iPhone强制重启！</a></h1>
+                <a class="post-title-link" href="/2019/08/24/java_collection/java_collection_10_linked_list/" itemprop="url">集合系列 Queue（十）：LinkedList</a></h1>
         
 
         <div class="post-meta">
@@ -1124,8 +1120,8 @@ JDK源码JDK 源
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-17T21:44:56+08:00">
-                2018-09-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-24T09:10:59+08:00">
+                2019-08-24
               </time>
             
 
@@ -1147,8 +1143,8 @@ JDK源码JDK 源
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/生活随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">生活随笔</span>
+                  <a href="/categories/Java集合/" itemprop="url" rel="index">
+                    <span itemprop="name">Java集合</span>
                   </a>
                 </span>
 
@@ -1164,7 +1160,7 @@ JDK源码JDK 源
 
           
           
-             <span id="/2018/09/17/essay/the_bug_of_webkit_in_ios_make_iphone_reboot/" class="leancloud_visitors" data-flag-title="iOS最新漏洞，竟让iPhone强制重启！">
+             <span id="/2019/08/24/java_collection/java_collection_10_linked_list/" class="leancloud_visitors" data-flag-title="集合系列 Queue（十）：LinkedList">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1197,12 +1193,12 @@ JDK源码JDK 源
       
         
           
-          就在昨天早些时候，树义的交流群里有人突然发了一个二维码。出于习惯，树义二话长按识别了二维码，没想到手中的 iPhone 就突然黑屏。之后狂按 Home 键也没任何反应。心想，这不是中了病毒吧？什么病毒这么厉害，点一下链接就让手机崩溃！
-其实这是最新曝出的 iOS WebKit 漏洞，只要 15 行 
+          我们之前在说到 List 集合的时候已经说过 LinkedList 了。但 LinkedList 不仅仅是一个 List 集合实现，其还是一个双向队列实现。
+123public class LinkedList&lt;E&gt;    extends AbstractSequentialList&l
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/17/essay/the_bug_of_webkit_in_ios_make_iphone_reboot/#more" rel="contents">
+            <a class="btn" href="/2019/08/24/java_collection/java_collection_10_linked_list/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1255,7 +1251,7 @@ JDK源码JDK 源
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/17/jvm/the_basic_structure_of_jvm/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/24/java_collection/java_collection_09_priority_queue/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -1274,7 +1270,7 @@ JDK源码JDK 源
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/17/jvm/the_basic_structure_of_jvm/" itemprop="url">Java虚拟机的基本结构</a></h1>
+                <a class="post-title-link" href="/2019/08/24/java_collection/java_collection_09_priority_queue/" itemprop="url">集合系列 Queue（九）：PriorityQueue</a></h1>
         
 
         <div class="post-meta">
@@ -1286,8 +1282,8 @@ JDK源码JDK 源
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-17T10:13:04+08:00">
-                2018-09-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-24T09:09:59+08:00">
+                2019-08-24
               </time>
             
 
@@ -1309,8 +1305,8 @@ JDK源码JDK 源
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JVM系列/" itemprop="url" rel="index">
-                    <span itemprop="name">JVM系列</span>
+                  <a href="/categories/Java集合/" itemprop="url" rel="index">
+                    <span itemprop="name">Java集合</span>
                   </a>
                 </span>
 
@@ -1326,7 +1322,7 @@ JDK源码JDK 源
 
           
           
-             <span id="/2018/09/17/jvm/the_basic_structure_of_jvm/" class="leancloud_visitors" data-flag-title="Java虚拟机的基本结构">
+             <span id="/2019/08/24/java_collection/java_collection_09_priority_queue/" class="leancloud_visitors" data-flag-title="集合系列 Queue（九）：PriorityQueue">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1359,21 +1355,12 @@ JDK源码JDK 源
       
         
           
-          Java 虚拟机的基本结构包括了下面几个部分：
-
-类加载子系统
-内存区：方法区、Java堆、直接内存
-垃圾回收系统
-Java 栈
-本地方法栈
-PC 寄存器
-执行引擎
-
-类加载子系统
-          
+          PriorityQueue 是一个优先级队列，其底层原理采用二叉堆实现。我们先来看看它的类声明：
+12public class PriorityQueue&lt;E&gt; extends AbstractQueue&lt;E&gt;    implements java.io.Serializab
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/17/jvm/the_basic_structure_of_jvm/#more" rel="contents">
+            <a class="btn" href="/2019/08/24/java_collection/java_collection_09_priority_queue/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1426,7 +1413,7 @@ PC 寄存器
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/15/java_basic/two_important_specification_in_java/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/24/java_collection/java_collection_08_tree_set/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -1445,7 +1432,7 @@ PC 寄存器
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/15/java_basic/two_important_specification_in_java/" itemprop="url">Java中的两个重要规范，90%的人都不知道</a></h1>
+                <a class="post-title-link" href="/2019/08/24/java_collection/java_collection_08_tree_set/" itemprop="url">集合系列 Set（八）：TreeSet</a></h1>
         
 
         <div class="post-meta">
@@ -1457,8 +1444,8 @@ PC 寄存器
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-15T11:38:33+08:00">
-                2018-09-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-24T09:08:59+08:00">
+                2019-08-24
               </time>
             
 
@@ -1480,8 +1467,8 @@ PC 寄存器
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java基础/" itemprop="url" rel="index">
-                    <span itemprop="name">Java基础</span>
+                  <a href="/categories/Java集合/" itemprop="url" rel="index">
+                    <span itemprop="name">Java集合</span>
                   </a>
                 </span>
 
@@ -1497,7 +1484,7 @@ PC 寄存器
 
           
           
-             <span id="/2018/09/15/java_basic/two_important_specification_in_java/" class="leancloud_visitors" data-flag-title="Java中的两个重要规范，90%的人都不知道">
+             <span id="/2019/08/24/java_collection/java_collection_08_tree_set/" class="leancloud_visitors" data-flag-title="集合系列 Set（八）：TreeSet">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1530,12 +1517,12 @@ PC 寄存器
       
         
           
-          说到 Java 领域的规范，就不得不提：Java 语言规范和 Java 虚拟机规范了。他们一个描述了 Java 语言，一个描述了 Java 虚拟机。
-Java 语言规范简单点来说，Java语言规范就是要告诉开发人员「Java代码应该如何写」。例如 Java 语言有多少种数据类型，Java 语言的 i
+          TreeSet 是 Set 集合的红黑树实现，但其内部并没有具体的逻辑，而是直接使用 TreeMap 对象实现。我们先来看看 TreeSet 的定义。
+12public class TreeSet&lt;E&gt; extends AbstractSet&lt;E&gt;    implements
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/15/java_basic/two_important_specification_in_java/#more" rel="contents">
+            <a class="btn" href="/2019/08/24/java_collection/java_collection_08_tree_set/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1588,7 +1575,7 @@ Java 语言规范简单点来说，Java语言规范就是要告诉开发人员�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/15/cs_basic/how_the_data_storate_in_computer/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/24/java_collection/java_collection_07_linked_hash_set/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -1607,7 +1594,7 @@ Java 语言规范简单点来说，Java语言规范就是要告诉开发人员�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/15/cs_basic/how_the_data_storate_in_computer/" itemprop="url">图形背后的数字世界，计算机是如何存储数据的？</a></h1>
+                <a class="post-title-link" href="/2019/08/24/java_collection/java_collection_07_linked_hash_set/" itemprop="url">集合系列 Set（七）：LinkedHashSet</a></h1>
         
 
         <div class="post-meta">
@@ -1619,8 +1606,8 @@ Java 语言规范简单点来说，Java语言规范就是要告诉开发人员�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-15T11:28:58+08:00">
-                2018-09-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-24T09:07:59+08:00">
+                2019-08-24
               </time>
             
 
@@ -1642,8 +1629,8 @@ Java 语言规范简单点来说，Java语言规范就是要告诉开发人员�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/计科基础/" itemprop="url" rel="index">
-                    <span itemprop="name">计科基础</span>
+                  <a href="/categories/Java集合/" itemprop="url" rel="index">
+                    <span itemprop="name">Java集合</span>
                   </a>
                 </span>
 
@@ -1659,7 +1646,7 @@ Java 语言规范简单点来说，Java语言规范就是要告诉开发人员�
 
           
           
-             <span id="/2018/09/15/cs_basic/how_the_data_storate_in_computer/" class="leancloud_visitors" data-flag-title="图形背后的数字世界，计算机是如何存储数据的？">
+             <span id="/2019/08/24/java_collection/java_collection_07_linked_hash_set/" class="leancloud_visitors" data-flag-title="集合系列 Set（七）：LinkedHashSet">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1692,12 +1679,12 @@ Java 语言规范简单点来说，Java语言规范就是要告诉开发人员�
       
         
           
-          如果你在大学学过计算机相关课程，那么你或许会知道：在我们漂亮的图形界面之下，其实所有的数据都是用 1 和 0 来表示的。对于机器来说，它们不懂得什么是图标，不懂得什么是红色，不懂得什么是网页，等等。对于机器来说，它们只认识两个数字：1 和 0。简单地说，1 和 0 就是数字世界的水和电。
-在 1 和
+          LinkedHashSet 继承了 HashSet，在此基础上维护了元素的插入顺序。
+123public class LinkedHashSet&lt;E&gt;    extends HashSet&lt;E&gt;    implements Set&lt;E&gt;, Cloneable, j
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/15/cs_basic/how_the_data_storate_in_computer/#more" rel="contents">
+            <a class="btn" href="/2019/08/24/java_collection/java_collection_07_linked_hash_set/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1750,7 +1737,7 @@ Java 语言规范简单点来说，Java语言规范就是要告诉开发人员�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/15/cs_basic/the_hierarchy_of_unix_os/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/24/java_collection/java_collection_06_hash_set/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -1769,7 +1756,7 @@ Java 语言规范简单点来说，Java语言规范就是要告诉开发人员�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/15/cs_basic/the_hierarchy_of_unix_os/" itemprop="url">从硬件到内核，聊聊Linux系统的层次结构</a></h1>
+                <a class="post-title-link" href="/2019/08/24/java_collection/java_collection_06_hash_set/" itemprop="url">集合系列 Set（六）：HashSet</a></h1>
         
 
         <div class="post-meta">
@@ -1781,8 +1768,8 @@ Java 语言规范简单点来说，Java语言规范就是要告诉开发人员�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-15T11:26:11+08:00">
-                2018-09-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-24T09:06:59+08:00">
+                2019-08-24
               </time>
             
 
@@ -1804,8 +1791,8 @@ Java 语言规范简单点来说，Java语言规范就是要告诉开发人员�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/计科基础/" itemprop="url" rel="index">
-                    <span itemprop="name">计科基础</span>
+                  <a href="/categories/Java集合/" itemprop="url" rel="index">
+                    <span itemprop="name">Java集合</span>
                   </a>
                 </span>
 
@@ -1821,7 +1808,7 @@ Java 语言规范简单点来说，Java语言规范就是要告诉开发人员�
 
           
           
-             <span id="/2018/09/15/cs_basic/the_hierarchy_of_unix_os/" class="leancloud_visitors" data-flag-title="从硬件到内核，聊聊Linux系统的层次结构">
+             <span id="/2019/08/24/java_collection/java_collection_06_hash_set/" class="leancloud_visitors" data-flag-title="集合系列 Set（六）：HashSet">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1854,13 +1841,12 @@ Java 语言规范简单点来说，Java语言规范就是要告诉开发人员�
       
         
           
-          相信组装过电脑的朋友都知道，我们的电脑最主要的几个零件是：CPU、内存、硬盘。但我们实际使用的时候，我们并不会主动跟硬件打交道，而是和显示器上显示的操作系统打交道。
-那么问题来了，操作系统到底是怎么操作CPU、内存、硬盘，让其实现我们的功能的呢？操作系统与硬件之间的层级结构是怎样的？
-这里的操作系统
+          HashSet 是 Set 集合的哈希实现，其继承了 AbstractSet 抽象类，并实现了 Set 接口。
+123public class HashSet&lt;E&gt;    extends AbstractSet&lt;E&gt;    implements Set&lt;E&gt;, C
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/15/cs_basic/the_hierarchy_of_unix_os/#more" rel="contents">
+            <a class="btn" href="/2019/08/24/java_collection/java_collection_06_hash_set/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1903,7 +1889,7 @@ Java 语言规范简单点来说，Java语言规范就是要告诉开发人员�
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1949,7 +1935,7 @@ Java 语言规范简单点来说，Java语言规范就是要告诉开发人员�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">94</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
