@@ -1749,7 +1749,7 @@ test命令test 命令主要是用来做表达式的判断，其语法结构如�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_17_array/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/quick_start_of_shell/quick_start_of_shell_21_arithmetic_operator/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -1768,7 +1768,7 @@ test命令test 命令主要是用来做表达式的判断，其语法结构如�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_17_array/" itemprop="url">Shell 快速入门（十七）：如何使用数组</a></h1>
+                <a class="post-title-link" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_21_arithmetic_operator/" itemprop="url">Shell 快速入门（二十一）：算术运算符的使用</a></h1>
         
 
         <div class="post-meta">
@@ -1820,7 +1820,7 @@ test命令test 命令主要是用来做表达式的判断，其语法结构如�
 
           
           
-             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_17_array/" class="leancloud_visitors" data-flag-title="Shell 快速入门（十七）：如何使用数组">
+             <span id="/2018/07/02/quick_start_of_shell/quick_start_of_shell_21_arithmetic_operator/" class="leancloud_visitors" data-flag-title="Shell 快速入门（二十一）：算术运算符的使用">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1853,13 +1853,23 @@ test命令test 命令主要是用来做表达式的判断，其语法结构如�
       
         
           
-          Shell 中有数组这个概念，数组中可以存放多个值。但 Shell 只支持一维数组，不支持多维数组，初始化时不需要定义数组大小。与大部分编程语言类似，数组元素的下标由0开始。
-Shell 数组用括号来表示，元素用「空格」符号分割开，语法格式如下：
-1array_name=(value1 ... va
+          在 Shell 中，利用 expr 命令再加上算术运算符可以实现数值运算。目前支持的算术运算符有：
+
++：加法
+-：减法
+*：乘法
+/：除法
+%：取余
+=：赋值
+==：相等
+!=：不相等
+
+在 Java 中，我们可以这样实现一个算术运算：
+123int a = 12;int b = 10;int c
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_17_array/#more" rel="contents">
+            <a class="btn" href="/2018/07/02/quick_start_of_shell/quick_start_of_shell_21_arithmetic_operator/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
