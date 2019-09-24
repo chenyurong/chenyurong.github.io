@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="陈树义, Java, Spring, Dubbo, 源码阅读" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="随着互联网创业潮的兴起，作为互联网核心的工程师们逐渐走入了大众的视野。但不知为何，程序员在许多人中的印象并不是特别好，蓬头垢面、满脸油光、格子衫、小短裤似乎成了程序员的代名词。 反观同一公司里的其它岗位，产品、运营、市场岗位，却并不会给人留下不好的印象。同样作为程序员的我，不得不去思考这个问题：为什么收入并不比别人低，但为什么形象却不如人家？既然这样，那我们的努力有何意义？我们的未来到底在哪里？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="程序员的未来在哪里？">
+<meta property="og:url" content="http://yoursite.com/2017/08/30/essay/the_future_of_coder/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="随着互联网创业潮的兴起，作为互联网核心的工程师们逐渐走入了大众的视野。但不知为何，程序员在许多人中的印象并不是特别好，蓬头垢面、满脸油光、格子衫、小短裤似乎成了程序员的代名词。 反观同一公司里的其它岗位，产品、运营、市场岗位，却并不会给人留下不好的印象。同样作为程序员的我，不得不去思考这个问题：为什么收入并不比别人低，但为什么形象却不如人家？既然这样，那我们的努力有何意义？我们的未来到底在哪里？">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://images2017.cnblogs.com/blog/595137/201711/595137-20171101151050904-1203771584.jpg">
+<meta property="og:updated_time" content="2018-07-11T09:42:10.352Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="程序员的未来在哪里？">
+<meta name="twitter:description" content="随着互联网创业潮的兴起，作为互联网核心的工程师们逐渐走入了大众的视野。但不知为何，程序员在许多人中的印象并不是特别好，蓬头垢面、满脸油光、格子衫、小短裤似乎成了程序员的代名词。 反观同一公司里的其它岗位，产品、运营、市场岗位，却并不会给人留下不好的印象。同样作为程序员的我，不得不去思考这个问题：为什么收入并不比别人低，但为什么形象却不如人家？既然这样，那我们的努力有何意义？我们的未来到底在哪里？">
+<meta name="twitter:image" content="http://images2017.cnblogs.com/blog/595137/201711/595137-20171101151050904-1203771584.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/30/essay/the_future_of_coder/"/>
+
+
+
+
+
+  <title>程序员的未来在哪里？ | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/30/essay/the_future_of_coder/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">程序员的未来在哪里？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-30T18:04:37+08:00">
+                2017-08-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/生活随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">生活随笔</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/08/30/essay/the_future_of_coder/" class="leancloud_visitors" data-flag-title="程序员的未来在哪里？">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://images2017.cnblogs.com/blog/595137/201711/595137-20171101151050904-1203771584.jpg" alt=""></p>
+<p>随着互联网创业潮的兴起，作为互联网核心的工程师们逐渐走入了大众的视野。但不知为何，程序员在许多人中的印象并不是特别好，蓬头垢面、满脸油光、格子衫、小短裤似乎成了程序员的代名词。</p>
+<p>反观同一公司里的其它岗位，产品、运营、市场岗位，却并不会给人留下不好的印象。同样作为程序员的我，不得不去思考这个问题：为什么收入并不比别人低，但为什么形象却不如人家？既然这样，那我们的努力有何意义？我们的未来到底在哪里？</p>
+<h2 id="程序员的出身"><a href="#程序员的出身" class="headerlink" title="程序员的出身"></a>程序员的出身</h2><p>要透彻地思考这个问题，就避不开出身这个根源问题。</p>
+<p>当离开养育我十几年的故乡踏上广州的求学之路时，我每个月只有800块的生活费。而这其实已经算是挺不错的生活条件了，有更多生活条件比我还差的同学。在吃饭问题刚刚得到解决，没有闲钱的情况下，人是没有能力去追求更高的物质享受的。</p>
+<p>在大学四年的时间里，我一心牵挂的是如何好好学习找到一份养家糊口的工作。于是乎我的大学可以说是比较平平淡淡的，经常是和好基友在自习室看书到晚上十余点。在现在看来，有时候会有那么一瞬间会觉得浪费了大学的大好时光，没有花点时间去学点才艺，但仔细想想也实属无奈，吃饭都成问题，还怎么追求精神享受呢。</p>
+<p>相信许多选读计算机的朋友也和我一样，并不是来自于大富大贵的家庭，更多的是普通的家庭。有一句话说得很好：穷人读工科、中产读商科、富人读艺术。对于绝大部分的普通人来说，合理的套路是：第一代读理工医科，有一技之长，安家立命，打好基础；第二代才能读金融商科，可以利用第一代的资源人脉，加强资本积累；最后第三代读人文社科，有前两代的基础，知道如何长久的维护他们手上的资源。根据我的观察，周围的程序员们确实出身于普通家庭，有的甚至是大山里的孩子。对于没有背景没有人脉的他们，有一技之长，安家立命才是最重要的。</p>
+<h2 id="程序员的本质"><a href="#程序员的本质" class="headerlink" title="程序员的本质"></a>程序员的本质</h2><p>在大学毕业后，毕业后拿到一份还算可以的薪资，但至少能养活自己。而且在后面几年里薪资也不断增长，至少现在的我已经不需要担心生存问题了。但这时我发现此时的我除了工作，似乎一无所有，没有兴趣、没有爱好、没有才艺、没有活动。</p>
+<p>我想去充实自己的业余生活，去学一门才艺、去发展一门爱好，但却发现时间怎么都不够用。此时，我渐渐意识到了程序员这个行业的本质所在。程序员钱多，但加班也多，个人的业余时间也变得少了。长此以往，整个人的交际技能会逐渐退化，人的生活也会变得稍微无趣。</p>
+<p>除了工作时间外，工作内容也是让人变得无趣的一个方面。程序员的内容都是各种枯燥的业务逻辑和机器，而且技术难题都需要静下心来才能深入理解。如果你的生活太精彩，你怎么可能静得下心来去做这么枯燥无味的事情啊。</p>
+<p>所以程序员的本质是出卖自己的时间和技能换取金钱，可以说是一个高级点的技工，只不过过得舒服自在点罢了。</p>
+<h2 id="程序员为什么不受待见"><a href="#程序员为什么不受待见" class="headerlink" title="程序员为什么不受待见"></a>程序员为什么不受待见</h2><p>知名科技博主月光博客曾经写过一篇文章《为什么程序员社会地位不高》，这篇文章很深刻地解释了程序员不受待见的原因。</p>
+<p><strong>程序员的自我尊重和自我认知价值太低。</strong>有一个现象可以证明这一点：程序员们互相厌恶。他们通常在非程序员面前抨击别的程序员。把一个程序员的代码给另外一个程序员，往往，常常，后者会给前者的工作以负面评价。艺术家不会这样。销售员不会这样。管理者不会这样。政治家这么做只是为了赢得选票。</p>
+<p>其他专业人士他们会公开的支持同行，即使他们有竞争。（例如律师，请不要问我为什么美国事实上是被这帮混蛋统治的）。简而言之，上面提到的这些行业人员拥有更大的行业事业，以自己的工作和行业自豪。</p>
+<p><strong>程序员们并不追求浮华的头衔，性感的典礼、奖项、他们讨厌聚光灯。</strong></p>
+<p>程序员们喜欢编程。他们想要独自编程。编程是他们的目标，是他们的政治，是他们的荣耀。他们对公共演讲不感兴趣。他们讨厌不如他们聪明的人。他们讨厌不理解C++编程逻辑的人。</p>
+<p>于是他开始慢慢说服自己生来就是内向的。所以他害怕外出，害怕接电话，害怕去泡吧，害怕去见陌生人，害怕所有能为他建立社会关系和社会地位的活动。</p>
+<h2 id="程序员的未来"><a href="#程序员的未来" class="headerlink" title="程序员的未来"></a>程序员的未来</h2><p>赚钱有三个层次，第一个层次是拿时间换金钱，第二个层次是拿资源换金钱，第三个层次是用钱赚钱。作为程序员的我显然还是处于拿时间换金钱的阶段，所以在很长时间里，我还是会作为一名程序员生活着。在这个阶段，我们积累技术、资源，为下个阶段做准备。</p>
+<p>当我们有了足够的技术实力和人脉资源之后，我们或许就不必事必躬亲去做一线代码工作了，我们可以拿着我们拥有的资源更加轻松地赚钱。这时候如果你还是喜欢Coding，你可以更加自由地做自己想做的事。这个阶段的你，生活必定比苦哈哈地干活来得有滋有味。</p>
+<p>而当你用资源交换得到的财富到达一个量级时，你完全可以通过投资去获取生活所需要的物质条件，这才真的是躺着赚钱。在这个阶段，你才可以真的说是人身自由的一个人。我想，到了这个阶段，你的梦想和对于这个世界的理解肯定会大有不同吧。</p>
+<p>想想刚刚毕业的我看着这几万几万的房价，一脸迷茫看不到希望，每天都在抱怨高房价中度过。但当我想通了我未来要走的路，我现在处于的阶段，我都释然了。该来的总会来的，该跌的房价总会跌，该涨的收入总会涨，该有的机会总会有。就像十年前总被说脑残的90后、被说成垮掉的一代，现在还不是走上了社会，担任了社会的中坚力量。</p>
+<p>其实回头想一想，程序员还是一个很幸运的群体，有这样一个顺畅的道路让你可以努力往上走。看看那些读机械、读食品专业的同学们，工作三年了现在估计还在几千块工资徘徊。想到这里，我很感激这个时代，给了我这么一个机会。</p>
+<p>想通了以后自己要走的路，该努力的努力，该吃的吃，该玩的玩。做该做的事情，尽量让自己的生活丰富起来，相信生活会越来越美好。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/30/essay/reading_should_be_happy/" rel="next" title="读书应该是件快乐的事">
+                <i class="fa fa-chevron-left"></i> 读书应该是件快乐的事
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/15/java_combat/some_experienc_in_system_refactor/" rel="prev" title="浅谈重构中踩过的坑">
+                浅谈重构中踩过的坑 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">97</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#程序员的出身"><span class="nav-number">1.</span> <span class="nav-text">程序员的出身</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序员的本质"><span class="nav-number">2.</span> <span class="nav-text">程序员的本质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序员为什么不受待见"><span class="nav-number">3.</span> <span class="nav-text">程序员为什么不受待见</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序员的未来"><span class="nav-number">4.</span> <span class="nav-text">程序员的未来</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

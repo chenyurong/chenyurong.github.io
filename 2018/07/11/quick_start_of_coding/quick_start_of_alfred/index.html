@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="陈树义, Java, Spring, Dubbo, 源码阅读" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Alfred 是 Mac 系统上一款专注于效率提升的著名应用，它能帮你快速打开网页、快速进行自定义搜索、查看剪贴板历史、快速查询单词等等。Alfred 提供的功能虽然很多，但目的只有一个 —— 那就是减少我们工作中的一些重复动作，提升我们的工作效率。 试想一下下面这些场景： 当我们想用百度搜索一个东西，我们一般是这么做的：打开chrome，输入百度网址，输入搜索词。但有了 Alfred 之后，我">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你绝不能错过的效率神器 —— Alfred">
+<meta property="og:url" content="http://yoursite.com/2018/07/11/quick_start_of_coding/quick_start_of_alfred/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="Alfred 是 Mac 系统上一款专注于效率提升的著名应用，它能帮你快速打开网页、快速进行自定义搜索、查看剪贴板历史、快速查询单词等等。Alfred 提供的功能虽然很多，但目的只有一个 —— 那就是减少我们工作中的一些重复动作，提升我们的工作效率。 试想一下下面这些场景： 当我们想用百度搜索一个东西，我们一般是这么做的：打开chrome，输入百度网址，输入搜索词。但有了 Alfred 之后，我">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202231801054-2136581001.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232015647-2002648108.gif">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232112897-367877425.gif">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232155991-349832390.gif">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232222710-854986639.gif">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232443788-96742582.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232506851-1159287016.gif">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232524007-302873234.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232535804-2010677436.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232709757-1067169760.gif">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232938179-397994359.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232956866-314371211.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202233020147-1653621293.gif">
+<meta property="og:updated_time" content="2018-07-11T10:02:16.268Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="你绝不能错过的效率神器 —— Alfred">
+<meta name="twitter:description" content="Alfred 是 Mac 系统上一款专注于效率提升的著名应用，它能帮你快速打开网页、快速进行自定义搜索、查看剪贴板历史、快速查询单词等等。Alfred 提供的功能虽然很多，但目的只有一个 —— 那就是减少我们工作中的一些重复动作，提升我们的工作效率。 试想一下下面这些场景： 当我们想用百度搜索一个东西，我们一般是这么做的：打开chrome，输入百度网址，输入搜索词。但有了 Alfred 之后，我">
+<meta name="twitter:image" content="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202231801054-2136581001.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/11/quick_start_of_coding/quick_start_of_alfred/"/>
+
+
+
+
+
+  <title>你绝不能错过的效率神器 —— Alfred | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/11/quick_start_of_coding/quick_start_of_alfred/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">你绝不能错过的效率神器 —— Alfred</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-11T18:02:13+08:00">
+                2018-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/快速入门系列/" itemprop="url" rel="index">
+                    <span itemprop="name">快速入门系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/11/quick_start_of_coding/quick_start_of_alfred/" class="leancloud_visitors" data-flag-title="你绝不能错过的效率神器 —— Alfred">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202231801054-2136581001.png" alt=""></p>
+<p>Alfred 是 Mac 系统上一款专注于效率提升的著名应用，它能帮你快速打开网页、快速进行自定义搜索、查看剪贴板历史、快速查询单词等等。Alfred 提供的功能虽然很多，但目的只有一个 —— 那就是减少我们工作中的一些重复动作，提升我们的工作效率。</p>
+<p>试想一下下面这些场景：</p>
+<p>当我们想用百度搜索一个东西，我们一般是这么做的：打开chrome，输入百度网址，输入搜索词。但有了 Alfred 之后，我直接快捷键调出 Alfred 输入框，输入：「baidu 搜索词」即可。</p>
+<p><img src="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232015647-2002648108.gif" alt=""></p>
+<p>有时候突然忘记一个单词的中文意思是什么，我们得移动下鼠标，打开词典工具，然后输入单词。但有了 Alfred 我们直接输入单词就可以知道其含义是什么。</p>
+<p><img src="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232112897-367877425.gif" alt=""></p>
+<p>上面的几个使用场景只是 Alfred 功能的很小一部分，现在就让我们看看 Alfred 都能做些什么吧。</p>
+<p>Alfred 安装非常简单，只需要到<a href="https://www.alfredapp.com/" target="_blank" rel="noopener">Alfred - Productivity App for Mac OS X</a>官网下载，下载完成后按照提示一步步安装即可。</p>
+<h2 id="Alfred能做什么？"><a href="#Alfred能做什么？" class="headerlink" title="Alfred能做什么？"></a>Alfred能做什么？</h2><p>总的来说，Alfred 的功能概括来说可以包括以下几个类别：</p>
+<ul>
+<li>定位文件、打开文件</li>
+<li>打开网址、书签、App</li>
+<li>自定义搜索</li>
+<li>剪贴板历史</li>
+<li>计算器、查词典、运行shell命令</li>
+</ul>
+<h3 id="打开文件（夹）、定位文件（夹）"><a href="#打开文件（夹）、定位文件（夹）" class="headerlink" title="打开文件（夹）、定位文件（夹）"></a>打开文件（夹）、定位文件（夹）</h3><p>定位文件、打开文件是 Alfred 提供的基础功能，它能让你无需打开文件浏览器便可定位文件或打开文件。</p>
+<p>使用这个功能非常简单，只需调出 Alfred 的输入框（默认快捷键是 Command + Space）输入对应的文字即可。</p>
+<p>打开文件直接输入要打开的文件或文件夹名称，Alfred 便会将搜索结果显示出来，你可以用 Command + 数字来进行结果选择。而定位文件或文件夹则需要先输入「find」关键词 + 空格，之后输入对应的名字。</p>
+<p><img src="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232155991-349832390.gif" alt=""></p>
+<p>这个功能可以在「Preference」-&gt; 「Feature」-&gt; 「File Search」中可以找到，你可以进行自定义设置。Alfred 默认使用「find」定位文件，使用「open」或「space」键打开文件。</p>
+<h3 id="打开网址、书签、App"><a href="#打开网址、书签、App" class="headerlink" title="打开网址、书签、App"></a>打开网址、书签、App</h3><p>Alfred 提供的这个功能可以让你无需打开浏览器便能直接访问对应的网址、书签或 App，这也是我经常使用的一个功能。</p>
+<p><img src="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232222710-854986639.gif" alt=""></p>
+<p>书签的设置在「Preference」-&gt; 「Feature」-&gt; 「Web Bookmarks」中可以找到，勾选上「Safari Bookmarks」和「Google Chrome Bookmarks」选项即可让 Alfred 读取 Safari 和 Chrome 的书签。</p>
+<p><img src="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232443788-96742582.png" alt=""></p>
+<p>而网址、App 则没有多余的设置，直接使用即可。</p>
+<h3 id="自定义搜索"><a href="#自定义搜索" class="headerlink" title="自定义搜索"></a>自定义搜索</h3><p>自定义搜索功能可以说是 Alfred 另外一个非常实用的功能，它能让你添加各种各样的搜索引擎，比如：百度搜索、谷歌搜索、知乎搜索、博客园搜索等等。只要是带一个参数的搜索请求，它都可以做。</p>
+<p><img src="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232506851-1159287016.gif" alt=""></p>
+<p>自定义搜索的设置在「Preference」-&gt; 「Feature」-&gt; 「Web Search」中可以找到，点击右下角的「Add Custom Search」可以进入添加自定义搜索的页面。</p>
+<p><img src="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232524007-302873234.png" alt=""></p>
+<p>在下面的自定义搜索页面，输入相关信息点击保存即可。</p>
+<p><img src="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232535804-2010677436.png" alt=""></p>
+<p>其中「Search URL」表示搜索的地址，「Title」表示使用时显示在 Alfred 上的文字，Keyword 表示调用的关键词，你还可以在右边上传对应的图标。添加完成后可以点击「Test」按钮可以测试你的配置是否正确。</p>
+<h3 id="剪贴板历史"><a href="#剪贴板历史" class="headerlink" title="剪贴板历史"></a>剪贴板历史</h3><p>剪贴板历史功能可以存储所有你复制过的内容，不仅仅包括文字，还包括图片、文件。只要你曾经复制过，那么它就乖乖躺在那里等着你。</p>
+<p><img src="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232709757-1067169760.gif" alt=""></p>
+<p>剪贴板历史的设置在「Preference」-&gt; 「Feature」-&gt; 「Clipboard」中可以找到，在设置页面可以设置「剪贴板历史的快捷键」和「清除剪贴板历史的快捷键」。从动图上可以看到，我设置剪贴板历史快捷键为「cplist」，清除剪贴板历史快捷键为「clearcp」。</p>
+<p><strong>提示：剪贴板历史是收费功能，需要购买 PowerPack 才能使用。</strong></p>
+<h3 id="计算器、查词典、运行shell命令"><a href="#计算器、查词典、运行shell命令" class="headerlink" title="计算器、查词典、运行shell命令"></a>计算器、查词典、运行shell命令</h3><p>Alfred 除了能做到上面的那些强大的功能之外，它还有一些贴心的功能，比如直接进行算术运算，直接运行 shell 命令（收费功能）。</p>
+<h2 id="关于Alfred的授权"><a href="#关于Alfred的授权" class="headerlink" title="关于Alfred的授权"></a>关于Alfred的授权</h2><p>Alfred 是一个效率提升的软件，本身提供了一些基本的免费功能，例如查字典、打开书签、搜索文件、打开文件是免费的，但是诸如历史剪贴板、WorkFlow 则是收费的。Alfred 提供了 3 种套餐：</p>
+<p><img src="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232938179-397994359.png" alt=""></p>
+<ul>
+<li><strong>Single License（个人授权）。</strong>个人授权只能自己使用，最多能在两台 Mac 机器上激活。</li>
+<li><strong>Family License（家庭授权）。</strong>家庭授权最多只能给 5 台 Mac 机器使用，并且只限于家庭成员使用，不允许给朋友或者团队使用。</li>
+<li><strong>Mega Supporter（终生收钱）。</strong>终身授权只能给自己使用，最多能在四台 Mac 机器上激活，并且终身免费升级（其他类型的授权升级是要钱的）。</li>
+</ul>
+<p>我直接上了一个<strong>Mega Supporter</strong>，花费 35 英镑（大约 310 人民币）。如果是学生没什么钱，直接买个 Single License 也是可以的，毕竟 Alfred 未来估计也不会有什么大的变动了，买 Mega Supporter 纯粹是支持作者而已。</p>
+<p>关于授权，有同学看到<strong>Family License</strong>就动脑筋了，想着我可以和朋友一起买啊，一人一个，5 个才 200 多，一人 50 块，划算！我查阅了一些资料发现其实这种方式也是行得通的，但是因为官网明确指出 Family License 只能家庭使用，如果你不按照官网规定使用的话，<strong>其实你还是使用的盗版</strong>。就像我们安装的 Windows 系统，如果你获得了正版的授权，那么无论你从网上下载还是从官网下载都是一样的。几个朋友一起用从技术手段来看，暂时是无法查出来的。但是这样也有一些坏处，例如：自己花了钱，但是授权的名字和邮箱并不是自己的；下次版本有优惠的时候，需要向别人索取……所以直接上 Single License 是一个比较好的选择，开发者上 Mega Supporter 一步到位更好。</p>
+<h2 id="Alfred的本质是什么"><a href="#Alfred的本质是什么" class="headerlink" title="Alfred的本质是什么"></a>Alfred的本质是什么</h2><p>前面列举了 Alfred 的许多功能，其实总归来说，就是把我们日常工作中一些重复性的固定的操作简化起来，让程序帮我们做。</p>
+<p>当我们要打开网页时，我们不需要打开浏览器（固定的部分），之后移动光标到地址栏（固定的部分），最后输入要访问的网址（变化的部分）。而有了 Alfred，我们只需要告诉 Alfred 变化的部分（要访问的网址）就可以了。那些固定的部分（打开浏览器、移动光标）Alfred 自动帮我们做了。</p>
+<p>在自定义搜索里。Alfred 问我们要搜索什么内容，之后帮我们打开浏览器，帮我们填补上搜索的关键词，发起 HTTP 请求，呈现结果。</p>
+<p>在查词典里。Alfred 问我们要查哪个单词，之后帮我们拼接 HTTP 请求，最后把结果显示出来。</p>
+<p>当我们尝试着去抽象这样一个业务链条的时候，我们会发现其实无论是自定义搜索还是查字典都可以抽象成一个个动作流，而「询问查询内容」、「拼接HTTP请求」、「打开浏览器」等操作都是一个个动作。</p>
+<p><img src="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202232956866-314371211.png" alt=""></p>
+<p>那么自定义搜索就是这么一个动作流：</p>
+<p>输入搜索词 -&gt; 打开浏览器 -&gt; 拼接HTTP请求 -&gt; 返回结果</p>
+<p>而查词典则是这么一个动作流：</p>
+<p>输入单词 -&gt; 打开词典应用 -&gt; 输入查询单词 -&gt; 显示结果</p>
+<p>所以从本质上来说<strong>Alfred 就是一个流编程器，把一些重复性的动作编排起来，自动帮我们执行。</strong></p>
+<h2 id="大杀器WorkFlow"><a href="#大杀器WorkFlow" class="headerlink" title="大杀器WorkFlow"></a>大杀器WorkFlow</h2><p>上面说到 Alfred 其实就是一个流编程器，把一些重复性的动作编排起来，自动帮我们执行。那如果我们再深入想一下，我们能不能在这基础上再进一步抽象，提供一个可以让用户自己定制的工具呢？如果用户发现自己工作里经常有某个重复性动作，那么用户可以自己定制这样一个流，提高其工作效率。</p>
+<p>其实我们能想到的，Alfred 开发者也想到了，这就是 Alfred 高级功能WorkFlow！<strong>WorkFlow 可以让使用者自定义一系列工作流，帮助其减少重复性的工作！</strong></p>
+<p>Alfred 的 WorkFlow 给用户提供了无限的可能性，让用户可以自己对流程进行编程优化，极大地激活了用户的创造性。到现在为止，有很多人都写了很多不错的 WorkFlow，比如有一个即时查询单词的 WorkFlow，直接输入单词，结果就可以立即显示出来，还可以直接发音，不需要打开网页。</p>
+<p><img src="https://images2018.cnblogs.com/blog/595137/201712/595137-20171202233020147-1653621293.gif" alt=""></p>
+<p>有爱好者特地做了个网站来收集 WorkFlow —— <a href="http://alfredworkflow.com/" target="_blank" rel="noopener">Alfred 2 Workflow List | Search, Install and Share</a>，虽然里面很多WorkFlow 的链接都找不到了，但或许去看看碰碰运气。</p>
+<p>对于大多数人来说，能做出自己的一个 WorkFlow 才是一件令人激动的事情。其实做出简单的 WorkFlow 是没啥问题，但如果你想实现一些复杂点的功能，那么你可能需要懂一门脚本语言。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>好了，今天关于 Alfred 的文章就到这里了。我将在下一篇文章《Alfred大杀器：WorkFlow快速入门》介绍如何从零开始制作一个属于自己的 WorkFlow，进一步地提高你的工作效率。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/11/java_combat/quick_download_git_project/" rel="next" title="高效开发技巧：为什么你下载Git项目这么慢？">
+                <i class="fa fa-chevron-left"></i> 高效开发技巧：为什么你下载Git项目这么慢？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/11/java_basic/deep_insight_java_byte_code/" rel="prev" title="从 HelloWorld 看 Java 字节码文件结构">
+                从 HelloWorld 看 Java 字节码文件结构 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">97</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Alfred能做什么？"><span class="nav-number">1.</span> <span class="nav-text">Alfred能做什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#打开文件（夹）、定位文件（夹）"><span class="nav-number">1.1.</span> <span class="nav-text">打开文件（夹）、定位文件（夹）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打开网址、书签、App"><span class="nav-number">1.2.</span> <span class="nav-text">打开网址、书签、App</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义搜索"><span class="nav-number">1.3.</span> <span class="nav-text">自定义搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#剪贴板历史"><span class="nav-number">1.4.</span> <span class="nav-text">剪贴板历史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算器、查词典、运行shell命令"><span class="nav-number">1.5.</span> <span class="nav-text">计算器、查词典、运行shell命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于Alfred的授权"><span class="nav-number">2.</span> <span class="nav-text">关于Alfred的授权</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Alfred的本质是什么"><span class="nav-number">3.</span> <span class="nav-text">Alfred的本质是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#大杀器WorkFlow"><span class="nav-number">4.</span> <span class="nav-text">大杀器WorkFlow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

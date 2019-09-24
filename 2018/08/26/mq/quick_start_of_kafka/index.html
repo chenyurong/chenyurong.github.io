@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="陈树义, Java, Spring, Dubbo, 源码阅读" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="title: 5分钟带你了解Kafka的技术架构date: 2019-04-23 10:09:58categories:  消息队列tags: Kafka   大家都知道 Kafka 是一个非常牛逼的消息队列框架，阿里的 RocketMQ 也是在 Kafka 的基础上进行改进的。对于初学者来说，一开始面对这么一个庞然大物会不知道怎么入手。那么这篇文章就带你先了解一下 Kafka 的技术架构，让你">
+<meta property="og:type" content="article">
+<meta property="og:title" content="陈树义">
+<meta property="og:url" content="http://yoursite.com/2018/08/26/mq/quick_start_of_kafka/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="title: 5分钟带你了解Kafka的技术架构date: 2019-04-23 10:09:58categories:  消息队列tags: Kafka   大家都知道 Kafka 是一个非常牛逼的消息队列框架，阿里的 RocketMQ 也是在 Kafka 的基础上进行改进的。对于初学者来说，一开始面对这么一个庞然大物会不知道怎么入手。那么这篇文章就带你先了解一下 Kafka 的技术架构，让你">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15559844465646.jpg">
+<meta property="og:updated_time" content="2019-04-23T02:10:18.836Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="陈树义">
+<meta name="twitter:description" content="title: 5分钟带你了解Kafka的技术架构date: 2019-04-23 10:09:58categories:  消息队列tags: Kafka   大家都知道 Kafka 是一个非常牛逼的消息队列框架，阿里的 RocketMQ 也是在 Kafka 的基础上进行改进的。对于初学者来说，一开始面对这么一个庞然大物会不知道怎么入手。那么这篇文章就带你先了解一下 Kafka 的技术架构，让你">
+<meta name="twitter:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15559844465646.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/26/mq/quick_start_of_kafka/"/>
+
+
+
+
+
+  <title> | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/26/mq/quick_start_of_kafka/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-26T22:35:37+08:00">
+                2018-08-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/26/mq/quick_start_of_kafka/" class="leancloud_visitors" data-flag-title="">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<p>title: 5分钟带你了解Kafka的技术架构<br>date: 2019-04-23 10:09:58<br>categories:</p>
+<ul>
+<li>消息队列<br>tags:</li>
+<li>Kafka</li>
+</ul>
+<hr>
+<p>大家都知道 Kafka 是一个非常牛逼的消息队列框架，阿里的 RocketMQ 也是在 Kafka 的基础上进行改进的。对于初学者来说，一开始面对这么一个庞然大物会不知道怎么入手。那么这篇文章就带你先了解一下 Kafka 的技术架构，让你从全局的视野认识 Kafka。了解了 Kafka 的整体架构和消息流程之后，脑海里就会有一个大致的结构，这时候再去学习每个部分就容易得多了。</p>
+<p>我们先来看一下 Kafka 的整体架构图：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15559844465646.jpg" alt=""></p>
+<p>Kafka 的架构图可以分为四个部分：</p>
+<ul>
+<li>Producer Cluster：生产者集群。一般由许多个实际的业务项目组成，其不断地往 Kafka 集群中写入数据。</li>
+<li>Kafka Cluster：Kafka 服务器集群。这里就是 Kafka 作为重要的一部分，这里负责接收生产者写入的数据，并将其持久化到文件里，最终将消息提供给 Consumer Cluster。</li>
+<li>Zookeeper Cluster：Zookeeper 集群。Zookeeper 负责维护整个 Kafka 集群的 Topic 信息、Kafka Controller 等信息。</li>
+<li>Consumer Cluster：消费者集群。与 Producer Cluster 一样，其一般是由许多个实际的业务项目组成，不断地从 Kafka Cluster 中读取数据。</li>
+</ul>
+<p>了解了 Kafka 的整体架构，那一个消息是怎么从生产者到 Kafka Server，又是如何从 Kafka Server 到消费者的呢？一般来说，一个消息的流转可以分为下面几个阶段：</p>
+<ul>
+<li>服务器启动阶段</li>
+<li>生产者发送消息阶段</li>
+<li>Kafka存储消息阶段</li>
+<li>消费者拉取消息阶段</li>
+</ul>
+<h2 id="服务器启动阶段"><a href="#服务器启动阶段" class="headerlink" title="服务器启动阶段"></a>服务器启动阶段</h2><p>首先，我们会启动 Zookeeper 服务器，作为集群管理服务器。接着，启动 Kafka Server。Kafka Server 会向 Zookeeper 服务器注册信息，接着启动线程池监听客户端的连接请求。最后，启动生产者和消费者，连接到 Zookeeper 服务器，从 Zookeeper 服务器获取到对应的 Kafka Server 信息[1]。</p>
+<h2 id="生产者发送消息阶段"><a href="#生产者发送消息阶段" class="headerlink" title="生产者发送消息阶段"></a>生产者发送消息阶段</h2><p>当需要将消息存入消息队列中时，生产者根据配置的分片算法，选择分到哪一个 partition 中。在发送一条消息时，可以指定这条消息的 key，Producer 根据这个 key 和 Partition 机制来判断应该将这条消息发送到哪个 Parition。</p>
+<p>Paritition 机制可以通过指定 Producer 的 paritition.class 这一参数来指定，该 class 必须实现 kafka.producer.Partitioner 接口。如果不实现 Partition 接口，那么会使用默认的分区算法，即根据根据 key 哈希后取余[2]。</p>
+<p>随后生产者与该 Partition Leader 建立联系，之后将消息发送至该 partition leader。之后生产者会根据设置的 request.required.acks 参数不同，选择等待或或直接发送下一条消息。</p>
+<ul>
+<li><strong>request.required.acks = 0</strong> 表示 Producer 不等待来自 Leader 的 ACK 确认，直接发送下一条消息。在这种情况下，如果 Leader 分片所在服务器发生宕机，那么这些已经发送的数据会丢失。</li>
+<li><strong>request.required.acks = 1</strong> 表示 Producer 等待来自 Leader 的 ACK 确认，当收到确认后才发送下一条消息。在这种情况下，消息一定会被写入到 Leader 服务器，但并不保证 Follow 节点已经同步完成。所以如果在消息已经被写入 Leader 分片，但是还未同步到 Follower 节点，此时Leader 分片所在服务器宕机了，那么这条消息也就丢失了，无法被消费到。</li>
+<li><strong>request.required.acks = -1</strong> 表示 Producer 等待来自 Leader 和所有 Follower 的 ACK 确认之后，才发送下一条消息。在这种情况下，除非 Leader 节点和所有 Follower 节点都宕机了，否则不会发生消息的丢失。</li>
+</ul>
+<h2 id="Kafka存储消息阶段"><a href="#Kafka存储消息阶段" class="headerlink" title="Kafka存储消息阶段"></a>Kafka存储消息阶段</h2><p>当 Kafka 接收到消息后，其并不直接将消息写入磁盘，而是先写入内存中。之后根据生产者设置参数的不同，选择是否回复 ack 给生产者。之后有一个线程会定期将内存中的数据刷入磁盘，这里有两个参数控制着这个过程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 数据达到多少条就将消息刷到磁盘</span><br><span class="line">#log.flush.interval.messages=10000</span><br><span class="line"># 多久将累积的消息刷到磁盘，任何一个达到指定值就触发写入</span><br><span class="line">#log.flush.interval.ms=1000</span><br></pre></td></tr></table></figure>
+<p>如果我们设置 log.flush.interval.messages=1，那么每次来一条消息，就会刷一次磁盘。通过这种方式，就可以达到消息绝对不丢失的目的，这种情况我们称之为同步刷盘。反之，我们称之为异步刷盘。</p>
+<p>于此同时，Kafka 服务器也会进行副本的复制，该 Partition 的 Follower 会从 Leader 节点拉取数据进行保存。然后将数据存储到 Partition 的 Follower 节点中。 </p>
+<h2 id="消费者拉取消息阶段"><a href="#消费者拉取消息阶段" class="headerlink" title="消费者拉取消息阶段"></a>消费者拉取消息阶段</h2><p>在消费者启动时，其会连接到 zk 注册节点，之后根据所连接 topic 的 partition 个数和消费者个数，进行 partition 分配。一个 partition 最多只能被一个线程消费，但一个线程可以消费多个 partition。其分配算法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 将目标 topic 下的所有 partirtion 排序，存于PT</span><br><span class="line">2. 对某 consumer group 下所有 consumer 排序，存于 CG，第 i 个consumer 记为 Ci</span><br><span class="line">3. N=size(PT)/size(CG)，向上取整</span><br><span class="line">4. 解除 Ci 对原来分配的 partition 的消费权（i从0开始）</span><br><span class="line">5. 将第i*N到（i+1）*N-1个 partition 分配给 Ci</span><br></pre></td></tr></table></figure>
+<p>我们用例子简单描述下这个算法的内容：假设我们连接的 topic 有 8 个 partition，此时有 3 个消费线程。那么 partition 的分配过程大致是这样的：</p>
+<ul>
+<li>8/3=2.667，向上取整就是3，也就是说每个consumer分配3个分区。</li>
+<li>那么给第一个消费者分配p0/p1/p2三个分区。</li>
+<li>给第二个消费者分配p3/p4/p5三个分区。</li>
+<li>给第三个消费者分配p6/p7两个分区。</li>
+</ul>
+<p>接着消费者连接对应分区的 Kafka Server，并从该分区服务器拉取数据。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这篇文章简单介绍了 Kafka 框架的技术架构以及消息流转过程，并介绍了其中的某些细节。通过这篇文章，相信大家对 Kafka 框架应该有个大致的了解。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://blog.csdn.net/LG772EF/article/details/72821616" target="_blank" rel="noopener">[1].kafka broker启动流程和server结构</a></li>
+<li><a href="https://leokongwq.github.io/2017/02/27/mq-kafka-producer-partitioner.html" target="_blank" rel="noopener">[2].kafka发送消息分区选择策略详解</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/25/reading/use_the_effective_way_to_study/1.1_why_you_do_not_have_money/" rel="next" title="你没钱，真的不是因为不努力">
+                <i class="fa fa-chevron-left"></i> 你没钱，真的不是因为不努力
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/26/jvm/deep_insight_jvm_boolean/" rel="prev" title="从字节码层面，解析 Java 布尔型的实现原理">
+                从字节码层面，解析 Java 布尔型的实现原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">97</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器启动阶段"><span class="nav-number">1.</span> <span class="nav-text">服务器启动阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生产者发送消息阶段"><span class="nav-number">2.</span> <span class="nav-text">生产者发送消息阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka存储消息阶段"><span class="nav-number">3.</span> <span class="nav-text">Kafka存储消息阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消费者拉取消息阶段"><span class="nav-number">4.</span> <span class="nav-text">消费者拉取消息阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

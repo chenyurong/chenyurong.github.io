@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="陈树义, Java, Spring, Dubbo, 源码阅读" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="我们很多时候经常会迷茫、焦虑，总是在想 35 岁的中年危机怎么办？很多时候与其焦虑，还不如想想看应该怎么办。很幸运的是，我在知道上遇到了一位年过中年还从事技术工作的技术专家。他写的很多经历和观点都让我受益，今天我把他推荐给你们。 截止到发稿时间为止，他在知乎上有 6 万多的粉丝，获得了 36 万的赞同，有 5 个回答、1 篇文章被知乎圆桌、知乎日报收录。  沈老师的经历比较丰富。一开始与我们一样都">
+<meta property="og:type" content="article">
+<meta property="og:title" content="40岁技术专家，他怎么看中年危机？">
+<meta property="og:url" content="http://yoursite.com/2019/09/09/essay/what_a_fourty_tech_expertise_think_about_35/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="我们很多时候经常会迷茫、焦虑，总是在想 35 岁的中年危机怎么办？很多时候与其焦虑，还不如想想看应该怎么办。很幸运的是，我在知道上遇到了一位年过中年还从事技术工作的技术专家。他写的很多经历和观点都让我受益，今天我把他推荐给你们。 截止到发稿时间为止，他在知乎上有 6 万多的粉丝，获得了 36 万的赞同，有 5 个回答、1 篇文章被知乎圆桌、知乎日报收录。  沈老师的经历比较丰富。一开始与我们一样都">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15668647357115.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15668649355082.jpg">
+<meta property="og:updated_time" content="2019-09-09T00:38:56.298Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="40岁技术专家，他怎么看中年危机？">
+<meta name="twitter:description" content="我们很多时候经常会迷茫、焦虑，总是在想 35 岁的中年危机怎么办？很多时候与其焦虑，还不如想想看应该怎么办。很幸运的是，我在知道上遇到了一位年过中年还从事技术工作的技术专家。他写的很多经历和观点都让我受益，今天我把他推荐给你们。 截止到发稿时间为止，他在知乎上有 6 万多的粉丝，获得了 36 万的赞同，有 5 个回答、1 篇文章被知乎圆桌、知乎日报收录。  沈老师的经历比较丰富。一开始与我们一样都">
+<meta name="twitter:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15668647357115.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/09/essay/what_a_fourty_tech_expertise_think_about_35/"/>
+
+
+
+
+
+  <title>40岁技术专家，他怎么看中年危机？ | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/09/essay/what_a_fourty_tech_expertise_think_about_35/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">40岁技术专家，他怎么看中年危机？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-09T08:38:34+08:00">
+                2019-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/生活随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">生活随笔</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/09/09/essay/what_a_fourty_tech_expertise_think_about_35/" class="leancloud_visitors" data-flag-title="40岁技术专家，他怎么看中年危机？">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我们很多时候经常会迷茫、焦虑，总是在想 35 岁的中年危机怎么办？很多时候与其焦虑，还不如想想看应该怎么办。很幸运的是，我在知道上遇到了一位年过中年还从事技术工作的技术专家。他写的很多经历和观点都让我受益，今天我把他推荐给你们。</p>
+<p>截止到发稿时间为止，他在知乎上有 6 万多的粉丝，获得了 36 万的赞同，有 5 个回答、1 篇文章被知乎圆桌、知乎日报收录。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15668647357115.jpg" alt=""></p>
+<p>沈老师的经历比较丰富。一开始与我们一样都是一线的开发，之后转到管理岗位。但是经历了一段时间的管理岗位之后，发现自己还是适合往技术专家方向走，于是重新拿起技术研究 Spring 源码。从此之后，专注于技术专家方向。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15668649355082.jpg" alt=""></p>
+<p>但实际上吸引我的并不是沈老师的这些 title，而是他的一些观点，经常能够给之启发。看它的文字多了，你会发现他就像一个长辈一样为你指明前方的路。很多东西，人家都经历过了，多了解他的经历，你就可以少走一些弯路，少去一些迷茫。</p>
+<h2 id="不思上进-OR-独立思考？"><a href="#不思上进-OR-独立思考？" class="headerlink" title="不思上进 OR 独立思考？"></a>不思上进 OR 独立思考？</h2><p>知乎上有一个问题：为什么越来越多的年轻人感觉工作没有动力、职业发展没有希望，迷茫和中年危机等现象普遍发生？</p>
+<p>沈老师谈了谈他身上的一个例子，事情大概是这样的：他手下有一个工作了 5 年的小伙子，很聪明没干劲。于是去了解了解原因。了解了发现，其要赶回西安摇号买房子，很奔波劳累。沈老师不解地问：为什么不在北京买房，而去西安？小伙子将首付凑不到，即使凑到了，孩子也上不了学。与其苦留在北京，不如回西安安居乐业。</p>
+<p>离开北京回西安，这样的一个操作会让人觉得这就是不思上进，走回头路。但事实真的是这样吗？这恰恰才是「独立思考」，因为知道北京留不下，所以选择适合自己发展的地方。看起来，似乎是“不思上进”，但绝不是“迷茫”，反而是清醒，是独立思考。</p>
+<h2 id="如何看待-996？"><a href="#如何看待-996？" class="headerlink" title="如何看待 996？"></a>如何看待 996？</h2><p>996 是一个老生常谈的问题，沈老师也聊到了这个话题。他的核心观点是：996 是在经济上赤裸裸的盘剥员工，更使得中年危机成为每个职场人的必然。</p>
+<blockquote>
+<p>干IT的，中年危机是一个无法回避的问题。对此，不断有人提出各种解决方案。对个人来说，建议最多的就是持续保持学习能力，从而跟上时代的变化。不过在我看来，这都是避重就轻，隔靴搔痒的方案，完全于事无补！我做开发将近20年了，年龄也不小（40岁），目前还混迹在开发一线，算得上开发老兵。让我感到骄傲的是，现在依然保持着高效的产出，无论是数量还是质量。<br>年龄大了，你的身体非常忠诚，高强度的工作在物理上是不可能完成的。这和一块锂电池的原理是一样的，用的多了，续航能力就会下降。你就是再励志也没用。没电了就是没电了，汽车会抛锚，手机会关机。只有充电（休息）才能重新启动。<br>而我现在还能保持高质量的产出，那是因为现在的公司能够保证8小时工作制，因此工作之余能保证充分的休息，也让我这块老电池有正常的循环，从而发挥“余热”。反过来，如果现在中国所有的IT公司都强行996制度，那么像我这样的老工程师，也就被直接被踢出了劳动力市场。不是我矫情，是身体真的挣不了这个钱，即使我不要命也不行。<br>说一百道一万，996的原因非常简单：一个是资本的逐利本性，另一个就是管理层的无能。我们公司的hr曾经在一次员工沟通大会上给大家仔细的算过账，说外企的成本非常高，包括人力成本。一个重要的原因就是受限于法律，公司不能成制度的组织加班，但我们的竞争对手却可以。这样在人力成本上，我们就处于绝对劣势。而在中国当前的企业中，有太多低劣的管理者，既无能在8小时内调动员工的积极性，又怕承担责任，所以只能追求表面功夫，堆砌劳动时间，自我欺骗、自我麻木。于是白天上班的时候大家一块磨洋工，下班的时候，拉扯着不走，装作努力和奋斗的样子。硬生生把整个职场搞的乌烟瘴气，硬生生把这一代职场人的生活变得悲催不堪。</p>
+</blockquote>
+<p>沈老师的话并不大而空，而是简简单单陈述事实，讲述自己的经历。他并不会给出具体的建议，而是讲述经历，让你自己去选择。很多时候，这种影响远大于直接说出某个观点。</p>
+<h2 id="35岁的程序员"><a href="#35岁的程序员" class="headerlink" title="35岁的程序员"></a>35岁的程序员</h2><p>知乎上的一个提问：找工作时单位普遍要求 35 岁以下，那 35 岁以上的人都干嘛去了？沈老师 2019 年就 40 岁了，所以他也聊了聊自己的经历。</p>
+<blockquote>
+<p>今年刚好40岁，算是非常幸运了，目前在一家世界100强的外企（欧美）做到技术专家的位置，工作强度还算合理，至少在保证健康的情况下，还有时间照顾家庭。我在这家公司已经服务了10年，做过3年软件开发工程师，然后又做了5年的开发经理，现在又主动申请转到技术岗（技术专家）。<br>坦率的说，无论作管理还是做技术，过了35岁都一样焦虑，因为一旦失业，在就业市场上都一样没有竞争力，甚至管理岗更没有竞争力，毕竟一则管理岗本身就少，二则普通的中级管理岗更倾向于公司内部提拔，至少在目前的公司，10年了我都没见过一个空降的经理。<br>我所在的事业部目前盈利还不错，自我评估了下，3年内大概率不会失业，但更长远的未来就很难预料了，但唯一可以确定的下岗是早晚的事，一则这些年外企在国内一直处于颓势，二则放眼世界也没见过基业长青的科技公司。<br>人过了35，且不是说社会上赤裸裸的年龄歧视，就拿当前中国的劳动氛围来说，动辄就是996的工作强度，就算这些公司能够给你offer，以35岁之后每况愈下的身体状况，有几个人能吃得消，只怕是有命挣钱无命消受。<br>所以说“中年危机”的局怎么破？从个人来说很难，因为这本质上是一个社会问题。我们所能做的就是等待，等待在或远或近的将社会的劳动环境会变得更健康，更合法。等待将来整个社会都消灭了恶性加班，消灭了非法解雇，消灭了年龄歧视，消灭了…，只有那一天才是“中年危机”真正破局的时候。</p>
+</blockquote>
+<p>喜欢沈老师的文字，更多在于喜欢他的思考。就说中年危机而言，别人就只是贩卖焦虑，但沈老师讲出了自己的思考。他觉得中年危机是个社会问题，是恶性加班，是非法解雇，是年龄歧视！</p>
+<p>最后他给出了自己对于中年危机的几点建议：</p>
+<ul>
+<li>35岁之前尽量进入一个温和的公司，避免盲目的跳槽</li>
+<li>转行做咨询师讲师等</li>
+<li>主动降低生活的期望</li>
+</ul>
+<h2 id="黄金时代"><a href="#黄金时代" class="headerlink" title="黄金时代"></a>黄金时代</h2><p>好看的皮囊千篇一律，有趣的灵魂万里挑一。希望你们喜欢今天的推荐，也希望大家都能少点迷茫，多点行动。最后也用沈老师的在回答中引用的《黄金时代》片段结束本文，希望大家也迎来自己的黄金时代！</p>
+<blockquote>
+<p>那一天我二十一岁，在我一生的黄金时代。我有好多奢望。我想爱，想吃，还想在一瞬间变成天上半明半暗的云。后来我才知道，生活就是个缓慢受锤的过程，人一天天老下去，奢望也一天天消失，最后变得像挨了锤的牛一样。可是我过二十一岁生日时没有预见到这一点。我觉得自己会永远生猛下去，什么也锤不了我。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/04/essay/the_coach_of_high_performance/" rel="next" title="高绩效教练，真的可以实现嘛？">
+                <i class="fa fa-chevron-left"></i> 高绩效教练，真的可以实现嘛？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/22/essay/how_to_have_a_long_viewer/" rel="prev" title="如何做到长远思考？">
+                如何做到长远思考？ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">97</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#不思上进-OR-独立思考？"><span class="nav-number">1.</span> <span class="nav-text">不思上进 OR 独立思考？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何看待-996？"><span class="nav-number">2.</span> <span class="nav-text">如何看待 996？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#35岁的程序员"><span class="nav-number">3.</span> <span class="nav-text">35岁的程序员</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#黄金时代"><span class="nav-number">4.</span> <span class="nav-text">黄金时代</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

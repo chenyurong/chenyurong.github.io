@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java,正则表达式," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前几天线上一个项目监控信息突然报告异常，上到机器上后查看相关资源的使用情况，发现 CPU 利用率将近 100%。通过 Java 自带的线程 Dump 工具，我们导出了出问题的堆栈信息。  我们可以看到所有的堆栈都指向了一个名为 validateUrl 的方法，这样的报错信息在堆栈中一共超过 100 处。通过排查代码，我们知道这个方法的主要功能是校验 URL 是否合法。 很奇怪，一个正则表达式怎么会">
+<meta name="keywords" content="Java,正则表达式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="藏在正则表达式里的陷阱，竟让 CPU 100%异常！">
+<meta property="og:url" content="http://yoursite.com/2018/07/18/java_combat/the_trap_in_the_regex_expression/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="前几天线上一个项目监控信息突然报告异常，上到机器上后查看相关资源的使用情况，发现 CPU 利用率将近 100%。通过 Java 自带的线程 Dump 工具，我们导出了出问题的堆栈信息。  我们可以看到所有的堆栈都指向了一个名为 validateUrl 的方法，这样的报错信息在堆栈中一共超过 100 处。通过排查代码，我们知道这个方法的主要功能是校验 URL 是否合法。 很奇怪，一个正则表达式怎么会">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/595137/201806/595137-20180619160029441-1617517241.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_regex_backtracking_02.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_regex_backtracking_03.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_regex_backtracking_04.png">
+<meta property="og:image" content="http://p3npq6ecr.bkt.clouddn.com/blog/the_regex_backtracking_05.png">
+<meta property="og:updated_time" content="2018-07-18T12:12:57.713Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="藏在正则表达式里的陷阱，竟让 CPU 100%异常！">
+<meta name="twitter:description" content="前几天线上一个项目监控信息突然报告异常，上到机器上后查看相关资源的使用情况，发现 CPU 利用率将近 100%。通过 Java 自带的线程 Dump 工具，我们导出了出问题的堆栈信息。  我们可以看到所有的堆栈都指向了一个名为 validateUrl 的方法，这样的报错信息在堆栈中一共超过 100 处。通过排查代码，我们知道这个方法的主要功能是校验 URL 是否合法。 很奇怪，一个正则表达式怎么会">
+<meta name="twitter:image" content="https://images2018.cnblogs.com/blog/595137/201806/595137-20180619160029441-1617517241.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/18/java_combat/the_trap_in_the_regex_expression/"/>
+
+
+
+
+
+  <title>藏在正则表达式里的陷阱，竟让 CPU 100%异常！ | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/18/java_combat/the_trap_in_the_regex_expression/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">藏在正则表达式里的陷阱，竟让 CPU 100%异常！</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-18T20:12:35+08:00">
+                2018-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java实战/" itemprop="url" rel="index">
+                    <span itemprop="name">Java实战</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/18/java_combat/the_trap_in_the_regex_expression/" class="leancloud_visitors" data-flag-title="藏在正则表达式里的陷阱，竟让 CPU 100%异常！">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前几天线上一个项目监控信息突然报告异常，上到机器上后查看相关资源的使用情况，发现 CPU 利用率将近 100%。通过 Java 自带的线程 Dump 工具，我们导出了出问题的堆栈信息。</p>
+<p><img src="https://images2018.cnblogs.com/blog/595137/201806/595137-20180619160029441-1617517241.png" alt=""></p>
+<p>我们可以看到所有的堆栈都指向了一个名为 validateUrl 的方法，这样的报错信息在堆栈中一共超过 100 处。通过排查代码，我们知道这个方法的主要功能是校验 URL 是否合法。</p>
+<p>很奇怪，一个正则表达式怎么会导致 CPU 利用率居高不下。为了弄清楚复现问题，我们将其中的关键代码摘抄出来，做了个简单的单元测试。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    String badRegex = &quot;^([hH][tT]&#123;2&#125;[pP]://|[hH][tT]&#123;2&#125;[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\\\/])+$&quot;;</span><br><span class="line">    String bugUrl = &quot;http://www.fapiao.com/dddp-web/pdf/download?request=6e7JGxxxxx4ILd-kExxxxxxxqJ4-CHLmqVnenXC692m74H38sdfdsazxcUmfcOH2fAfY1Vw__%5EDadIfJgiEf&quot;;</span><br><span class="line">    if (bugUrl.matches(badRegex)) &#123;</span><br><span class="line">        System.out.println(&quot;match!!&quot;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        System.out.println(&quot;no match!!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当我们运行上面这个例子的时候，通过资源监视器可以看到有一个名为 java 的进程 CPU 利用率直接飙升到了 91.4% 。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_regex_backtracking_02.png" alt=""></p>
+<p>看到这里，我们基本可以推断，这个正则表达式就是导致 CPU 利用率居高不下的凶手！</p>
+<p>于是，我们将排错的重点放在了那个正则表达式上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^([hH][tT]&#123;2&#125;[pP]://|[hH][tT]&#123;2&#125;[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+$</span><br></pre></td></tr></table></figure>
+<p>这个正则表达式看起来没什么问题，可以分为三个部分：</p>
+<p>第一部分匹配 http 和 https 协议，第二部分匹配 www. 字符，第三部分匹配许多字符。我看着这个表达式发呆了许久，也没发现没有什么大的问题。</p>
+<p>其实这里导致 CPU 使用率高的关键原因就是：<strong>Java 正则表达式使用的引擎实现是 NFA 自动机，这种正则表达式引擎在进行字符匹配时会发生回溯（backtracking）。</strong>而一旦发生回溯，那其消耗的时间就会变得很长，有可能是几分钟，也有可能是几个小时，时间长短取决于回溯的次数和复杂度。</p>
+<p>看到这里，可能大家还不是很清楚什么是回溯，还有点懵。没关系，我们一点点从正则表达式的原理开始讲起。</p>
+<h2 id="正则表达式引擎"><a href="#正则表达式引擎" class="headerlink" title="正则表达式引擎"></a>正则表达式引擎</h2><p>正则表达式是一个很方便的匹配符号，但要实现这么复杂，功能如此强大的匹配语法，就必须要有一套算法来实现，而实现这套算法的东西就叫做正则表达式引擎。简单地说，实现正则表达式引擎的有两种方式：<strong>DFA 自动机</strong>（Deterministic Final Automata 确定型有穷自动机）和 <strong>NFA 自动机</strong>（Non deterministic Finite Automaton 不确定型有穷自动机）。</p>
+<p>对于这两种自动机，他们有各自的区别，这里并不打算深入将它们的原理。简单地说，DFA 自动机的时间复杂度是线性的，更加稳定，但是功能有限。而 NFA 的时间复杂度比较不稳定，有时候很好，有时候不怎么好，好不好取决于你写的正则表达式。但是胜在 NFA 的功能更加强大，所以包括 Java 、.NET、Perl、Python、Ruby、PHP 等语言都使用了 NFA 去实现其正则表达式。</p>
+<p>那 NFA 自动机到底是怎么进行匹配的呢？我们以下面的字符和表达式来举例说明。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">text=&quot;Today is a nice day.&quot;</span><br><span class="line">regex=&quot;day&quot;</span><br></pre></td></tr></table></figure>
+<p>要记住一个很重要的点，即：NFA 是以正则表达式为基准去匹配的。也就是说，NFA 自动机会读取正则表达式的一个一个字符，然后拿去和目标字符串匹配，匹配成功就换正则表达式的下一个字符，否则继续和目标字符串的下一个字符比较。或许你们听不太懂，没事，接下来我们以上面的例子一步步解析。</p>
+<ul>
+<li>首先，拿到正则表达式的第一个匹配符：d。于是那去和字符串的字符进行比较，字符串的第一个字符是 T，不匹配，换下一个。第二个是 o，也不匹配，再换下一个。第三个是 d，匹配了，那么就读取正则表达式的第二个字符：a。</li>
+<li>读取到正则表达式的第二个匹配符：a。那着继续和字符串的第四个字符 a 比较，又匹配了。那么接着读取正则表达式的第三个字符：y。</li>
+<li>读取到正则表达式的第三个匹配符：y。那着继续和字符串的第五个字符 y 比较，又匹配了。尝试读取正则表达式的下一个字符，发现没有了，那么匹配结束。</li>
+</ul>
+<p>上面这个匹配过程就是 NFA 自动机的匹配过程，但实际上的匹配过程会比这个复杂非常多，但其原理是不变的。</p>
+<h2 id="NFA自动机的回溯"><a href="#NFA自动机的回溯" class="headerlink" title="NFA自动机的回溯"></a>NFA自动机的回溯</h2><p>了解了 NFA 是如何进行字符串匹配的，接下来我们就可以讲讲这篇文章的重点了：回溯。为了更好地解释回溯，我们同样以下面的例子来讲解。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">text=&quot;abbc&quot;</span><br><span class="line">regex=&quot;ab&#123;1,3&#125;c&quot;</span><br></pre></td></tr></table></figure>
+<p>上面的这个例子的目的比较简单，匹配以 a 开头，以 c 结尾，中间有 1-3 个 b 字符的字符串。NFA 对其解析的过程是这样子的：</p>
+<ul>
+<li>首先，读取正则表达式第一个匹配符 a 和 字符串第一个字符 a 比较，匹配了。于是读取正则表达式第二个字符。</li>
+<li>读取正则表达式第二个匹配符 b{1,3} 和字符串的第二个字符 b 比较，匹配了。但因为 b{1,3} 表示 1-3 个 b 字符串，以及 NFA 自动机的贪婪特性（也就是说要尽可能多地匹配），所以此时并不会再去读取下一个正则表达式的匹配符，而是依旧使用 b{1,3} 和字符串的第三个字符 b 比较，发现还是匹配。于是继续使用 b{1,3} 和字符串的第四个字符 c 比较，发现不匹配了。此时就会发生回溯。</li>
+<li>发生回溯是怎么操作呢？发生回溯后，我们已经读取的字符串第四个字符 c 将被吐出去，指针回到第三个字符串的位置。之后，程序读取正则表达式的下一个操作符 c，读取当前指针的下一个字符 c 进行对比，发现匹配。于是读取下一个操作符，但这里已经结束了。</li>
+</ul>
+<p>下面我们回过头来看看前面的那个校验 URL 的正则表达式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^([hH][tT]&#123;2&#125;[pP]://|[hH][tT]&#123;2&#125;[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+$</span><br></pre></td></tr></table></figure>
+<p>出现问题的 URL 是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.fapiao.com/dzfp-web/pdf/download?request=6e7JGm38jfjghVrv4ILd-kEn64HcUX4qL4a4qJ4-CHLmqVnenXC692m74H5oxkjgdsYazxcUmfcOH2fAfY1Vw__%5EDadIfJgiEf</span><br></pre></td></tr></table></figure>
+<p>我们把这个正则表达式分为三个部分：</p>
+<ul>
+<li>第一部分：校验协议。<code>^([hH][tT]{2}[pP]://|[hH][tT]{2}[pP][sS]://)</code>。</li>
+<li>第二部分：校验域名。<code>(([A-Za-z0-9-~]+).)+</code>。</li>
+<li>第三部分：校验参数。<code>([A-Za-z0-9-~\\/])+$</code>。</li>
+</ul>
+<p>我们可以发现正则表达式校验协议 <code>http://</code> 这部分是没有问题的，但是在校验 www.fapiao.com 的时候，其使用了 <code>xxxx.</code> 这种方式去校验。那么其实匹配过程是这样的：</p>
+<ul>
+<li>匹配到 www.</li>
+<li>匹配到 fapiao. </li>
+<li>匹配到 <code>com/dzfp-web/pdf/download?request=6e7JGm38jf.....</code>，你会发现因为贪婪匹配的原因，所以程序会一直读后面的字符串进行匹配，最后发现没有点号，于是就一个个字符回溯回去了。</li>
+</ul>
+<p>这是这个正则表达式存在的第一个问题。</p>
+<p>另外一个问题是在正则表达式的第三部分，我们发现出现问题的 URL 是有下划线（_）和百分号（%）的，但是对应第三部分的正则表达式里面却没有。这样就会导致前面匹配了一长串的字符之后，发现不匹配，最后回溯回去。</p>
+<p>这是这个正则表达式存在的第二个问题。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>明白了回溯是导致问题的原因之后，其实就是减少这种回溯，你会发现如果我在第三部分加上下划线和百分号之后，程序就正常了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    String badRegex = &quot;^([hH][tT]&#123;2&#125;[pP]://|[hH][tT]&#123;2&#125;[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~_%\\\\/])+$&quot;;</span><br><span class="line">    String bugUrl = &quot;http://www.fapiao.com/dddp-web/pdf/download?request=6e7JGxxxxx4ILd-kExxxxxxxqJ4-CHLmqVnenXC692m74H38sdfdsazxcUmfcOH2fAfY1Vw__%5EDadIfJgiEf&quot;;</span><br><span class="line">    if (bugUrl.matches(badRegex)) &#123;</span><br><span class="line">        System.out.println(&quot;match!!&quot;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        System.out.println(&quot;no match!!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行上面的程序，立刻就会打印出<code>match!!</code>。</p>
+<p>但这是不够的，如果以后还有其他 URL 包含了乱七八糟的字符呢，我们难不成还再修改一遍。肯定不现实嘛！</p>
+<p>其实在正则表达式中有这么三种模式：<strong>贪婪模式、懒惰模式、独占模式。</strong></p>
+<p>在关于数量的匹配中，有 <code>+ ? * {min,max}</code> 四种两次，如果只是单独使用，那么它们就是贪婪模式。</p>
+<p><strong>如果在他们之后加多一个 ? 符号，那么原先的贪婪模式就会变成懒惰模式，即尽可能少地匹配。</strong>但是懒惰模式还是会发生回溯现象的。例如下面这个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">text=&quot;abbc&quot;</span><br><span class="line">regex=&quot;ab&#123;1,3&#125;?c&quot;</span><br></pre></td></tr></table></figure>
+<p>正则表达式的第一个操作符 a 与 字符串第一个字符 a 匹配，匹配成功。于是正则表达式的第二个操作符 b{1,3}? 和 字符串第二个字符 b 匹配，匹配成功。因为最小匹配原则，所以拿正则表达式第三个操作符 c 与字符串第三个字符 b 匹配，发现不匹配。于是回溯回去，拿正则表达式第二个操作符 b{1,3}? 和字符串第三个字符 b 匹配，匹配成功。于是再拿正则表达式第三个操作符 c 与字符串第四个字符 c 匹配，匹配成功。于是结束。</p>
+<p><strong>如果在他们之后加多一个 + 符号，那么原先的贪婪模式就会变成独占模式，即尽可能多地匹配，但是不回溯。</strong></p>
+<p>于是乎，如果要彻底解决问题，就要在保证功能的同时确保不发生回溯。我将上面校验 URL 的正则表达式的第二部分后面加多了个 + 号，即变成这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">^([hH][tT]&#123;2&#125;[pP]:\/\/|[hH][tT]&#123;2&#125;[pP][sS]:\/\/)</span><br><span class="line">(([A-Za-z0-9-~]+).)++    ---&gt;&gt;&gt; （这里加了个+号）</span><br><span class="line">([A-Za-z0-9-~_%\\\/])+$</span><br></pre></td></tr></table></figure>
+<p>这样之后，运行原有的程序就没有问题了。</p>
+<p>最后推荐一个网站，这个网站可以检查你写的正则表达式和对应的字符串匹配时会不会有问题。</p>
+<p><a href="https://regex101.com/" target="_blank" rel="noopener">Online regex tester and debugger: PHP, PCRE, Python, Golang and JavaScript</a></p>
+<p>例如我本文中存在问题的那个 URL 使用该网站检查后会提示：catastrophic backgracking（灾难性回溯）。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_regex_backtracking_03.png" alt=""></p>
+<p>当你点击左下角的「regex debugger」时，它会告诉你一共经过多少步检查完毕，并且会将所有步骤都列出来，并标明发生回溯的位置。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_regex_backtracking_04.png" alt=""></p>
+<p>本文中的这个正则表达式在进行了 11 万步尝试之后，自动停止了。这说明这个正则表达式确实存在问题，需要改进。</p>
+<p>但是当我用我们修改过的正则表达式进行测试，即下面这个正则表达式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^([hH][tT]&#123;2&#125;[pP]:\/\/|[hH][tT]&#123;2&#125;[pP][sS]:\/\/)(([A-Za-z0-9-~]+).)++([A-Za-z0-9-~\\\/])+$</span><br></pre></td></tr></table></figure>
+<p>工具提示只用了 58 步就完成了检查。</p>
+<p><img src="http://p3npq6ecr.bkt.clouddn.com/blog/the_regex_backtracking_05.png" alt=""></p>
+<p>一个字符的差别，性能就差距了好几万倍。</p>
+<h2 id="树义有话说"><a href="#树义有话说" class="headerlink" title="树义有话说"></a>树义有话说</h2><p>一个小小的正则表达式竟然能够把 CPU 拖垮，也是很神奇了。这也给平时写程序的我们一个警醒，遇到正则表达式的时候要注意贪婪模式和回溯问题，否则我们每写的一个表达式都是一个雷。</p>
+<p>通过查阅网上资料，我发现深圳阿里中心 LAZADA 的同学也在 17 年遇到了这个问题。他们同样也是在测试环境没有发现问题，但是一到线上的时候就发生了 CPU 100% 的问题，他们遇到的问题几乎跟我们的一模一样。有兴趣的朋友可以点击阅读原文查看他们后期总结的文章：<a href="http://www.cnblogs.com/study-everyday/p/7426862.html" target="_blank" rel="noopener">一个由正则表达式引发的血案 - 明志健致远 - 博客园</a></p>
+<p>虽然把这篇文章写完了，但是关于 NFA 自动机的原理方面，特别是关于懒惰模式、独占模式的解释方面还是没有解释得足够深入。因为 NFA 自动机确实不是那么容易理解，所以在这方面还需要不断学习加强。欢迎有懂行的朋友来学习交流，互相促进。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/正则表达式/" rel="tag"># 正则表达式</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/15/java_basic/deep_insight_java_spi/" rel="next" title="我是 SPI，我让框架更加优雅了！">
+                <i class="fa fa-chevron-left"></i> 我是 SPI，我让框架更加优雅了！
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/25/reading/use_the_effective_way_to_study/1.1_why_you_do_not_have_money/" rel="prev" title="你没钱，真的不是因为不努力">
+                你没钱，真的不是因为不努力 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">97</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#正则表达式引擎"><span class="nav-number">1.</span> <span class="nav-text">正则表达式引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NFA自动机的回溯"><span class="nav-number">2.</span> <span class="nav-text">NFA自动机的回溯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案"><span class="nav-number">3.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#树义有话说"><span class="nav-number">4.</span> <span class="nav-text">树义有话说</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

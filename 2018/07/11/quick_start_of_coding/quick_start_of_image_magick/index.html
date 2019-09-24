@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="ImageMagick介绍ImageMagick是一个免费的创建、编辑、合成图片的软件，可以实现图片切割、颜色替换、图片缩略图、图片水印等各种效果。ImageMagick是免费开源软件，支持大多数操作系统，包括Linux、Windows操作系统。ImageMagick的大多数功能的使用都来源于命令行工具。 ImageMagick快速入门安装ImageMagick到官网下载相应的安装包。  在安装过">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 图片处理解决方案：ImageMagick 快速入门教程">
+<meta property="og:url" content="http://yoursite.com/2018/07/11/quick_start_of_coding/quick_start_of_image_magick/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="ImageMagick介绍ImageMagick是一个免费的创建、编辑、合成图片的软件，可以实现图片切割、颜色替换、图片缩略图、图片水印等各种效果。ImageMagick是免费开源软件，支持大多数操作系统，包括Linux、Windows操作系统。ImageMagick的大多数功能的使用都来源于命令行工具。 ImageMagick快速入门安装ImageMagick到官网下载相应的安装包。  在安装过">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161352492-857944833.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161417414-1492018287.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161402382-88938975.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161431164-1867974504.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161442476-728370357.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161500226-1848968693.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161528789-150651576.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161612679-1322019538.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161500226-1848968693.png">
+<meta property="og:updated_time" content="2018-07-11T09:22:20.810Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java 图片处理解决方案：ImageMagick 快速入门教程">
+<meta name="twitter:description" content="ImageMagick介绍ImageMagick是一个免费的创建、编辑、合成图片的软件，可以实现图片切割、颜色替换、图片缩略图、图片水印等各种效果。ImageMagick是免费开源软件，支持大多数操作系统，包括Linux、Windows操作系统。ImageMagick的大多数功能的使用都来源于命令行工具。 ImageMagick快速入门安装ImageMagick到官网下载相应的安装包。  在安装过">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161352492-857944833.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/11/quick_start_of_coding/quick_start_of_image_magick/"/>
+
+
+
+
+
+  <title>Java 图片处理解决方案：ImageMagick 快速入门教程 | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/11/quick_start_of_coding/quick_start_of_image_magick/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java 图片处理解决方案：ImageMagick 快速入门教程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-11T15:36:32+08:00">
+                2018-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/快速入门系列/" itemprop="url" rel="index">
+                    <span itemprop="name">快速入门系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/11/quick_start_of_coding/quick_start_of_image_magick/" class="leancloud_visitors" data-flag-title="Java 图片处理解决方案：ImageMagick 快速入门教程">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="ImageMagick介绍"><a href="#ImageMagick介绍" class="headerlink" title="ImageMagick介绍"></a>ImageMagick介绍</h2><p>ImageMagick是一个免费的<strong>创建、编辑、合成图片</strong>的软件，可以实现图片切割、颜色替换、图片缩略图、图片水印等各种效果。ImageMagick是免费开源软件，支持大多数操作系统，包括<strong>Linux、Windows</strong>操作系统。ImageMagick的大多数功能的使用都来源于<strong>命令行工具</strong>。</p>
+<h2 id="ImageMagick快速入门"><a href="#ImageMagick快速入门" class="headerlink" title="ImageMagick快速入门"></a>ImageMagick快速入门</h2><h3 id="安装ImageMagick"><a href="#安装ImageMagick" class="headerlink" title="安装ImageMagick"></a>安装ImageMagick</h3><p>到<a href="http://www.imagemagick.org/script/download.php" target="_blank" rel="noopener">官网</a>下载相应的安装包。</p>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161352492-857944833.png" alt="下载"></p>
+<p>在安装过程中记得勾选<code>Install legacy utilities(e.g. convert)</code>选项。</p>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161417414-1492018287.png" alt="安装注意"></p>
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p>将ImageMagick安装目录设置到PATH系统变量中</p>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161402382-88938975.png" alt="设置PATH路径"></p>
+<p>打开命令行运行<code>magick -help</code>测试是否配置成功</p>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161431164-1867974504.png" alt="测试配置是否成功"></p>
+<h3 id="使用ImageMagick实现旋转"><a href="#使用ImageMagick实现旋转" class="headerlink" title="使用ImageMagick实现旋转"></a>使用ImageMagick实现旋转</h3><p>ImageMagick图片处理命令的格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">imagick deal_type origin_pic_path deal_param dest_pic_path</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>deal_type：</strong>图片处理类型。ImageMagick提供了几十种图片处理类型，包括：decorate（边框）、convert（转换）、montage（拼接）、animation（动画）等，你可以在<a href="http://www.imagemagick.org/script/index.php" target="_blank" rel="noopener">Features and Capabilities</a>查看更多图片处理类型。</li>
+<li><strong>origin_pic_path：</strong>源图片路径。</li>
+<li><strong>deal_param：</strong>处理参数。不同的图片处理类型有不同的处理参数。</li>
+<li><strong>dest_pic_path：</strong>目标图片路径。</li>
+</ul>
+<p>运行下面的命令将图片顺时针旋转90度：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">magick doraemon.jpg -rotate 90 doraemon_rotate.jpg</span><br></pre></td></tr></table></figure>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161442476-728370357.png" alt="图片旋转代码"></p>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161500226-1848968693.png" alt="ImageMagick快速入门之图片旋转效果"></p>
+<h2 id="在Java中使用ImageMagick"><a href="#在Java中使用ImageMagick" class="headerlink" title="在Java中使用ImageMagick"></a>在Java中使用ImageMagick</h2><p>开始前请先确认JDK、Maven正确安装：</p>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161528789-150651576.png" alt="JDK、MAVEN安装确认"></p>
+<h3 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h3><p>IM4Java是ImageMagick的Java API包，它将Java代码转化成对ImageMagick的命令行调用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.im4java&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;im4java&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.4.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="调用IM4Java实现旋转"><a href="#调用IM4Java实现旋转" class="headerlink" title="调用IM4Java实现旋转"></a>调用IM4Java实现旋转</h3><p>IM4Java的作用是将Java代码转成对ImageMagick的命令行调用，因此IM4Java API与ImageMagick的命令有一一对应的关系。</p>
+<ul>
+<li>ImageMagick的图片处理类型（deal_type）对应xxxCmd，如：<code>convert</code>处理类型对应<code>ConvertCmd</code>，<code>montage</code>处理类型对应<code>MontageCmd</code>。</li>
+<li>ImageMagick的图片处理参数（deal_param）对应IMOperation方法，如：<code>-rotate 90</code>参数对应<code>operation.rotate(90d)</code>，<code>-resize 900x600</code>参数对应<code>operation.resize(900,600)</code>。</li>
+</ul>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161612679-1322019538.png" alt="API和命令行参数对比"></p>
+<p>运行以下代码可以将图片顺时针旋转90度。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">IMOperation operation = new IMOperation();</span><br><span class="line">operation.addImage(&quot;C:\\Users\\Administrator\\Desktop\\imagemagick\\doraemon.jpg&quot;);</span><br><span class="line">operation.rotate(90d);</span><br><span class="line">operation.addImage(&quot;C:\\Users\\Administrator\\Desktop\\imagemagick\\doraemon_rotate.jpg&quot;);</span><br><span class="line"></span><br><span class="line">ConvertCmd cmd = new ConvertCmd();</span><br><span class="line">cmd.setSearchPath(&quot;C:\\Program Files\\ImageMagick-7.0.5-Q16&quot;);  //Windows需要设置，Linux不需要</span><br><span class="line">cmd.run(operation);</span><br></pre></td></tr></table></figure>
+<p>运行程序后可以看到图片已经旋转90度。</p>
+<p><img src="http://images2015.cnblogs.com/blog/595137/201705/595137-20170505161500226-1848968693.png" alt="ImageMagick入门旋转效果对比"></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>1.<a href="http://www.imagemagick.org" target="_blank" rel="noopener">ImageMagick官网</a></li>
+<li>2.<a href="http://www.imagemagick.org/script/index.php#features" target="_blank" rel="noopener">ImageMagick支持的图片处理操作列表</a></li>
+<li>3.<a href="http://co63oc.blog.51cto.com/904636/328997/" target="_blank" rel="noopener">选择ImageMagick还是GraphicMagick</a></li>
+</ul>
+<h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><p><code>Java 图片处理</code> <code>Java 图片处理解决方案</code> <code>Java 图片加水印</code> <code>Java 图片圆角</code> <code>Java 图片裁切</code> <code>Java 图片等比缩小</code> <code>ImageMagick GraphicsMagick 区别</code> <code>ImageMagick 旋转</code></p>
+<!-- 
+
+- ![ImageMagick常用操作](http://www.360doc.com/content/14/1119/14/11029609_426407658.shtml)
+- ![ImageMagick与GraphicMagick对比](http://co63oc.blog.51cto.com/904636/328997/)
+- 其他解决方案：`Java Graphic`、`Thumbnailator`、`ImageMagick/GraphicsMagick`
+- Thumbnailator：http://www.cnblogs.com/fomeiherz/p/5882643.html
+
+-->
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/11/java_basic/deep_insight_java_dynamic_proxy/" rel="next" title="Java动态代理：一个面包店的动态代理帝国">
+                <i class="fa fa-chevron-left"></i> Java动态代理：一个面包店的动态代理帝国
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/11/java_combat/how-loadbalance-works/" rel="prev" title="亿级PV请求的三种负载均衡技术">
+                亿级PV请求的三种负载均衡技术 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">97</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ImageMagick介绍"><span class="nav-number">1.</span> <span class="nav-text">ImageMagick介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ImageMagick快速入门"><span class="nav-number">2.</span> <span class="nav-text">ImageMagick快速入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装ImageMagick"><span class="nav-number">2.1.</span> <span class="nav-text">安装ImageMagick</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置环境变量"><span class="nav-number">2.2.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用ImageMagick实现旋转"><span class="nav-number">2.3.</span> <span class="nav-text">使用ImageMagick实现旋转</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Java中使用ImageMagick"><span class="nav-number">3.</span> <span class="nav-text">在Java中使用ImageMagick</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引入依赖"><span class="nav-number">3.1.</span> <span class="nav-text">引入依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用IM4Java实现旋转"><span class="nav-number">3.2.</span> <span class="nav-text">调用IM4Java实现旋转</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词"><span class="nav-number">5.</span> <span class="nav-text">关键词</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

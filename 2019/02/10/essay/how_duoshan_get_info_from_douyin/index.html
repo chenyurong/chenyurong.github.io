@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="抖音,多闪," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一周前，多闪、马桶 MT 和聊天宝三款社交 App 同一天上线，被社交媒体渲染成「三英打战吕布」。但在这三款产品中，只有头条的「多闪」是稍有发展前景的，因为其有「抖音」的用户基础作为支撑。  正如多闪的产品经理所说：多闪是短视频+社交的结合。所以多闪在一开始势必会通过抖音导入数据，那么作为技术人的我会关心这样一个问题：多闪如何从抖音获取用户数据？ 有些技术朋友可能会说：这个问题有什么好讨论的呢，不">
+<meta name="keywords" content="抖音,多闪">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为抖音而生的多闪，如何获取抖音的用户数据？">
+<meta property="og:url" content="http://yoursite.com/2019/02/10/essay/how_duoshan_get_info_from_douyin/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="一周前，多闪、马桶 MT 和聊天宝三款社交 App 同一天上线，被社交媒体渲染成「三英打战吕布」。但在这三款产品中，只有头条的「多闪」是稍有发展前景的，因为其有「抖音」的用户基础作为支撑。  正如多闪的产品经理所说：多闪是短视频+社交的结合。所以多闪在一开始势必会通过抖音导入数据，那么作为技术人的我会关心这样一个问题：多闪如何从抖音获取用户数据？ 有些技术朋友可能会说：这个问题有什么好讨论的呢，不">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128092530641-1393604683.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128092612627-1161142288.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128092646631-1818307516.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128092703711-224677412.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128092752670-2077137471.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128092913656-726929217.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128092940620-1375932304.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128093013617-288407359.png">
+<meta property="og:updated_time" content="2019-02-10T08:42:41.050Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为抖音而生的多闪，如何获取抖音的用户数据？">
+<meta name="twitter:description" content="一周前，多闪、马桶 MT 和聊天宝三款社交 App 同一天上线，被社交媒体渲染成「三英打战吕布」。但在这三款产品中，只有头条的「多闪」是稍有发展前景的，因为其有「抖音」的用户基础作为支撑。  正如多闪的产品经理所说：多闪是短视频+社交的结合。所以多闪在一开始势必会通过抖音导入数据，那么作为技术人的我会关心这样一个问题：多闪如何从抖音获取用户数据？ 有些技术朋友可能会说：这个问题有什么好讨论的呢，不">
+<meta name="twitter:image" content="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128092530641-1393604683.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/10/essay/how_duoshan_get_info_from_douyin/"/>
+
+
+
+
+
+  <title>为抖音而生的多闪，如何获取抖音的用户数据？ | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/10/essay/how_duoshan_get_info_from_douyin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">为抖音而生的多闪，如何获取抖音的用户数据？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-10T16:42:21+08:00">
+                2019-02-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/生活随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">生活随笔</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/02/10/essay/how_duoshan_get_info_from_douyin/" class="leancloud_visitors" data-flag-title="为抖音而生的多闪，如何获取抖音的用户数据？">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>一周前，多闪、马桶 MT 和聊天宝三款社交 App 同一天上线，被社交媒体渲染成「三英打战吕布」。但在这三款产品中，只有头条的「多闪」是稍有发展前景的，因为其有「抖音」的用户基础作为支撑。</p>
+<p><img src="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128092530641-1393604683.png" alt=""></p>
+<p>正如多闪的产品经理所说：多闪是短视频+社交的结合。所以多闪在一开始势必会通过抖音导入数据，那么作为技术人的我会关心这样一个问题：多闪如何从抖音获取用户数据？</p>
+<p>有些技术朋友可能会说：这个问题有什么好讨论的呢，不就直接通过 RPC 直接调用么。毕竟是一家公司的，何必计较那么多呢。但作为一个工作多年的老鸟，我想说：事情肯定没那么简单！</p>
+<p>其实对于小公司而言，为了快速上线，我们可以直接在内网通过 RPC 调用的方式直接获取用户信息。但对于到了一定体量的公司而言，其实他们会通过另一种方式来实现，那就是——开放平台。</p>
+<h2 id="什么是开放平台？"><a href="#什么是开放平台？" class="headerlink" title="什么是开放平台？"></a>什么是开放平台？</h2><p>简单地说，开放平台就是把我的接口开放给第三方，第三方通过调用接口获得相应的数据。在我们讨论的这个话题里面，抖音可以通过开放平台将用户信息分享给多闪。</p>
+<p>说起开放平台，其实他存在已经很久了。远在 2005 年的时候，随着 web 2.0 技术的快速发展，硅谷掀起了开放平台的一股热潮。Google 带头开放了 map api，随后 Twitter 也推出了开放平台，一堆基于 Twitter 的页游火了起来。而在中国，QQ 开放平台的推出让开心网和 QQ 空间偷菜火爆了全中国。而在更近的时间里，微信、支付宝等移动支付公司也推出了开放平台，各种基于移动支付的需求被满足了，这让我们的生活变得更加便利。</p>
+<p>所以开放平台其实是一种数据开放能力。腾讯公司将自己积累了十几年的社交用户数据开放出去，使得第三方页游公司免去了长时间的用户积累，得以快速发展。支付宝将支付能力开放出去，使得一个小公司也能在其 App 上使用移动支付，打造生态闭环。</p>
+<h2 id="为什么要建开放平台？"><a href="#为什么要建开放平台？" class="headerlink" title="为什么要建开放平台？"></a>为什么要建开放平台？</h2><p>看到这里，许多人会很疑惑：开放平台貌似只对使用者有用，那对于腾讯、支付宝而言，做这些事情有什么好处呢？其实对于腾讯而言，其宝贵的社交用户信息可以通过开放接口分享给其投资的公司。而支付宝通过其支付能力的输出可以赚取佣金，不同的接入方式会有不同的收费标准。</p>
+<p> <img src="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128092612627-1161142288.png" alt=""></p>
+<p>图为支付宝手机网站支付费率</p>
+<p>但是对于大多数公司而言，他们的数据或者技术能力没有腾讯和支付宝那么强大。那么对于他们而言，开放平台的意义就在于数据互通。例如对于想要深耕智能家具行业的科技公司来说，它不仅仅需要做好前端商城的售卖，还需要把控好整个家具制造供应链。那么对于他们而言，建开放平台就可以把这些数据打通，形成一个生态。</p>
+<h2 id="如何建开放平台？"><a href="#如何建开放平台？" class="headerlink" title="如何建开放平台？"></a>如何建开放平台？</h2><p>一般来说，一个功能完整的开放平台架构如下：</p>
+<p><img src="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128092646631-1818307516.png" alt=""></p>
+<p>其中包括了几个重要的模块：</p>
+<ul>
+<li>服务接入网关。</li>
+<li>开放平台服务后台。</li>
+<li>开发者门户。</li>
+<li>开发者管理后台。</li>
+</ul>
+<h3 id="服务接入网关"><a href="#服务接入网关" class="headerlink" title="服务接入网关"></a>服务接入网关</h3><p>服务接入网关可以说是整个开放平台最为重要的一部分了。在服务接入网关里，其将会对来自第三方的请求做权限校验、流量控制、并发控制等操作。这一切的目的都是为了让第三方合法、合理地使用开放接口，具体的细节就不深入介绍了。</p>
+<h3 id="开放平台服务后台"><a href="#开放平台服务后台" class="headerlink" title="开放平台服务后台"></a>开放平台服务后台</h3><p>开放平台服务后台负责对内部的服务进行组合，以让开放接口方便第三方的调用。举个简单的例子：第三方需要查询淘宝用户的某个订单的信息，但我们知道现在订单信息中不仅包含基础的订单信息，还包含了简单的物流信息。</p>
+<p>虽然淘宝开放平台可以让第三方分两次查询信息，再让第三方自己组合起来，但更好的方式是淘宝开放平台自己就把这些信息组装起来。而我们这里所说的开放平台服务后台做的就是这样的事情，它将一些服务进行组装修改以方便外部第三方的使用，有时也会过滤掉一些敏感的数据等。</p>
+<h3 id="开发者门户"><a href="#开发者门户" class="headerlink" title="开发者门户"></a>开发者门户</h3><p>开发者门户是第三方与开放平台交互的重要方式。通过开发者门户，第三方注册成为开发者，获得访问接口的权限。此外，开放平台也会将如何接入开放平台，开放平台的 API 文档等信息放在开发者门户，方便开发者接入。</p>
+<p><img src="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128092703711-224677412.png" alt=""></p>
+<p>淘宝开放平台</p>
+<h3 id="开发者管理后台"><a href="#开发者管理后台" class="headerlink" title="开发者管理后台"></a>开发者管理后台</h3><p>开发者管理后台是管理开放平台的重要方式。通过管理后台，管理员可以审批开发者的申请，审批开发者的接口访问权限，限制某个 API 的访问频次等。</p>
+<h2 id="抖音开放平台？"><a href="#抖音开放平台？" class="headerlink" title="抖音开放平台？"></a>抖音开放平台？</h2><p>说了这么多，虽然听着好像很有道理，但抖音真的有开放平台么？答案是：真的有！直接 Google 搜索「抖音开放平台」会出现下面的结果。</p>
+<p><img src="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128092752670-2077137471.png" alt=""></p>
+<p>可以看到第二条信息就是「抖音开放平台」，打开会看到这确实是抖音的开放平台呀！</p>
+<p> <img src="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128092913656-726929217.png" alt=""></p>
+<p>打开「技术文档」看一看，可以看到其详细的接入指引。</p>
+<p><img src="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128092940620-1375932304.png" alt=""></p>
+<p>目前抖音对外的开放平台并没有太多的接口可以调用，但可以猜测其内部应该开放了不少接口。我想在不久的将来，抖音应该会开放更多的接口，让更多开发者在抖音的生态下创造出更多有意思的玩意儿。</p>
+<p><img src="https://img2018.cnblogs.com/blog/595137/201901/595137-20190128093013617-288407359.png" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/抖音/" rel="tag"># 抖音</a>
+          
+            <a href="/tags/多闪/" rel="tag"># 多闪</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/10/reading/after_reading_the_survivor/" rel="next" title="读完《未来世界的幸存者》，我越来越悲观">
+                <i class="fa fa-chevron-left"></i> 读完《未来世界的幸存者》，我越来越悲观
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/10/essay/how_to_combat_with_evil_boss/" rel="prev" title="写给程序员的裁员防身指南">
+                写给程序员的裁员防身指南 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">97</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是开放平台？"><span class="nav-number">1.</span> <span class="nav-text">什么是开放平台？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要建开放平台？"><span class="nav-number">2.</span> <span class="nav-text">为什么要建开放平台？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何建开放平台？"><span class="nav-number">3.</span> <span class="nav-text">如何建开放平台？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#服务接入网关"><span class="nav-number">3.1.</span> <span class="nav-text">服务接入网关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开放平台服务后台"><span class="nav-number">3.2.</span> <span class="nav-text">开放平台服务后台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发者门户"><span class="nav-number">3.3.</span> <span class="nav-text">开发者门户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发者管理后台"><span class="nav-number">3.4.</span> <span class="nav-text">开发者管理后台</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抖音开放平台？"><span class="nav-number">4.</span> <span class="nav-text">抖音开放平台？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
