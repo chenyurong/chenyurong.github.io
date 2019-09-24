@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="ScheduledThreadPoolExecutor简介在executors框架概述一节中，我们曾经提到过一种可对任务进行延迟/周期性调度的执行器（Executor），这类Executor一般实现了ScheduledExecutorService这个接口。ScheduledExecutorService在普通执行器接口（ExecutorService）的基础上引入了Future模式，使得可以限时">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="J.U.C 线程池（三）：ScheduledThreadPoolExecutor">
+<meta property="og:url" content="http://yoursite.com/2019/09/24/java_thred_pool/java_thread_pool_03_scheduled_thread_pool_executor/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="ScheduledThreadPoolExecutor简介在executors框架概述一节中，我们曾经提到过一种可对任务进行延迟/周期性调度的执行器（Executor），这类Executor一般实现了ScheduledExecutorService这个接口。ScheduledExecutorService在普通执行器接口（ExecutorService）的基础上引入了Future模式，使得可以限时">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15536944067813.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15536944269390.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15536945961650.jpg">
+<meta property="og:updated_time" content="2019-09-24T09:25:22.881Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="J.U.C 线程池（三）：ScheduledThreadPoolExecutor">
+<meta name="twitter:description" content="ScheduledThreadPoolExecutor简介在executors框架概述一节中，我们曾经提到过一种可对任务进行延迟/周期性调度的执行器（Executor），这类Executor一般实现了ScheduledExecutorService这个接口。ScheduledExecutorService在普通执行器接口（ExecutorService）的基础上引入了Future模式，使得可以限时">
+<meta name="twitter:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15536944067813.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/24/java_thred_pool/java_thread_pool_03_scheduled_thread_pool_executor/"/>
+
+
+
+
+
+  <title>J.U.C 线程池（三）：ScheduledThreadPoolExecutor | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/24/java_thred_pool/java_thread_pool_03_scheduled_thread_pool_executor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">J.U.C 线程池（三）：ScheduledThreadPoolExecutor</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-24T17:24:42+08:00">
+                2019-09-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/线程池系列/" itemprop="url" rel="index">
+                    <span itemprop="name">线程池系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/09/24/java_thred_pool/java_thread_pool_03_scheduled_thread_pool_executor/" class="leancloud_visitors" data-flag-title="J.U.C 线程池（三）：ScheduledThreadPoolExecutor">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="ScheduledThreadPoolExecutor简介"><a href="#ScheduledThreadPoolExecutor简介" class="headerlink" title="ScheduledThreadPoolExecutor简介"></a>ScheduledThreadPoolExecutor简介</h2><p>在executors框架概述一节中，我们曾经提到过一种可对任务进行延迟/周期性调度的执行器（Executor），这类Executor一般实现了ScheduledExecutorService这个接口。ScheduledExecutorService在普通执行器接口（ExecutorService）的基础上引入了Future模式，使得可以限时或周期性地调度任务。</p>
+<p>ScheduledThreadPoolExecutor的类继承关系如下图，该图中除了本节要讲解的ScheduledThreadPoolExecutor外，其它部分已经在前2节详细介绍过了：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15536944067813.jpg" alt=""></p>
+<p>从上图中可以看到，ScheduledThreadPoolExecutor其实是继承了ThreadPoolExecutor这个普通线程池，我们知道ThreadPoolExecutor中提交的任务都是实现了Runnable接口，但是ScheduledThreadPoolExecutor比较特殊，由于要满足任务的延迟/周期调度功能，它会对所有的Runnable任务都进行包装，包装成一个RunnableScheduledFuture任务。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15536944269390.jpg" alt=""></p>
+<blockquote>
+<p>RunnableScheduledFuture是Future模式中的一个接口，关于Future模式，我们后续会专门章节讲解，这里只要知道RunnableScheduledFuture的作用就是可以异步地执行【延时/周期任务】。</p>
+</blockquote>
+<p>另外，我们知道在ThreadPoolExecutor中，需要指定一个阻塞队列作为任务队列。ScheduledThreadPoolExecutor中也一样，不过特殊的是，ScheduledThreadPoolExecutor中的任务队列是一种特殊的延时队列（DelayQueue）。</p>
+<p>我们曾经在juc-collections框架中，分析过该种阻塞队列，DelayQueue底层基于优先队列（PriorityQueue）实现，是一种“堆”结构，通过该种阻塞队列可以实现任务的延迟到期执行（即每次从队列获取的任务都是最先到期的任务）。</p>
+<p>ScheduledThreadPoolExecutor在内部定义了DelayQueue的变种——DelayedWorkQueue，它和DelayQueue类似，只不过要求所有入队元素必须实现RunnableScheduledFuture接口。</p>
+<h2 id="ScheduledThreadPoolExecutor基本原理"><a href="#ScheduledThreadPoolExecutor基本原理" class="headerlink" title="ScheduledThreadPoolExecutor基本原理"></a>ScheduledThreadPoolExecutor基本原理</h2><h3 id="构造线程池"><a href="#构造线程池" class="headerlink" title="构造线程池"></a>构造线程池</h3><p>我们先来看下ScheduledThreadPoolExecutor的构造，其实在executors框架概述中讲Executors时已经接触过了，Executors使用newScheduledThreadPool工厂方法创建ScheduledThreadPoolExecutor：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize) &#123;</span><br><span class="line">    return new ScheduledThreadPoolExecutor(corePoolSize);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize, ThreadFactory threadFactory) &#123;</span><br><span class="line">    return new ScheduledThreadPoolExecutor(corePoolSize, threadFactory);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们来看下ScheduledThreadPoolExecutor的构造器，内部其实都是调用了父类ThreadPoolExecutor的构造器，这里最需要注意的就是任务队列的选择——DelayedWorkQueue，我们后面会详细介绍它的实现原理。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public ScheduledThreadPoolExecutor(int corePoolSize) &#123;</span><br><span class="line">    super(corePoolSize, Integer.MAX_VALUE, 0, NANOSECONDS, new DelayedWorkQueue());</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">public ScheduledThreadPoolExecutor(int corePoolSize, ThreadFactory threadFactory) &#123;</span><br><span class="line">    super(corePoolSize, Integer.MAX_VALUE, 0, NANOSECONDS, new DelayedWorkQueue(), threadFactory);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">public ScheduledThreadPoolExecutor(int corePoolSize, RejectedExecutionHandler handler) &#123;</span><br><span class="line">    super(corePoolSize, Integer.MAX_VALUE, 0, NANOSECONDS, new DelayedWorkQueue(), handler);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">public ScheduledThreadPoolExecutor(int corePoolSize, ThreadFactory threadFactory, RejectedExecutionHandler handler) &#123;</span><br><span class="line">    super(corePoolSize, Integer.MAX_VALUE, 0, NANOSECONDS, new DelayedWorkQueue(), threadFactory, handler);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="线程池的调度"><a href="#线程池的调度" class="headerlink" title="线程池的调度"></a>线程池的调度</h3><p>ScheduledThreadPoolExecutor的核心调度方法是schedule、scheduleAtFixedRate、scheduleWithFixedDelay，我们通过schedule方法来看下整个调度流程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public ScheduledFuture&lt;?&gt; schedule(Runnable command, long delay, TimeUnit unit) &#123;</span><br><span class="line">    if (command == null || unit == null)</span><br><span class="line">        throw new NullPointerException();</span><br><span class="line">    RunnableScheduledFuture&lt;?&gt; t = decorateTask(command, new ScheduledFutureTask&lt;Void&gt;(command, null,</span><br><span class="line">            triggerTime(delay, unit)));</span><br><span class="line">    delayedExecute(t);</span><br><span class="line">    return t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述的decorateTask方法把Runnable任务包装成ScheduledFutureTask，用户可以根据自己的需要覆写该方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">protected &lt;V&gt; RunnableScheduledFuture&lt;V&gt; decorateTask(Runnable runnable, RunnableScheduledFuture&lt;V&gt; task) &#123;</span><br><span class="line">    return task;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：ScheduledFutureTask是RunnableScheduledFuture接口的实现类，任务通过period字段来表示任务类型</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">private class ScheduledFutureTask&lt;V&gt; extends FutureTask&lt;V&gt; implements RunnableScheduledFuture&lt;V&gt; &#123;</span><br><span class="line"> </span><br><span class="line">    /**</span><br><span class="line">     * 任务序号, 自增唯一</span><br><span class="line">     */</span><br><span class="line">    private final long sequenceNumber;</span><br><span class="line"> </span><br><span class="line">    /**</span><br><span class="line">     * 首次执行的时间点</span><br><span class="line">     */</span><br><span class="line">    private long time;</span><br><span class="line"> </span><br><span class="line">    /**</span><br><span class="line">     * 0: 非周期任务</span><br><span class="line">     * &gt;0: fixed-rate任务</span><br><span class="line">     * &lt;0: fixed-delay任务</span><br><span class="line">     */</span><br><span class="line">    private final long period;</span><br><span class="line"> </span><br><span class="line">    /**</span><br><span class="line">     * 在堆中的索引</span><br><span class="line">     */</span><br><span class="line">    int heapIndex;</span><br><span class="line"> </span><br><span class="line">    ScheduledFutureTask(Runnable r, V result, long ns) &#123;</span><br><span class="line">        super(r, result);</span><br><span class="line">        this.time = ns;</span><br><span class="line">        this.period = 0;</span><br><span class="line">        this.sequenceNumber = sequencer.getAndIncrement();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>ScheduledThreadPoolExecutor中的任务队列——DelayedWorkQueue，保存的元素就是ScheduledFutureTask。DelayedWorkQueue是一种堆结构，time最小的任务会排在堆顶（表示最早过期），每次出队都是取堆顶元素，这样最快到期的任务就会被先执行。如果两个ScheduledFutureTask的time相同，就比较它们的序号——sequenceNumber，序号小的代表先被提交，所以就会先执行。</p>
+</blockquote>
+<p>schedule的核心是其中的delayedExecute方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">private void delayedExecute(RunnableScheduledFuture&lt;?&gt; task) &#123;</span><br><span class="line">    if (isShutdown())   // 线程池已关闭</span><br><span class="line">        reject(task);   // 任务拒绝策略</span><br><span class="line">    else &#123;</span><br><span class="line">        super.getQueue().add(task);                 // 将任务入队</span><br><span class="line"> </span><br><span class="line">        // 如果线程池已关闭且该任务是非周期任务, 则将其从队列移除</span><br><span class="line">        if (isShutdown() &amp;&amp; !canRunInCurrentRunState(task.isPeriodic()) &amp;&amp; remove(task))</span><br><span class="line">            task.cancel(false);  // 取消任务</span><br><span class="line">        else</span><br><span class="line">            ensurePrestart();   // 添加一个工作线程</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过delayedExecute可以看出，ScheduledThreadPoolExecutor的整个任务调度流程大致如下图：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15536945961650.jpg" alt=""></p>
+<p>我们来分析这个过程：</p>
+<ol>
+<li>首先，任务被提交到线程池后，会判断线程池的状态，如果不是RUNNING状态会执行拒绝策略。</li>
+<li>然后，将任务添加到阻塞队列中。（注意，由于DelayedWorkQueue是无界队列，所以一定会add成功）</li>
+<li>然后，会创建一个工作线程，加入到核心线程池或者非核心线程池：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">void ensurePrestart() &#123;</span><br><span class="line">    int wc = workerCountOf(ctl.get());</span><br><span class="line">    if (wc &lt; corePoolSize)</span><br><span class="line">        addWorker(null, true);</span><br><span class="line">    else if (wc == 0)</span><br><span class="line">        addWorker(null, false);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过ensurePrestart可以看到，如果核心线程池未满，则新建的工作线程会被放到核心线程池中。如果核心线程池已经满了，ScheduledThreadPoolExecutor不会像ThreadPoolExecutor那样再去创建归属于非核心线程池的工作线程，而是直接返回。也就是说，在ScheduledThreadPoolExecutor中，一旦核心线程池满了，就不会再去创建工作线程。</p>
+<blockquote>
+<p>这里思考一点，什么时候会执行else if (wc == 0)创建一个归属于非核心线程池的工作线程？答案是：当通过setCorePoolSize方法设置核心线程池大小为0时，这里必须要保证任务能够被执行，所以会创建一个工作线程，放到非核心线程池中。</p>
+</blockquote>
+<p>最后，线程池中的工作线程会去任务队列获取任务并执行，当任务被执行完成后，如果该任务是周期任务，则会重置time字段，并重新插入队列中，等待下次执行。这里注意从队列中获取元素的方法：</p>
+<ul>
+<li>对于核心线程池中的工作线程来说，如果没有超时设置（allowCoreThreadTimeOut == false），则会使用阻塞方法take获取任务（因为没有超时限制，所以会一直等待直到队列中有任务）；如果设置了超时，则会使用poll方法（方法入参需要超时时间），超时还没拿到任务的话，该工作线程就会被回收。</li>
+<li>对于非工作线程来说，都是调用poll获取队列元素，超时取不到任务就会被回收。</li>
+</ul>
+<p>上述就是ScheduledThreadPoolExecutor的核心调度流程，通过我们的分析可以看出，相比ThreadPoolExecutor，ScheduledThreadPoolExecutor主要有以下几点不同：</p>
+<ol>
+<li>总体的调度控制流程略有区别；</li>
+<li>任务的执行方式有所区别；</li>
+<li>任务队列的选择不同。</li>
+</ol>
+<p>最后，我们来看下ScheduledThreadPoolExecutor中的延时队列——DelayedWorkQueue。</p>
+<h3 id="延时队列"><a href="#延时队列" class="headerlink" title="延时队列"></a>延时队列</h3><p>DelayedWorkQueue，该队列和已经介绍过的DelayQueue区别不大，只不过队列元素是RunnableScheduledFuture：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">static class DelayedWorkQueue extends AbstractQueue&lt;Runnable&gt; implements BlockingQueue&lt;Runnable&gt; &#123;</span><br><span class="line">    private static final int INITIAL_CAPACITY = 16;</span><br><span class="line">    private RunnableScheduledFuture&lt;?&gt;[] queue = new RunnableScheduledFuture&lt;?&gt;[INITIAL_CAPACITY];</span><br><span class="line">    private int size = 0;</span><br><span class="line"> </span><br><span class="line">    private final ReentrantLock lock = new ReentrantLock();</span><br><span class="line">    private final Condition available = lock.newCondition();</span><br><span class="line"> </span><br><span class="line">    private Thread leader = null;</span><br><span class="line"> </span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>DelayedWorkQueue是一个无界队列，在队列元素满了以后会自动扩容，它并没有像DelayQueue那样，将队列操作委托给PriorityQueue，而是自己重新实现了一遍堆的核心操作——上浮、下沉。我这里不再赘述这些堆操作，读者可以参考PriorityBlockingQueue自行阅读源码。</p>
+<p>我们关键来看下add、take、poll这三个队列方法，因为ScheduledThreadPoolExecutor的核心调度流程中使用到了这三个方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public boolean add(Runnable e) &#123;</span><br><span class="line">    return offer(e);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">public boolean offer(Runnable e, long timeout, TimeUnit unit) &#123;</span><br><span class="line">    return offer(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>add、offer内部都调用了下面这个方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public boolean offer(Runnable x) &#123;</span><br><span class="line">    if (x == null)</span><br><span class="line">        throw new NullPointerException();</span><br><span class="line">    </span><br><span class="line">    RunnableScheduledFuture&lt;?&gt; e = (RunnableScheduledFuture&lt;?&gt;) x;</span><br><span class="line">    final ReentrantLock lock = this.lock;</span><br><span class="line">    lock.lock();</span><br><span class="line">    try &#123;</span><br><span class="line">        int i = size;           // 队列已满, 扩容</span><br><span class="line">        if (i &gt;= queue.length)</span><br><span class="line">            grow();</span><br><span class="line">        size = i + 1;</span><br><span class="line">        if (i == 0) &#123;</span><br><span class="line">            queue[0] = e;</span><br><span class="line">            setIndex(e, 0);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            siftUp(i, e);       // 堆上浮操作</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        if (queue[0] == e) &#123;    // 当前元素是首个元素</span><br><span class="line">            leader = null;</span><br><span class="line">            available.signal(); // 唤醒一个等待线程</span><br><span class="line">        &#125;   </span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>take方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">public RunnableScheduledFuture&lt;?&gt; take() throws InterruptedException &#123;</span><br><span class="line">    final ReentrantLock lock = this.lock;</span><br><span class="line">    lock.lockInterruptibly();</span><br><span class="line">    try &#123;</span><br><span class="line">        for (; ; ) &#123;</span><br><span class="line">            RunnableScheduledFuture&lt;?&gt; first = queue[0];</span><br><span class="line">            if (first == null)          // 队列为空</span><br><span class="line">                available.await();      // 等待元素入队</span><br><span class="line">            else &#123;</span><br><span class="line">                long delay = first.getDelay(NANOSECONDS);</span><br><span class="line">                if (delay &lt;= 0)         // 元素已到期</span><br><span class="line">                    return finishPoll(first);</span><br><span class="line"> </span><br><span class="line">                // 执行到此处, 说明队首元素还未到期</span><br><span class="line">                first = null;</span><br><span class="line">                if (leader != null)</span><br><span class="line">                    available.await();</span><br><span class="line">                else &#123;</span><br><span class="line">                    // 当前线程成功leader线程</span><br><span class="line">                    Thread thisThread = Thread.currentThread();</span><br><span class="line">                    leader = thisThread;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        available.awaitNanos(delay);</span><br><span class="line">                    &#125; finally &#123;</span><br><span class="line">                        if (leader == thisThread)</span><br><span class="line">                            leader = null;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        if (leader == null &amp;&amp; queue[0] != null)</span><br><span class="line">            available.signal();</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意：上述leader表示一个等待获取队首元素的出队线程，这是一种称为“Leader-Follower pattern”的多线程设计模式（读者可以参考DelayQueue中的讲解）。</p>
+<blockquote>
+<p>每次出队元素时，如果队列为空或者队首元素还未到期，线程就会在condition条件队列等待。一般的思路是无限等待，直到出现一个入队线程，入队元素后将一个出队线程唤醒。<br>为了提升性能，当队列非空时，用leader保存第一个到来并尝试出队的线程，并设置它的等待时间为队首元素的剩余期限，这样当元素过期后，线程也就自己唤醒了，不需要入队线程唤醒。这样做的好处就是提升一些性能。</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本节介绍了ScheduledThreadPoolExecutor，它是对普通线程池ThreadPoolExecutor的扩展，增加了延时调度、周期调度任务的功能。概括下ScheduledThreadPoolExecutor的主要特点：</p>
+<ol>
+<li>对Runnable任务进行包装，封装成ScheduledFutureTask，该类任务支持任务的周期执行、延迟执行；</li>
+<li>采用DelayedWorkQueue作为任务队列。该队列是无界队列，所以任务一定能添加成功，但是当工作线程尝试从队列取任务执行时，只有最先到期的任务会出队，如果没有任务或者队首任务未到期，则工作线程会阻塞；</li>
+<li>ScheduledThreadPoolExecutor的任务调度流程与ThreadPoolExecutor略有区别，最大的区别就是，先往队列添加任务，然后创建工作线程执行任务。</li>
+</ol>
+<p>另外，maximumPoolSize这个参数对ScheduledThreadPoolExecutor其实并没有作用，因为除非把corePoolSize设置为0，这种情况下ScheduledThreadPoolExecutor只会创建一个属于非核心线程池的工作线程；否则，ScheduledThreadPoolExecutor只会新建归属于核心线程池的工作线程，一旦核心线程池满了，就不再新建工作线程。</p>
+<p>转载自：<a href="https://segmentfault.com/a/1190000016672638" target="_blank" rel="noopener">https://segmentfault.com/a/1190000016672638</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/24/java_thred_pool/java_thread_pool_02_thread_pool_executor/" rel="next" title="J.U.C 线程池（二）：ThreadPoolExecutor">
+                <i class="fa fa-chevron-left"></i> J.U.C 线程池（二）：ThreadPoolExecutor
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/24/java_thred_pool/java_thread_pool_04_future/" rel="prev" title="J.U.C 线程池（四）：线程池Future体系">
+                J.U.C 线程池（四）：线程池Future体系 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">103</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ScheduledThreadPoolExecutor简介"><span class="nav-number">1.</span> <span class="nav-text">ScheduledThreadPoolExecutor简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ScheduledThreadPoolExecutor基本原理"><span class="nav-number">2.</span> <span class="nav-text">ScheduledThreadPoolExecutor基本原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构造线程池"><span class="nav-number">2.1.</span> <span class="nav-text">构造线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程池的调度"><span class="nav-number">2.2.</span> <span class="nav-text">线程池的调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#延时队列"><span class="nav-number">2.3.</span> <span class="nav-text">延时队列</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

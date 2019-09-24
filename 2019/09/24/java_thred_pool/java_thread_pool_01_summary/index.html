@@ -79,22 +79,22 @@
 
 
 
-<meta name="description" content="J.U.C 线程池（一）：Executors 框架概述executors框架简介juc-executors 框架是整个J.U.C包中类/接口关系最复杂的框架，真正理解executors框架的前提是理清楚各个模块之间的关系，高屋建瓴，从整体到局部才能透彻理解其中各个模块的功能和背后的设计思路。 网上有太多文章讲executors框架，要么泛泛而谈，要么一叶障目不见泰山，缺乏整体视角，很多根本没有理解">
+<meta name="description" content="executors框架简介juc-executors 框架是整个J.U.C包中类/接口关系最复杂的框架，真正理解executors框架的前提是理清楚各个模块之间的关系，高屋建瓴，从整体到局部才能透彻理解其中各个模块的功能和背后的设计思路。 网上有太多文章讲executors框架，要么泛泛而谈，要么一叶障目不见泰山，缺乏整体视角，很多根本没有理解整个框架的设计思想和模块关系。本文将对整个execut">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="J.U.C 线程池（一）：Executors 框架概述">
 <meta property="og:url" content="http://yoursite.com/2019/09/24/java_thred_pool/java_thread_pool_01_summary/index.html">
 <meta property="og:site_name" content="陈树义">
-<meta property="og:description" content="J.U.C 线程池（一）：Executors 框架概述executors框架简介juc-executors 框架是整个J.U.C包中类/接口关系最复杂的框架，真正理解executors框架的前提是理清楚各个模块之间的关系，高屋建瓴，从整体到局部才能透彻理解其中各个模块的功能和背后的设计思路。 网上有太多文章讲executors框架，要么泛泛而谈，要么一叶障目不见泰山，缺乏整体视角，很多根本没有理解">
+<meta property="og:description" content="executors框架简介juc-executors 框架是整个J.U.C包中类/接口关系最复杂的框架，真正理解executors框架的前提是理清楚各个模块之间的关系，高屋建瓴，从整体到局部才能透彻理解其中各个模块的功能和背后的设计思路。 网上有太多文章讲executors框架，要么泛泛而谈，要么一叶障目不见泰山，缺乏整体视角，很多根本没有理解整个框架的设计思想和模块关系。本文将对整个execut">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15535852527779.jpg">
 <meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15535854249273.jpg">
 <meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15535854938748.jpg">
 <meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15535864645261.jpg">
-<meta property="og:updated_time" content="2019-09-24T09:18:38.792Z">
+<meta property="og:updated_time" content="2019-09-24T09:25:45.826Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="J.U.C 线程池（一）：Executors 框架概述">
-<meta name="twitter:description" content="J.U.C 线程池（一）：Executors 框架概述executors框架简介juc-executors 框架是整个J.U.C包中类/接口关系最复杂的框架，真正理解executors框架的前提是理清楚各个模块之间的关系，高屋建瓴，从整体到局部才能透彻理解其中各个模块的功能和背后的设计思路。 网上有太多文章讲executors框架，要么泛泛而谈，要么一叶障目不见泰山，缺乏整体视角，很多根本没有理解">
+<meta name="twitter:description" content="executors框架简介juc-executors 框架是整个J.U.C包中类/接口关系最复杂的框架，真正理解executors框架的前提是理清楚各个模块之间的关系，高屋建瓴，从整体到局部才能透彻理解其中各个模块的功能和背后的设计思路。 网上有太多文章讲executors框架，要么泛泛而谈，要么一叶障目不见泰山，缺乏整体视角，很多根本没有理解整个框架的设计思想和模块关系。本文将对整个execut">
 <meta name="twitter:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15535852527779.jpg">
 
 
@@ -387,7 +387,7 @@
       
 
       
-        <h1 id="J-U-C-线程池（一）：Executors-框架概述"><a href="#J-U-C-线程池（一）：Executors-框架概述" class="headerlink" title="J.U.C 线程池（一）：Executors 框架概述"></a>J.U.C 线程池（一）：Executors 框架概述</h1><h2 id="executors框架简介"><a href="#executors框架简介" class="headerlink" title="executors框架简介"></a>executors框架简介</h2><p>juc-executors 框架是整个J.U.C包中类/接口关系最复杂的框架，真正理解executors框架的前提是理清楚各个模块之间的关系，高屋建瓴，从整体到局部才能透彻理解其中各个模块的功能和背后的设计思路。</p>
+        <h2 id="executors框架简介"><a href="#executors框架简介" class="headerlink" title="executors框架简介"></a>executors框架简介</h2><p>juc-executors 框架是整个J.U.C包中类/接口关系最复杂的框架，真正理解executors框架的前提是理清楚各个模块之间的关系，高屋建瓴，从整体到局部才能透彻理解其中各个模块的功能和背后的设计思路。</p>
 <p>网上有太多文章讲executors框架，要么泛泛而谈，要么一叶障目不见泰山，缺乏整体视角，很多根本没有理解整个框架的设计思想和模块关系。本文将对整个executors框架做综述，介绍各个模块的功能和联系，后续再深入探讨每个模块，包括模块中的各个工具类。</p>
 <h3 id="从Executor谈起"><a href="#从Executor谈起" class="headerlink" title="从Executor谈起"></a>从Executor谈起</h3><p>Executor 是 JDK1.5 时，随着 J.U.C 引入的一个接口，引入该接口的主要目的是解耦任务本身和任务的执行。我们之前通过线程执行一个任务时，往往需要先创建一个线程，然后调用线程的start方法来执行任务：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new Thread(new(RunnableTask())).start();</span><br></pre></td></tr></table></figure>
@@ -540,6 +540,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/09/24/java_thred_pool/java_thread_pool_02_thread_pool_executor/" rel="prev" title="J.U.C 线程池（二）：ThreadPoolExecutor">
+                J.U.C 线程池（二）：ThreadPoolExecutor <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -615,7 +619,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">99</span>
+                  <span class="site-state-item-count">103</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -710,7 +714,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#J-U-C-线程池（一）：Executors-框架概述"><span class="nav-number">1.</span> <span class="nav-text">J.U.C 线程池（一）：Executors 框架概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#executors框架简介"><span class="nav-number">1.1.</span> <span class="nav-text">executors框架简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#从Executor谈起"><span class="nav-number">1.1.1.</span> <span class="nav-text">从Executor谈起</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增强的Executor——ExecutorService"><span class="nav-number">1.1.2.</span> <span class="nav-text">增强的Executor——ExecutorService</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#周期任务的调度——ScheduledExecutorService"><span class="nav-number">1.1.3.</span> <span class="nav-text">周期任务的调度——ScheduledExecutorService</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生产executor的工厂"><span class="nav-number">1.2.</span> <span class="nav-text">生产executor的工厂</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#固定线程数的线程池"><span class="nav-number">1.2.1.</span> <span class="nav-text">固定线程数的线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单个线程的线程池"><span class="nav-number">1.2.2.</span> <span class="nav-text">单个线程的线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可缓存的线程池"><span class="nav-number">1.2.3.</span> <span class="nav-text">可缓存的线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可延时-周期调度的线程池"><span class="nav-number">1.2.4.</span> <span class="nav-text">可延时/周期调度的线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fork-Join线程池"><span class="nav-number">1.2.5.</span> <span class="nav-text">Fork/Join线程池</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#executors框架简介"><span class="nav-number">1.</span> <span class="nav-text">executors框架简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#从Executor谈起"><span class="nav-number">1.1.</span> <span class="nav-text">从Executor谈起</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增强的Executor——ExecutorService"><span class="nav-number">1.2.</span> <span class="nav-text">增强的Executor——ExecutorService</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#周期任务的调度——ScheduledExecutorService"><span class="nav-number">1.3.</span> <span class="nav-text">周期任务的调度——ScheduledExecutorService</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生产executor的工厂"><span class="nav-number">2.</span> <span class="nav-text">生产executor的工厂</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#固定线程数的线程池"><span class="nav-number">2.1.</span> <span class="nav-text">固定线程数的线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单个线程的线程池"><span class="nav-number">2.2.</span> <span class="nav-text">单个线程的线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可缓存的线程池"><span class="nav-number">2.3.</span> <span class="nav-text">可缓存的线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可延时-周期调度的线程池"><span class="nav-number">2.4.</span> <span class="nav-text">可延时/周期调度的线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fork-Join线程池"><span class="nav-number">2.5.</span> <span class="nav-text">Fork/Join线程池</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
