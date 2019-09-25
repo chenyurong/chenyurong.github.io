@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="通过上一篇文章——ConcurrentHashMap原理(1)，相信读者对ConcurrentHashMap的基本原理有了一个初步认识，但是上一篇中还有一个遗留问题没有讨论到，那就是ConcurrentHashMap的扩容和数据迁移。本文中，我们将会对这两个问题进行讨论。 扩容思路JDK1.8中，ConcurrentHashMap最复杂的部分就是扩容/数据迁移，涉及多线程的合作和rehash。我们">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="J.U.C 并发集合（二）：ConcurrentHashMap 扩容">
+<meta property="og:url" content="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_02_concurrent_hash_map_02/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="通过上一篇文章——ConcurrentHashMap原理(1)，相信读者对ConcurrentHashMap的基本原理有了一个初步认识，但是上一篇中还有一个遗留问题没有讨论到，那就是ConcurrentHashMap的扩容和数据迁移。本文中，我们将会对这两个问题进行讨论。 扩容思路JDK1.8中，ConcurrentHashMap最复杂的部分就是扩容/数据迁移，涉及多线程的合作和rehash。我们">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549522493354.jpg">
+<meta property="og:updated_time" content="2019-09-25T00:00:35.933Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="J.U.C 并发集合（二）：ConcurrentHashMap 扩容">
+<meta name="twitter:description" content="通过上一篇文章——ConcurrentHashMap原理(1)，相信读者对ConcurrentHashMap的基本原理有了一个初步认识，但是上一篇中还有一个遗留问题没有讨论到，那就是ConcurrentHashMap的扩容和数据迁移。本文中，我们将会对这两个问题进行讨论。 扩容思路JDK1.8中，ConcurrentHashMap最复杂的部分就是扩容/数据迁移，涉及多线程的合作和rehash。我们">
+<meta name="twitter:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549522493354.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_02_concurrent_hash_map_02/"/>
+
+
+
+
+
+  <title>J.U.C 并发集合（二）：ConcurrentHashMap 扩容 | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_02_concurrent_hash_map_02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">J.U.C 并发集合（二）：ConcurrentHashMap 扩容</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T07:55:44+08:00">
+                2019-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/并发集合系列/" itemprop="url" rel="index">
+                    <span itemprop="name">并发集合系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/09/25/java_concurrent_collection/java_concurrent_collection_02_concurrent_hash_map_02/" class="leancloud_visitors" data-flag-title="J.U.C 并发集合（二）：ConcurrentHashMap 扩容">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>通过上一篇文章——ConcurrentHashMap原理(1)，相信读者对ConcurrentHashMap的基本原理有了一个初步认识，但是上一篇中还有一个遗留问题没有讨论到，那就是ConcurrentHashMap的扩容和数据迁移。本文中，我们将会对这两个问题进行讨论。</p>
+<h2 id="扩容思路"><a href="#扩容思路" class="headerlink" title="扩容思路"></a>扩容思路</h2><p>JDK1.8中，ConcurrentHashMap最复杂的部分就是扩容/数据迁移，涉及多线程的合作和rehash。我们先来考虑下一般情况下，如何对一个Hash表进行扩容。</p>
+<p>Hash表的扩容，一般都包含两个步骤：</p>
+<ol>
+<li>table数组的扩容</li>
+</ol>
+<p>table数组的扩容，一般就是新建一个2倍大小的槽数组，这个过程通过由一个单线程完成，且不允许出现并发。</p>
+<ol>
+<li>数据迁移</li>
+</ol>
+<p>所谓数据迁移，就是把旧table中的各个槽中的结点重新分配到新table中。比如，单线程情况下，可以遍历原来的table，然后put到新table中。</p>
+<p>这一过程通常涉及到槽中key的rehash，因为key映射到桶的位置与table的大小有关，新table的大小变了，key映射的位置一般也会变化。</p>
+<p>ConcurrentHashMap在处理rehash的时候，并不会重新计算每个key的hash值，而是利用了一种很巧妙的方法。我们在上一篇说过，ConcurrentHashMap内部的table数组的大小必须为2的幂次，原因是让key均匀分布，减少冲突，这只是其中一个原因。另一个原因就是：</p>
+<blockquote>
+<p>当table数组的大小为2的幂次时，通过key.hash &amp; table.length-1这种方式计算出的索引i，当table扩容后（2倍），新的索引要么在原来的位置i，要么是i+n。</p>
+</blockquote>
+<p>我们来看个例子：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549522493354.jpg" alt=""></p>
+<p>上图中：<br>扩容前，table数组大小为16，key1和key2映射到同一个索引5；<br>扩容后，table数组的大小变成 2*16=32 ，key1的索引不变，key2的索引变成 5+16=21。</p>
+<p>而且还有一个特点，扩容后key对应的索引如果发生了变化，那么其变化后的索引最高位一定是1（见扩容后key2的最高位）。</p>
+<blockquote>
+<p>这种处理方式非常利于扩容时多个线程同时进行的数据迁移操作，因为旧table的各个桶中的结点迁移不会互相影响，所以就可以用“分治”的方式，将整个table数组划分为很多部分，每一部分包含一定区间的桶，每个数据迁移线程处理各自区间中的结点，对多线程同时进行数据迁移非常有利，后面我们会详细介绍。</p>
+</blockquote>
+<h2 id="扩容时机"><a href="#扩容时机" class="headerlink" title="扩容时机"></a>扩容时机</h2><p>我们再来看下，ConcurrentHashMap何时会发生扩容。</p>
+<p>在上篇文章中，我们提到过，当往Map中插入结点时，如果链表的结点数目超过一定阈值，就会触发链表 -&gt; 红黑树的转换：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if (binCount &gt;= TREEIFY_THRESHOLD)</span><br><span class="line">    treeifyBin(tab, i);             // 链表 -&gt; 红黑树 转换</span><br></pre></td></tr></table></figure>
+<p>现在，我们来分析下treeifyBin这个红黑树化的操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 尝试进行 链表 -&gt; 红黑树 的转换.</span><br><span class="line"> */</span><br><span class="line">private final void treeifyBin(Node&lt;K, V&gt;[] tab, int index) &#123;</span><br><span class="line">    Node&lt;K, V&gt; b;</span><br><span class="line">    int n, sc;</span><br><span class="line">    if (tab != null) &#123;</span><br><span class="line"></span><br><span class="line">        // CASE 1: table的容量 &lt; MIN_TREEIFY_CAPACITY(64)时，直接进行table扩容，不进行红黑树转换</span><br><span class="line">        if ((n = tab.length) &lt; MIN_TREEIFY_CAPACITY)</span><br><span class="line">            tryPresize(n &lt;&lt; 1);</span><br><span class="line"></span><br><span class="line">            // CASE 2: table的容量 ≥ MIN_TREEIFY_CAPACITY(64)时，进行链表 -&gt; 红黑树的转换</span><br><span class="line">        else if ((b = tabAt(tab, index)) != null &amp;&amp; b.hash &gt;= 0) &#123;</span><br><span class="line">            synchronized (b) &#123;</span><br><span class="line">                if (tabAt(tab, index) == b) &#123;</span><br><span class="line">                    TreeNode&lt;K, V&gt; hd = null, tl = null;</span><br><span class="line"></span><br><span class="line">                    // 遍历链表，建立红黑树</span><br><span class="line">                    for (Node&lt;K, V&gt; e = b; e != null; e = e.next) &#123;</span><br><span class="line">                        TreeNode&lt;K, V&gt; p = new TreeNode&lt;K, V&gt;(e.hash, e.key, e.val, null, null);</span><br><span class="line">                        if ((p.prev = tl) == null)</span><br><span class="line">                            hd = p;</span><br><span class="line">                        else</span><br><span class="line">                            tl.next = p;</span><br><span class="line">                        tl = p;</span><br><span class="line">                    &#125;</span><br><span class="line">                    // 以TreeBin类型包装，并链接到table[index]中</span><br><span class="line">                    setTabAt(tab, index, new TreeBin&lt;K, V&gt;(hd));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述第一个分支中，还会再对table数组的长度进行一次判断：<br>如果table长度小于阈值MIN_TREEIFY_CAPACITY——默认64，则会调用tryPresize方法把数组长度扩大到原来的两倍。</p>
+<blockquote>
+<p>从代码也可以看到，链表 -&gt; 红黑树这一转换并不是一定会进行的，table长度较小时，CurrentHashMap会首先选择扩容，而非立即转换成红黑树。</p>
+</blockquote>
+<p>来看下tryPresize方法如何执行扩容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 尝试对table数组进行扩容.</span><br><span class="line"> *</span><br><span class="line"> * @param 待扩容的大小</span><br><span class="line"> */</span><br><span class="line">private final void tryPresize(int size) &#123;</span><br><span class="line">    // 视情况将size调整为2的幂次</span><br><span class="line">    int c = (size &gt;= (MAXIMUM_CAPACITY &gt;&gt;&gt; 1)) ? MAXIMUM_CAPACITY : tableSizeFor(size + (size &gt;&gt;&gt; 1) + 1);</span><br><span class="line">    int sc;</span><br><span class="line">    while ((sc = sizeCtl) &gt;= 0) &#123;</span><br><span class="line">        Node&lt;K, V&gt;[] tab = table;</span><br><span class="line">        int n;</span><br><span class="line"></span><br><span class="line">        //CASE 1: table还未初始化，则先进行初始化</span><br><span class="line">        if (tab == null || (n = tab.length) == 0) &#123;</span><br><span class="line">            n = (sc &gt; c) ? sc : c;</span><br><span class="line">            if (U.compareAndSwapInt(this, SIZECTL, sc, -1)) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    if (table == tab) &#123;</span><br><span class="line">                        Node&lt;K, V&gt;[] nt = (Node&lt;K, V&gt;[]) new Node&lt;?, ?&gt;[n];</span><br><span class="line">                        table = nt;</span><br><span class="line">                        sc = n - (n &gt;&gt;&gt; 2);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; finally &#123;</span><br><span class="line">                    sizeCtl = sc;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // CASE2: c &lt;= sc说明已经被扩容过了；n &gt;= MAXIMUM_CAPACITY说明table数组已达到最大容量</span><br><span class="line">        else if (c &lt;= sc || n &gt;= MAXIMUM_CAPACITY)</span><br><span class="line">            break;</span><br><span class="line">            // CASE3: 进行table扩容</span><br><span class="line">        else if (tab == table) &#123;</span><br><span class="line">            int rs = resizeStamp(n);    // 根据容量n生成一个随机数，唯一标识本次扩容操作</span><br><span class="line">            if (sc &lt; 0) &#123;               // sc &lt; 0 表明此时有别的线程正在进行扩容</span><br><span class="line">                Node&lt;K, V&gt;[] nt;</span><br><span class="line"></span><br><span class="line">                // 如果当前线程无法协助进行数据转移, 则退出</span><br><span class="line">                if ((sc &gt;&gt;&gt; RESIZE_STAMP_SHIFT) != rs || sc == rs + 1 ||</span><br><span class="line">                    sc == rs + MAX_RESIZERS || (nt = nextTable) == null ||</span><br><span class="line">                    transferIndex &lt;= 0)</span><br><span class="line">                    break;</span><br><span class="line"></span><br><span class="line">                // 协助数据转移, 把正在执行transfer任务的线程数加1</span><br><span class="line">                if (U.compareAndSwapInt(this, SIZECTL, sc, sc + 1))</span><br><span class="line">                    transfer(tab, nt);</span><br><span class="line">            &#125;</span><br><span class="line">            // sc置为负数, 当前线程自身成为第一个执行transfer(数据转移)的线程</span><br><span class="line">            // 这个CAS操作可以保证，仅有一个线程会执行扩容</span><br><span class="line">            else if (U.compareAndSwapInt(this, SIZECTL, sc, (rs &lt;&lt; RESIZE_STAMP_SHIFT) + 2))</span><br><span class="line">                transfer(tab, null);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>前两个分支没什么好说的，看下注释很容易理解，关键看第三个分支 —— CASE3：进行table扩容。CASE3其实分为两种情况：</p>
+<ol>
+<li>已经有其它线程正在执行扩容了，则当前线程会尝试协助“数据迁移”；（多线程并发）</li>
+<li>没有其它线程正在执行扩容，则当前线程自身发起扩容。（单线程）</li>
+</ol>
+<blockquote>
+<p>注意：这两种情况都是调用了transfer方法，通过第二个入参nextTab进行区分（nextTab表示扩容后的新table数组，如果为null，表示首次发起扩容）。<br>第二种情况下，是通过CAS和移位运算来保证仅有一个线程能发起扩容。</p>
+</blockquote>
+<h2 id="扩容原理"><a href="#扩容原理" class="headerlink" title="扩容原理"></a>扩容原理</h2><p>我们来看下transfer方法，这个方法可以被多个线程同时调用，也是“数据迁移”的核心操作方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 数据转移和扩容.</span><br><span class="line"> * 每个调用tranfer的线程会对当前旧table中[transferIndex-stride, transferIndex-1]位置的结点进行迁移</span><br><span class="line"> *</span><br><span class="line"> * @param tab     旧table数组</span><br><span class="line"> * @param nextTab 新table数组</span><br><span class="line"> */</span><br><span class="line">private final void transfer(Node&lt;K, V&gt;[] tab, Node&lt;K, V&gt;[] nextTab) &#123;</span><br><span class="line">    int n = tab.length, stride;</span><br><span class="line"></span><br><span class="line">    // stride可理解成“步长”，即数据迁移时，每个线程要负责旧table中的多少个桶</span><br><span class="line">    if ((stride = (NCPU &gt; 1) ? (n &gt;&gt;&gt; 3) / NCPU : n) &lt; MIN_TRANSFER_STRIDE)</span><br><span class="line">        stride = MIN_TRANSFER_STRIDE;</span><br><span class="line"></span><br><span class="line">    if (nextTab == null) &#123;           // 首次扩容</span><br><span class="line">        try &#123;</span><br><span class="line">            // 创建新table数组</span><br><span class="line">            Node&lt;K, V&gt;[] nt = (Node&lt;K, V&gt;[]) new Node&lt;?, ?&gt;[n &lt;&lt; 1];</span><br><span class="line">            nextTab = nt;</span><br><span class="line">        &#125; catch (Throwable ex) &#123;      // 处理内存溢出（OOME）的情况</span><br><span class="line">            sizeCtl = Integer.MAX_VALUE;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        nextTable = nextTab;</span><br><span class="line">        transferIndex = n;          // [transferIndex-stride, transferIndex-1]表示当前线程要进行数据迁移的桶区间</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int nextn = nextTab.length;</span><br><span class="line"></span><br><span class="line">    // ForwardingNode结点，当旧table的某个桶中的所有结点都迁移完后，用该结点占据这个桶</span><br><span class="line">    ForwardingNode&lt;K, V&gt; fwd = new ForwardingNode&lt;K, V&gt;(nextTab);</span><br><span class="line"></span><br><span class="line">    // 标识一个桶的迁移工作是否完成，advance == true 表示可以进行下一个位置的迁移</span><br><span class="line">    boolean advance = true;</span><br><span class="line"></span><br><span class="line">    // 最后一个数据迁移的线程将该值置为true，并进行本轮扩容的收尾工作</span><br><span class="line">    boolean finishing = false;</span><br><span class="line"></span><br><span class="line">    // i标识桶索引, bound标识边界</span><br><span class="line">    for (int i = 0, bound = 0; ; ) &#123;</span><br><span class="line">        Node&lt;K, V&gt; f;</span><br><span class="line">        int fh;</span><br><span class="line"></span><br><span class="line">        // 每一次自旋前的预处理，主要是定位本轮处理的桶区间</span><br><span class="line">        // 正常情况下，预处理完成后：i == transferIndex-1，bound == transferIndex-stride</span><br><span class="line">        while (advance) &#123;</span><br><span class="line">            int nextIndex, nextBound;</span><br><span class="line">            if (--i &gt;= bound || finishing)</span><br><span class="line">                advance = false;</span><br><span class="line">            else if ((nextIndex = transferIndex) &lt;= 0) &#123;</span><br><span class="line">                i = -1;</span><br><span class="line">                advance = false;</span><br><span class="line">            &#125; else if (U.compareAndSwapInt(this, TRANSFERINDEX, nextIndex,</span><br><span class="line">                nextBound = (nextIndex &gt; stride ? nextIndex - stride : 0))) &#123;</span><br><span class="line">                bound = nextBound;</span><br><span class="line">                i = nextIndex - 1;</span><br><span class="line">                advance = false;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (i &lt; 0 || i &gt;= n || i + n &gt;= nextn) &#123;    // CASE1：当前是处理最后一个tranfer任务的线程或出现扩容冲突</span><br><span class="line">            int sc;</span><br><span class="line">            if (finishing) &#123;    // 所有桶迁移均已完成</span><br><span class="line">                nextTable = null;</span><br><span class="line">                table = nextTab;</span><br><span class="line">                sizeCtl = (n &lt;&lt; 1) - (n &gt;&gt;&gt; 1);</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // 扩容线程数减1,表示当前线程已完成自己的transfer任务</span><br><span class="line">            if (U.compareAndSwapInt(this, SIZECTL, sc = sizeCtl, sc - 1)) &#123;</span><br><span class="line">                // 判断当前线程是否是本轮扩容中的最后一个线程，如果不是，则直接退出</span><br><span class="line">                if ((sc - 2) != resizeStamp(n) &lt;&lt; RESIZE_STAMP_SHIFT)</span><br><span class="line">                    return;</span><br><span class="line">                finishing = advance = true;</span><br><span class="line"></span><br><span class="line">                /**</span><br><span class="line">                 * 最后一个数据迁移线程要重新检查一次旧table中的所有桶，看是否都被正确迁移到新table了：</span><br><span class="line">                 * ①正常情况下，重新检查时，旧table的所有桶都应该是ForwardingNode;</span><br><span class="line">                 * ②特殊情况下，比如扩容冲突(多个线程申请到了同一个transfer任务)，此时当前线程领取的任务会作废，那么最后检查时，</span><br><span class="line">                 * 还要处理因为作废而没有被迁移的桶，把它们正确迁移到新table中</span><br><span class="line">                 */</span><br><span class="line">                i = n; // recheck before commit</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else if ((f = tabAt(tab, i)) == null)     // CASE2：旧桶本身为null，不用迁移，直接尝试放一个ForwardingNode</span><br><span class="line">            advance = casTabAt(tab, i, null, fwd);</span><br><span class="line">        else if ((fh = f.hash) == MOVED)            // CASE3：该旧桶已经迁移完成，直接跳过</span><br><span class="line">            advance = true;</span><br><span class="line">        else &#123;                                      // CASE4：该旧桶未迁移完成，进行数据迁移</span><br><span class="line">            synchronized (f) &#123;</span><br><span class="line">                if (tabAt(tab, i) == f) &#123;</span><br><span class="line">                    Node&lt;K, V&gt; ln, hn;</span><br><span class="line">                    if (fh &gt;= 0) &#123;                  // CASE4.1：桶的hash&gt;0，说明是链表迁移</span><br><span class="line"></span><br><span class="line">                        /**</span><br><span class="line">                         * 下面的过程会将旧桶中的链表分成两部分：ln链和hn链</span><br><span class="line">                         * ln链会插入到新table的槽i中，hn链会插入到新table的槽i+n中</span><br><span class="line">                         */</span><br><span class="line">                        int runBit = fh &amp; n;    // 由于n是2的幂次，所以runBit要么是0，要么高位是1</span><br><span class="line">                        Node&lt;K, V&gt; lastRun = f; // lastRun指向最后一个相邻runBit不同的结点</span><br><span class="line">                        for (Node&lt;K, V&gt; p = f.next; p != null; p = p.next) &#123;</span><br><span class="line">                            int b = p.hash &amp; n;</span><br><span class="line">                            if (b != runBit) &#123;</span><br><span class="line">                                runBit = b;</span><br><span class="line">                                lastRun = p;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                        if (runBit == 0) &#123;</span><br><span class="line">                            ln = lastRun;</span><br><span class="line">                            hn = null;</span><br><span class="line">                        &#125; else &#123;</span><br><span class="line">                            hn = lastRun;</span><br><span class="line">                            ln = null;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        // 以lastRun所指向的结点为分界，将链表拆成2个子链表ln、hn</span><br><span class="line">                        for (Node&lt;K, V&gt; p = f; p != lastRun; p = p.next) &#123;</span><br><span class="line">                            int ph = p.hash;</span><br><span class="line">                            K pk = p.key;</span><br><span class="line">                            V pv = p.val;</span><br><span class="line">                            if ((ph &amp; n) == 0)</span><br><span class="line">                                ln = new Node&lt;K, V&gt;(ph, pk, pv, ln);</span><br><span class="line">                            else</span><br><span class="line">                                hn = new Node&lt;K, V&gt;(ph, pk, pv, hn);</span><br><span class="line">                        &#125;</span><br><span class="line">                        setTabAt(nextTab, i, ln);               // ln链表存入新桶的索引i位置</span><br><span class="line">                        setTabAt(nextTab, i + n, hn);        // hn链表存入新桶的索引i+n位置</span><br><span class="line">                        setTabAt(tab, i, fwd);                  // 设置ForwardingNode占位</span><br><span class="line">                        advance = true;                         // 表示当前旧桶的结点已迁移完毕</span><br><span class="line">                    &#125;</span><br><span class="line">                    else if (f instanceof TreeBin) &#123;    // CASE4.2：红黑树迁移</span><br><span class="line"></span><br><span class="line">                        /**</span><br><span class="line">                         * 下面的过程会先以链表方式遍历，复制所有结点，然后根据高低位组装成两个链表；</span><br><span class="line">                         * 然后看下是否需要进行红黑树转换，最后放到新table对应的桶中</span><br><span class="line">                         */</span><br><span class="line">                        TreeBin&lt;K, V&gt; t = (TreeBin&lt;K, V&gt;) f;</span><br><span class="line">                        TreeNode&lt;K, V&gt; lo = null, loTail = null;</span><br><span class="line">                        TreeNode&lt;K, V&gt; hi = null, hiTail = null;</span><br><span class="line">                        int lc = 0, hc = 0;</span><br><span class="line">                        for (Node&lt;K, V&gt; e = t.first; e != null; e = e.next) &#123;</span><br><span class="line">                            int h = e.hash;</span><br><span class="line">                            TreeNode&lt;K, V&gt; p = new TreeNode&lt;K, V&gt;</span><br><span class="line">                                (h, e.key, e.val, null, null);</span><br><span class="line">                            if ((h &amp; n) == 0) &#123;</span><br><span class="line">                                if ((p.prev = loTail) == null)</span><br><span class="line">                                    lo = p;</span><br><span class="line">                                else</span><br><span class="line">                                    loTail.next = p;</span><br><span class="line">                                loTail = p;</span><br><span class="line">                                ++lc;</span><br><span class="line">                            &#125; else &#123;</span><br><span class="line">                                if ((p.prev = hiTail) == null)</span><br><span class="line">                                    hi = p;</span><br><span class="line">                                else</span><br><span class="line">                                    hiTail.next = p;</span><br><span class="line">                                hiTail = p;</span><br><span class="line">                                ++hc;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        // 判断是否需要进行 红黑树 &lt;-&gt; 链表 的转换</span><br><span class="line">                         ln = (lc &lt;= UNTREEIFY_THRESHOLD) ? untreeify(lo) :</span><br><span class="line">                            (hc != 0) ? new TreeBin&lt;K, V&gt;(lo) : t;</span><br><span class="line">                        hn = (hc &lt;= UNTREEIFY_THRESHOLD) ? untreeify(hi) :</span><br><span class="line">                            (lc != 0) ? new TreeBin&lt;K, V&gt;(hi) : t;</span><br><span class="line">                        setTabAt(nextTab, i, ln);</span><br><span class="line">                        setTabAt(nextTab, i + n, hn);</span><br><span class="line">                        setTabAt(tab, i, fwd);  // 设置ForwardingNode占位</span><br><span class="line">                        advance = true;         // 表示当前旧桶的结点已迁移完毕</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>tranfer方法的开头，会计算出一个stride变量的值，这个stride其实就是每个线程处理的桶区间，也就是步长：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// stride可理解成“步长”，即数据迁移时，每个线程要负责旧table中的多少个桶</span><br><span class="line">if ((stride = (NCPU &gt; 1) ? (n &gt;&gt;&gt; 3) / NCPU : n) &lt; MIN_TRANSFER_STRIDE)</span><br><span class="line">    stride = MIN_TRANSFER_STRIDE;</span><br></pre></td></tr></table></figure>
+<p>首次扩容时，会将table数组变成原来的2倍：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">if (nextTab == null) &#123;           // 首次扩容</span><br><span class="line">    try &#123;</span><br><span class="line">        // 创建新table数组</span><br><span class="line">        Node&lt;K, V&gt;[] nt = (Node&lt;K, V&gt;[]) new Node&lt;?, ?&gt;[n &lt;&lt; 1];</span><br><span class="line">        nextTab = nt;</span><br><span class="line">    &#125; catch (Throwable ex) &#123;      // 处理内存溢出（OOME）的情况</span><br><span class="line">        sizeCtl = Integer.MAX_VALUE;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    nextTable = nextTab;</span><br><span class="line">    transferIndex = n;          // [transferIndex-stride, transferIndex-1]表示当前线程要进行数据迁移的桶区间</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意上面的transferIndex变量，这是一个字段，table[transferIndex-stride, transferIndex-1]就是当前线程要进行数据迁移的桶区间：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 扩容时需要用到的一个下标变量.</span><br><span class="line"> */</span><br><span class="line">private transient volatile int transferIndex;</span><br></pre></td></tr></table></figure>
+<p>整个transfer方法几乎都在一个自旋操作中完成，从右往左开始进行数据迁移，transfer的退出点是当某个线程处理完最后的table区段——table[0,stride-1]。</p>
+<p>transfer方法主要包含4个分支，即对4种不同情况进行处理，我们按照难易程度来解释下各个分支所做的事情：</p>
+<h3 id="CASE2：桶table-i-为空"><a href="#CASE2：桶table-i-为空" class="headerlink" title="CASE2：桶table[i]为空"></a>CASE2：桶table[i]为空</h3><p>当旧table的桶table[i] == null，说明原来这个桶就没有数据，那就直接尝试放置一个ForwardingNode，表示这个桶已经处理完成。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">else if ((f = tabAt(tab, i)) == null)     // CASE2：旧桶本身为null，不用迁移，直接尝试放一个ForwardingNode</span><br><span class="line">    advance = casTabAt(tab, i, null, fwd);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注：ForwardingNode我们在上一篇提到过，主要做占用位，多线程进行数据迁移时，其它线程看到这个桶中是ForwardingNode结点，就知道有线程已经在数据迁移了。<br>另外，当最后一个线程完成迁移任务后，会遍历所有桶，看看是否都是ForwardingNode，如果是，那么说明整个扩容/数据迁移的过程就完成了。</p>
+</blockquote>
+<h3 id="CASE3：桶table-i-已迁移完成"><a href="#CASE3：桶table-i-已迁移完成" class="headerlink" title="CASE3：桶table[i]已迁移完成"></a>CASE3：桶table[i]已迁移完成</h3><p>没什么好说的，就是桶已经用ForwardingNode结点占用了，表示该桶的数据都迁移完了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">else if ((fh = f.hash) == MOVED)            // CASE3：该旧桶已经迁移完成，直接跳过</span><br><span class="line">    advance = true;</span><br></pre></td></tr></table></figure>
+<h3 id="CASE4：桶table-i-未迁移完成"><a href="#CASE4：桶table-i-未迁移完成" class="headerlink" title="CASE4：桶table[i]未迁移完成"></a>CASE4：桶table[i]未迁移完成</h3><p>如果旧桶的数据未迁移完成，就要进行迁移，这里根据桶中结点的类型分为：链表迁移、红黑树迁移。</p>
+<h4 id="链表迁移"><a href="#链表迁移" class="headerlink" title="链表迁移"></a>链表迁移</h4><p>链表迁移的过程如下，首先会遍历一遍原链表，找到最后一个相邻runBit不同的结点。<br>runbit是根据key.hash和旧table长度n进行与运算得到的值，由于table的长度为2的幂次，所以runbit只可能为0或最高位为1</p>
+<p>然后，会进行第二次链表遍历，按照第一次遍历找到的结点为界，将原链表分成2个子链表，再链接到新table的槽中。可以看到，新table的索引要么是i，要么是i+n，这里就利用了上一节说的ConcurrentHashMap的rehash特点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">if (fh &gt;= 0) &#123;                  // CASE4.1：桶的hash&gt;0，说明是链表迁移</span><br><span class="line">    /**</span><br><span class="line">     * 下面的过程会将旧桶中的链表分成两部分：ln链和hn链</span><br><span class="line">     * ln链会插入到新table的槽i中，hn链会插入到新table的槽i+n中</span><br><span class="line">     */</span><br><span class="line">    int runBit = fh &amp; n;    // 由于n是2的幂次，所以runBit要么是0，要么高位是1</span><br><span class="line">    Node&lt;K, V&gt; lastRun = f; // lastRun指向最后一个相邻runBit不同的结点</span><br><span class="line">    for (Node&lt;K, V&gt; p = f.next; p != null; p = p.next) &#123;</span><br><span class="line">        int b = p.hash &amp; n;</span><br><span class="line">        if (b != runBit) &#123;</span><br><span class="line">            runBit = b;</span><br><span class="line">            lastRun = p;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    if (runBit == 0) &#123;</span><br><span class="line">        ln = lastRun;</span><br><span class="line">        hn = null;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        hn = lastRun;</span><br><span class="line">        ln = null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 以lastRun所指向的结点为分界，将链表拆成2个子链表ln、hn</span><br><span class="line">    for (Node&lt;K, V&gt; p = f; p != lastRun; p = p.next) &#123;</span><br><span class="line">        int ph = p.hash;</span><br><span class="line">        K pk = p.key;</span><br><span class="line">        V pv = p.val;</span><br><span class="line">        if ((ph &amp; n) == 0)</span><br><span class="line">            ln = new Node&lt;K, V&gt;(ph, pk, pv, ln);</span><br><span class="line">        else</span><br><span class="line">            hn = new Node&lt;K, V&gt;(ph, pk, pv, hn);</span><br><span class="line">    &#125;</span><br><span class="line">    setTabAt(nextTab, i, ln);               // ln链表存入新桶的索引i位置</span><br><span class="line">    setTabAt(nextTab, i + n, hn);        // hn链表存入新桶的索引i+n位置</span><br><span class="line">    setTabAt(tab, i, fwd);                  // 设置ForwardingNode占位</span><br><span class="line">    advance = true;                         // 表示当前旧桶的结点已迁移完毕</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="红黑树迁移"><a href="#红黑树迁移" class="headerlink" title="红黑树迁移"></a>红黑树迁移</h4><p>红黑树的迁移按照链表遍历的方式进行，当链表结点超过/小于阈值时，涉及红黑树&lt;-&gt;链表的相互转换：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">else if (f instanceof TreeBin) &#123;    // CASE4.2：红黑树迁移</span><br><span class="line">    /**</span><br><span class="line">     * 下面的过程会先以链表方式遍历，复制所有结点，然后根据高低位组装成两个链表；</span><br><span class="line">     * 然后看下是否需要进行红黑树转换，最后放到新table对应的桶中</span><br><span class="line">     */</span><br><span class="line">    TreeBin&lt;K, V&gt; t = (TreeBin&lt;K, V&gt;) f;</span><br><span class="line">    TreeNode&lt;K, V&gt; lo = null, loTail = null;</span><br><span class="line">    TreeNode&lt;K, V&gt; hi = null, hiTail = null;</span><br><span class="line">    int lc = 0, hc = 0;</span><br><span class="line">    for (Node&lt;K, V&gt; e = t.first; e != null; e = e.next) &#123;</span><br><span class="line">        int h = e.hash;</span><br><span class="line">        TreeNode&lt;K, V&gt; p = new TreeNode&lt;K, V&gt;</span><br><span class="line">            (h, e.key, e.val, null, null);</span><br><span class="line">        if ((h &amp; n) == 0) &#123;</span><br><span class="line">            if ((p.prev = loTail) == null)</span><br><span class="line">                lo = p;</span><br><span class="line">            else</span><br><span class="line">                loTail.next = p;</span><br><span class="line">            loTail = p;</span><br><span class="line">            ++lc;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            if ((p.prev = hiTail) == null)</span><br><span class="line">                hi = p;</span><br><span class="line">            else</span><br><span class="line">                hiTail.next = p;</span><br><span class="line">            hiTail = p;</span><br><span class="line">            ++hc;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 判断是否需要进行 红黑树 &lt;-&gt; 链表 的转换</span><br><span class="line">     ln = (lc &lt;= UNTREEIFY_THRESHOLD) ? untreeify(lo) :</span><br><span class="line">        (hc != 0) ? new TreeBin&lt;K, V&gt;(lo) : t;</span><br><span class="line">    hn = (hc &lt;= UNTREEIFY_THRESHOLD) ? untreeify(hi) :</span><br><span class="line">        (lc != 0) ? new TreeBin&lt;K, V&gt;(hi) : t;</span><br><span class="line">    setTabAt(nextTab, i, ln);</span><br><span class="line">    setTabAt(nextTab, i + n, hn);</span><br><span class="line">    setTabAt(tab, i, fwd);  // 设置ForwardingNode占位</span><br><span class="line">    advance = true;         // 表示当前旧桶的结点已迁移完毕</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="CASE1：当前是最后一个迁移任务或出现扩容冲突"><a href="#CASE1：当前是最后一个迁移任务或出现扩容冲突" class="headerlink" title="CASE1：当前是最后一个迁移任务或出现扩容冲突"></a>CASE1：当前是最后一个迁移任务或出现扩容冲突</h3><p>我们刚才说了，调用transfer的线程会自动领用某个区段的桶，进行数据迁移操作，当区段的初始索引i变成负数的时候，说明当前线程处理的其实就是最后剩下的桶，并且处理完了。</p>
+<p>所以首先会更新sizeCtl变量，将扩容线程数减1，然后会做一些收尾工作：<br>设置table指向扩容后的新数组，遍历一遍旧数组，确保每个桶的数据都迁移完成——被ForwardingNode占用。</p>
+<p>另外，可能在扩容过程中，出现扩容冲突的情况，比如多个线程领用了同一区段的桶，这时任何一个线程都不能进行数据迁移。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">if (i &lt; 0 || i &gt;= n || i + n &gt;= nextn) &#123;    // CASE1：当前是处理最后一个tranfer任务的线程或出现扩容冲突</span><br><span class="line">    int sc;</span><br><span class="line">    if (finishing) &#123;    // 所有桶迁移均已完成</span><br><span class="line">        nextTable = null;</span><br><span class="line">        table = nextTab;</span><br><span class="line">        sizeCtl = (n &lt;&lt; 1) - (n &gt;&gt;&gt; 1);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 扩容线程数减1,表示当前线程已完成自己的transfer任务</span><br><span class="line">    if (U.compareAndSwapInt(this, SIZECTL, sc = sizeCtl, sc - 1)) &#123;</span><br><span class="line">        // 判断当前线程是否是本轮扩容中的最后一个线程，如果不是，则直接退出</span><br><span class="line">        if ((sc - 2) != resizeStamp(n) &lt;&lt; RESIZE_STAMP_SHIFT)</span><br><span class="line">            return;</span><br><span class="line">        finishing = advance = true;</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * 最后一个数据迁移线程要重新检查一次旧table中的所有桶，看是否都被正确迁移到新table了：</span><br><span class="line">         * ①正常情况下，重新检查时，旧table的所有桶都应该是ForwardingNode;</span><br><span class="line">         * ②特殊情况下，比如扩容冲突(多个线程申请到了同一个transfer任务)，此时当前线程领取的任务会作废，那么最后检查时，</span><br><span class="line">         * 还要处理因为作废而没有被迁移的桶，把它们正确迁移到新table中</span><br><span class="line">         */</span><br><span class="line">        i = n; // recheck before commit</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>转载自：<a href="https://segmentfault.com/a/1190000016124883" target="_blank" rel="noopener">https://segmentfault.com/a/1190000016124883</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_01_concurrent_hash_map_01/" rel="next" title="J.U.C 并发集合（一）：ConcurrentHashMap基础">
+                <i class="fa fa-chevron-left"></i> J.U.C 并发集合（一）：ConcurrentHashMap基础
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_03_concurrent_skip_list_map/" rel="prev" title="J.U.C 并发集合（三）：ConcurrentSkipListMap">
+                J.U.C 并发集合（三）：ConcurrentSkipListMap <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">121</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#扩容思路"><span class="nav-number">1.</span> <span class="nav-text">扩容思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩容时机"><span class="nav-number">2.</span> <span class="nav-text">扩容时机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩容原理"><span class="nav-number">3.</span> <span class="nav-text">扩容原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CASE2：桶table-i-为空"><span class="nav-number">3.1.</span> <span class="nav-text">CASE2：桶table[i]为空</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CASE3：桶table-i-已迁移完成"><span class="nav-number">3.2.</span> <span class="nav-text">CASE3：桶table[i]已迁移完成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CASE4：桶table-i-未迁移完成"><span class="nav-number">3.3.</span> <span class="nav-text">CASE4：桶table[i]未迁移完成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#链表迁移"><span class="nav-number">3.3.1.</span> <span class="nav-text">链表迁移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#红黑树迁移"><span class="nav-number">3.3.2.</span> <span class="nav-text">红黑树迁移</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CASE1：当前是最后一个迁移任务或出现扩容冲突"><span class="nav-number">3.4.</span> <span class="nav-text">CASE1：当前是最后一个迁移任务或出现扩容冲突</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

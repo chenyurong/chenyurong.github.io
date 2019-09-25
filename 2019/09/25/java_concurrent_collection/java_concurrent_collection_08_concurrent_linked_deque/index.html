@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在开始讲ConcurrentLinkedDeque之前，我们先来了解下Deque这种数据结构，我们知道Queue是一种具有FIFO特点的数据结构，元素只能在队首进行“入队”操作，在队尾进行“出队”操作。 Queue接口定义Queue的接口非常简单，一共只有三种类型的操作：入队、出队、读取。  上述方法，可以划分如下：  每种操作类型，都给出了两种方法，区别就是其中一种操作在队列的状态不满足某些要求">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="J.U.C 并发集合（八）：ConcurrentLinkedDeque">
+<meta property="og:url" content="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_08_concurrent_linked_deque/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="在开始讲ConcurrentLinkedDeque之前，我们先来了解下Deque这种数据结构，我们知道Queue是一种具有FIFO特点的数据结构，元素只能在队首进行“入队”操作，在队尾进行“出队”操作。 Queue接口定义Queue的接口非常简单，一共只有三种类型的操作：入队、出队、读取。  上述方法，可以划分如下：  每种操作类型，都给出了两种方法，区别就是其中一种操作在队列的状态不满足某些要求">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549671518323.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549671677455.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549670962818.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549671054433.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549672501089.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549672679009.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549672992623.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549673613056.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549673716376.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549674072930.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549674624268.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549674883506.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549674971015.jpg">
+<meta property="og:updated_time" content="2019-09-25T00:03:52.241Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="J.U.C 并发集合（八）：ConcurrentLinkedDeque">
+<meta name="twitter:description" content="在开始讲ConcurrentLinkedDeque之前，我们先来了解下Deque这种数据结构，我们知道Queue是一种具有FIFO特点的数据结构，元素只能在队首进行“入队”操作，在队尾进行“出队”操作。 Queue接口定义Queue的接口非常简单，一共只有三种类型的操作：入队、出队、读取。  上述方法，可以划分如下：  每种操作类型，都给出了两种方法，区别就是其中一种操作在队列的状态不满足某些要求">
+<meta name="twitter:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549671518323.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_08_concurrent_linked_deque/"/>
+
+
+
+
+
+  <title>J.U.C 并发集合（八）：ConcurrentLinkedDeque | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_08_concurrent_linked_deque/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">J.U.C 并发集合（八）：ConcurrentLinkedDeque</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T08:03:36+08:00">
+                2019-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/并发集合系列/" itemprop="url" rel="index">
+                    <span itemprop="name">并发集合系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/09/25/java_concurrent_collection/java_concurrent_collection_08_concurrent_linked_deque/" class="leancloud_visitors" data-flag-title="J.U.C 并发集合（八）：ConcurrentLinkedDeque">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在开始讲ConcurrentLinkedDeque之前，我们先来了解下Deque这种数据结构，我们知道Queue是一种具有FIFO特点的数据结构，元素只能在队首进行“入队”操作，在队尾进行“出队”操作。</p>
+<h2 id="Queue接口定义"><a href="#Queue接口定义" class="headerlink" title="Queue接口定义"></a>Queue接口定义</h2><p>Queue的接口非常简单，一共只有三种类型的操作：入队、出队、读取。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549671518323.jpg" alt=""></p>
+<p>上述方法，可以划分如下：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549671677455.jpg" alt=""></p>
+<p>每种操作类型，都给出了两种方法，区别就是其中一种操作在队列的状态不满足某些要求时，会抛出异常；另一种，则直接返回特殊值（如null）。</p>
+<h2 id="Deque接口定义"><a href="#Deque接口定义" class="headerlink" title="Deque接口定义"></a>Deque接口定义</h2><p>Deque 接口继承了 Queue 接口，而 Deque（double-ended queue）是一种双端队列，也就是说可以在任意一端进行“入队”，也可以在任意一端进行“出队”：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549670962818.jpg" alt=""></p>
+<p>Deque的数据结构示意图如下：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549671054433.jpg" alt=""></p>
+<p>Queue接口的所有方法Deque都具备，只不过队首/队尾都可以进行“出队”和“入队”操作：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549672501089.jpg" alt=""></p>
+<p>除此之外，Deque还可以当作“栈”来使用，我们知道“栈”是一种具有“LIFO”特点的数据结构（关于栈，可以参考我的这篇博文：栈），Deque提供了push、pop、peek这三个栈方法，一般实现这三个方法时，可以利用已有方法，即有如下映射关系：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549672679009.jpg" alt=""></p>
+<h2 id="ConcurrentLinkedDeque简介"><a href="#ConcurrentLinkedDeque简介" class="headerlink" title="ConcurrentLinkedDeque简介"></a>ConcurrentLinkedDeque简介</h2><p>ConcurrentLinkedDeque是JDK1.7时，J.U.C包引入的一个集合工具类。在JDK1.7之前，除了Stack类外，并没有其它适合并发环境的“栈”数据结构。ConcurrentLinkedDeque作为双端队列，可以当作“栈”来使用，并且高效地支持并发环境。</p>
+<p>ConcurrentLinkedDeque和ConcurrentLinkedQueue一样，采用了无锁算法，底层基于自旋+CAS的方式实现。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549672992623.jpg" alt=""></p>
+<h2 id="队列结构"><a href="#队列结构" class="headerlink" title="队列结构"></a>队列结构</h2><p>我们先来看下ConcurrentLinkedDeque的内部结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">public class ConcurrentLinkedDeque&lt;E&gt; extends AbstractCollection&lt;E&gt;</span><br><span class="line">    implements Deque&lt;E&gt;, java.io.Serializable &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 头指针</span><br><span class="line">     */</span><br><span class="line">    private transient volatile Node&lt;E&gt; head;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 尾指针</span><br><span class="line">     */</span><br><span class="line">    private transient volatile Node&lt;E&gt; tail;</span><br><span class="line"></span><br><span class="line">    private static final Node&lt;Object&gt; PREV_TERMINATOR, NEXT_TERMINATOR;</span><br><span class="line">    </span><br><span class="line">    // Unsafe mechanics</span><br><span class="line">    private static final sun.misc.Unsafe UNSAFE;</span><br><span class="line">    private static final long headOffset;</span><br><span class="line">    private static final long tailOffset;</span><br><span class="line"></span><br><span class="line">    static &#123;</span><br><span class="line">        PREV_TERMINATOR = new Node&lt;Object&gt;();</span><br><span class="line">        PREV_TERMINATOR.next = PREV_TERMINATOR;</span><br><span class="line">        NEXT_TERMINATOR = new Node&lt;Object&gt;();</span><br><span class="line">        NEXT_TERMINATOR.prev = NEXT_TERMINATOR;</span><br><span class="line">        try &#123;</span><br><span class="line">            UNSAFE = sun.misc.Unsafe.getUnsafe();</span><br><span class="line">            Class&lt;?&gt; k = ConcurrentLinkedDeque.class;</span><br><span class="line">            headOffset = UNSAFE.objectFieldOffset(k.getDeclaredField(&quot;head&quot;));</span><br><span class="line">            tailOffset = UNSAFE.objectFieldOffset(k.getDeclaredField(&quot;tail&quot;));</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            throw new Error(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 双链表结点定义</span><br><span class="line">     */</span><br><span class="line">    static final class Node&lt;E&gt; &#123;</span><br><span class="line">        volatile Node&lt;E&gt; prev;  // 前驱指针</span><br><span class="line">        volatile E item;        // 结点值</span><br><span class="line">        volatile Node&lt;E&gt; next;  // 后驱指针</span><br><span class="line"></span><br><span class="line">        Node() &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Node(E item) &#123;</span><br><span class="line">            UNSAFE.putObject(this, itemOffset, item);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        boolean casItem(E cmp, E val) &#123;</span><br><span class="line">            return UNSAFE.compareAndSwapObject(this, itemOffset, cmp, val);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        void lazySetNext(Node&lt;E&gt; val) &#123;</span><br><span class="line">            UNSAFE.putOrderedObject(this, nextOffset, val);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        boolean casNext(Node&lt;E&gt; cmp, Node&lt;E&gt; val) &#123;</span><br><span class="line">            return UNSAFE.compareAndSwapObject(this, nextOffset, cmp, val);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        void lazySetPrev(Node&lt;E&gt; val) &#123;</span><br><span class="line">            UNSAFE.putOrderedObject(this, prevOffset, val);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        boolean casPrev(Node&lt;E&gt; cmp, Node&lt;E&gt; val) &#123;</span><br><span class="line">            return UNSAFE.compareAndSwapObject(this, prevOffset, cmp, val);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // Unsafe mechanics</span><br><span class="line"></span><br><span class="line">        private static final sun.misc.Unsafe UNSAFE;</span><br><span class="line">        private static final long prevOffset;</span><br><span class="line">        private static final long itemOffset;</span><br><span class="line">        private static final long nextOffset;</span><br><span class="line"></span><br><span class="line">        static &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                UNSAFE = sun.misc.Unsafe.getUnsafe();</span><br><span class="line">                Class&lt;?&gt; k = Node.class;</span><br><span class="line">                prevOffset = UNSAFE.objectFieldOffset(k.getDeclaredField(&quot;prev&quot;));</span><br><span class="line">                itemOffset = UNSAFE.objectFieldOffset(k.getDeclaredField(&quot;item&quot;));</span><br><span class="line">                nextOffset = UNSAFE.objectFieldOffset(k.getDeclaredField(&quot;next&quot;));</span><br><span class="line">            &#125; catch (Exception e) &#123;</span><br><span class="line">                throw new Error(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，ConcurrentLinkedDeque的内部和ConcurrentLinkedQueue类似，不过是一个双链表结构，每入队一个元素就是插入一个Node类型的结点。字段head指向队列头，tail指向队列尾，通过Unsafe来CAS操作字段值以及Node对象的字段值。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549673613056.jpg" alt=""></p>
+<p>需要特别注意的是ConcurrentLinkedDeque包含两个特殊字段：PREV_TERMINATOR、NEXT_TERMINATOR。<br>这两个字段初始时都指向一个值为null的空结点，这两个字段在结点删除时使用，后面会详细介绍：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549673716376.jpg" alt=""></p>
+<h2 id="构造器定义"><a href="#构造器定义" class="headerlink" title="构造器定义"></a>构造器定义</h2><p>ConcurrentLinkedDeque包含两种构造器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 空构造器.</span><br><span class="line"> */</span><br><span class="line">public ConcurrentLinkedDeque() &#123;</span><br><span class="line">    head = tail = new Node&lt;E&gt;(null);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 从已有集合，构造队列</span><br><span class="line"> */</span><br><span class="line">public ConcurrentLinkedDeque(Collection&lt;? extends E&gt; c) &#123;</span><br><span class="line">    Node&lt;E&gt; h = null, t = null;</span><br><span class="line">    for (E e : c) &#123;</span><br><span class="line">        checkNotNull(e);</span><br><span class="line">        Node&lt;E&gt; newNode = new Node&lt;E&gt;(e);</span><br><span class="line">        if (h == null)</span><br><span class="line">            h = t = newNode;</span><br><span class="line">        else &#123;  // 在队尾插入元素</span><br><span class="line">            t.lazySetNext(newNode);</span><br><span class="line">            newNode.lazySetPrev(t);</span><br><span class="line">            t = newNode;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    initHeadTail(h, t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们重点看下空构造器，通过空构造器建立的ConcurrentLinkedDeque对象，其head和tail指针并非指向null，而是指向一个item值为null的Node结点——哨兵结点，如下图：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549674072930.jpg" alt=""></p>
+<h2 id="入队操作"><a href="#入队操作" class="headerlink" title="入队操作"></a>入队操作</h2><p>双端队列与普通队列的入队区别是：双端队列既可以在“队尾”插入元素，也可以在“队首”插入元素。ConcurrentLinkedDeque的入队方法有很多：addFirst(e)、addLast(e)、offerFirst(e)、offerLast(e)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public void addFirst(E e) &#123;</span><br><span class="line">    linkFirst(e);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void addLast(E e) &#123;</span><br><span class="line">    linkLast(e);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public boolean offerFirst(E e) &#123;</span><br><span class="line">    linkFirst(e);</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public boolean offerLast(E e) &#123;</span><br><span class="line">    linkLast(e);</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，队首“入队”其实就是调用了linkFirst(e)方法，而队尾“入队”是调用了 linkLast(e)方法。我们先来看下队首“入队”——linkFirst(e)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 在队首插入一个元素.</span><br><span class="line"> */</span><br><span class="line">private void linkFirst(E e) &#123;</span><br><span class="line">    checkNotNull(e);</span><br><span class="line">    final Node&lt;E&gt; newNode = new Node&lt;E&gt;(e); // 创建待插入的结点</span><br><span class="line"></span><br><span class="line">    restartFromHead:</span><br><span class="line">    for (; ; )</span><br><span class="line">        for (Node&lt;E&gt; h = head, p = h, q; ; ) &#123;</span><br><span class="line">            if ((q = p.prev) != null &amp;&amp; (q = (p = q).prev) != null)</span><br><span class="line">                // Check for head updates every other hop.</span><br><span class="line">                // If p == q, we are sure to follow head instead.</span><br><span class="line">                p = (h != (h = head)) ? h : q;</span><br><span class="line">            else if (p.next == p) // PREV_TERMINATOR</span><br><span class="line">                continue restartFromHead;</span><br><span class="line">            else &#123;</span><br><span class="line">                // p is first node</span><br><span class="line">                newNode.lazySetNext(p); // CAS piggyback</span><br><span class="line">                if (p.casPrev(null, newNode)) &#123;</span><br><span class="line">                    // Successful CAS is the linearization point</span><br><span class="line">                    // for e to become an element of this deque,</span><br><span class="line">                    // and for newNode to become &quot;live&quot;.</span><br><span class="line">                    if (p != h) // hop two nodes at a time</span><br><span class="line">                        casHead(h, newNode);  // Failure is OK.</span><br><span class="line">                    return;</span><br><span class="line">                &#125;</span><br><span class="line">                // Lost CAS race to another thread; re-read prev</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为了便于理解，我们以示例来看：假设有两个线程ThreadA和ThreadB同时进行入队操作。</p>
+<p>①ThreadA先单独入队一个元素9</p>
+<p>此时，ThreadA会执行CASE3分支：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">else &#123;                              // CASE3: p是队首结点</span><br><span class="line">    newNode.lazySetNext(p);         // “新结点”的next指向队首结点</span><br><span class="line">    if (p.casPrev(null, newNode)) &#123; // 队首结点的prev指针指向“新结点”</span><br><span class="line">        if (p != h) // hop two nodes at a time</span><br><span class="line">            casHead(h, newNode);  // Failure is OK.</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    // 执行到此处说明CAS操作失败，有其它线程也在队首插入元素</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>队列的结构如下：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549674624268.jpg" alt=""></p>
+<p>②ThreadA入队一个元素2，同时ThreadB入队一个元素10</p>
+<p>此时，依然执行CASE3分支，我们假设ThreadA操作成功，ThreadB操作失败：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">else &#123;                              // CASE3: p是队首结点</span><br><span class="line">    newNode.lazySetNext(p);         // “新结点”的next指向队首结点</span><br><span class="line">    if (p.casPrev(null, newNode)) &#123; // 队首结点的prev指针指向“新结点”</span><br><span class="line">        if (p != h) // hop two nodes at a time</span><br><span class="line">            casHead(h, newNode);  // Failure is OK.</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    // 执行到此处说明CAS操作失败，有其它线程也在队首插入元素</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ThreadA的CAS操作成功后，会进入以下判断：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if (p != h) // hop two nodes at a time</span><br><span class="line">    casHead(h, newNode);  // Failure is OK.</span><br></pre></td></tr></table></figure>
+<p>上述判断的作用就是重置head头指针，可以看到，ConcurrentLinkedDeque其实是以每次跳2个结点的方式移动指针，这主要考虑到并发环境以这种hop跳的方式可以提升效率。</p>
+<p>此时队列的机构如下：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549674883506.jpg" alt=""></p>
+<p>注意，此时ThreadB的p.casPrev(null, newNode)操作失败了，所以会进入下一次自旋，在下一次自旋中继续进入CASE3。如果ThreadA的casHead操作没有完成，ThreadB就进入了下一次自旋，则会进入分支1，重置指针p指向队首。最终队列结构如下：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549674971015.jpg" alt=""></p>
+<blockquote>
+<p>在队尾插入元素和队首类似，不再赘述，读者可以自己阅读源码。</p>
+</blockquote>
+<h2 id="出队操作"><a href="#出队操作" class="headerlink" title="出队操作"></a>出队操作</h2><p>ConcurrentLinkedDeque的出队一样分为队首、队尾两种情况：removeFirst()、pollFirst()、removeLast()、pollLast()。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">public E removeFirst() &#123;</span><br><span class="line">    return screenNullResult(pollFirst());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public E removeLast() &#123;</span><br><span class="line">    return screenNullResult(pollLast());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public E pollFirst() &#123;</span><br><span class="line">    for (Node&lt;E&gt; p = first(); p != null; p = succ(p)) &#123;</span><br><span class="line">        E item = p.item;</span><br><span class="line">        if (item != null &amp;&amp; p.casItem(item, null)) &#123;</span><br><span class="line">            unlink(p);</span><br><span class="line">            return item;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public E pollLast() &#123;</span><br><span class="line">    for (Node&lt;E&gt; p = last(); p != null; p = pred(p)) &#123;</span><br><span class="line">        E item = p.item;</span><br><span class="line">        if (item != null &amp;&amp; p.casItem(item, null)) &#123;</span><br><span class="line">            unlink(p);</span><br><span class="line">            return item;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，两个remove方法其实内部都调用了对应的poll方法，我们重点看下队尾的“出队”——pollLast方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public E pollLast() &#123;</span><br><span class="line">    for (Node&lt;E&gt; p = last(); p != null; p = pred(p)) &#123;</span><br><span class="line">        E item = p.item;</span><br><span class="line">        if (item != null &amp;&amp; p.casItem(item, null)) &#123;</span><br><span class="line">            unlink(p);</span><br><span class="line">            return item;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>last方法用于寻找队尾结点，即满足p.next == null &amp;&amp; p.prev != p的结点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Node&lt;E&gt; last() &#123;</span><br><span class="line">    restartFromTail:</span><br><span class="line">    for (; ; )</span><br><span class="line">        for (Node&lt;E&gt; t = tail, p = t, q; ; ) &#123;</span><br><span class="line">            if ((q = p.next) != null &amp;&amp;</span><br><span class="line">                (q = (p = q).next) != null)</span><br><span class="line">                // Check for tail updates every other hop.</span><br><span class="line">                // If p == q, we are sure to follow tail instead.</span><br><span class="line">                p = (t != (t = tail)) ? t : q;</span><br><span class="line">            else if (p == t</span><br><span class="line">                // It is possible that p is NEXT_TERMINATOR,</span><br><span class="line">                // but if so, the CAS is guaranteed to fail.</span><br><span class="line">                || casTail(t, p))</span><br><span class="line">                return p;</span><br><span class="line">            else</span><br><span class="line">                continue restartFromTail;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>pred方法用于寻找当前结点的前驱结点（如果前驱是自身，则返回队尾结点）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">final Node&lt;E&gt; pred(Node&lt;E&gt; p) &#123;</span><br><span class="line">    Node&lt;E&gt; q = p.prev;</span><br><span class="line">    return (p == q) ? last() : q;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>unlink方法断开结点的链接：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Unlinks non-null node x.</span><br><span class="line"> */</span><br><span class="line">void unlink(Node&lt;E&gt; x) &#123;</span><br><span class="line">    // assert x != null;</span><br><span class="line">    // assert x.item == null;</span><br><span class="line">    // assert x != PREV_TERMINATOR;</span><br><span class="line">    // assert x != NEXT_TERMINATOR;</span><br><span class="line"></span><br><span class="line">    final Node&lt;E&gt; prev = x.prev;</span><br><span class="line">    final Node&lt;E&gt; next = x.next;</span><br><span class="line">    if (prev == null) &#123;</span><br><span class="line">        unlinkFirst(x, next);</span><br><span class="line">    &#125; else if (next == null) &#123;</span><br><span class="line">        unlinkLast(x, prev);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        Node&lt;E&gt; activePred, activeSucc;</span><br><span class="line">        boolean isFirst, isLast;</span><br><span class="line">        int hops = 1;</span><br><span class="line"></span><br><span class="line">        // Find active predecessor</span><br><span class="line">        for (Node&lt;E&gt; p = prev; ; ++hops) &#123;</span><br><span class="line">            if (p.item != null) &#123;</span><br><span class="line">                activePred = p;</span><br><span class="line">                isFirst = false;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">            Node&lt;E&gt; q = p.prev;</span><br><span class="line">            if (q == null) &#123;</span><br><span class="line">                if (p.next == p)</span><br><span class="line">                    return;</span><br><span class="line">                activePred = p;</span><br><span class="line">                isFirst = true;</span><br><span class="line">                break;</span><br><span class="line">            &#125; else if (p == q)</span><br><span class="line">                return;</span><br><span class="line">            else</span><br><span class="line">                p = q;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // Find active successor</span><br><span class="line">        for (Node&lt;E&gt; p = next; ; ++hops) &#123;</span><br><span class="line">            if (p.item != null) &#123;</span><br><span class="line">                activeSucc = p;</span><br><span class="line">                isLast = false;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">            Node&lt;E&gt; q = p.next;</span><br><span class="line">            if (q == null) &#123;</span><br><span class="line">                if (p.prev == p)</span><br><span class="line">                    return;</span><br><span class="line">                activeSucc = p;</span><br><span class="line">                isLast = true;</span><br><span class="line">                break;</span><br><span class="line">            &#125; else if (p == q)</span><br><span class="line">                return;</span><br><span class="line">            else</span><br><span class="line">                p = q;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // TODO: better HOP heuristics</span><br><span class="line">        if (hops &lt; HOPS</span><br><span class="line">            // always squeeze out interior deleted nodes</span><br><span class="line">            &amp;&amp; (isFirst | isLast))</span><br><span class="line">            return;</span><br><span class="line"></span><br><span class="line">        // Squeeze out deleted nodes between activePred and</span><br><span class="line">        // activeSucc, including x.</span><br><span class="line">        skipDeletedSuccessors(activePred);</span><br><span class="line">        skipDeletedPredecessors(activeSucc);</span><br><span class="line"></span><br><span class="line">        // Try to gc-unlink, if possible</span><br><span class="line">        if ((isFirst | isLast) &amp;&amp;</span><br><span class="line"></span><br><span class="line">            // Recheck expected state of predecessor and successor</span><br><span class="line">            (activePred.next == activeSucc) &amp;&amp;</span><br><span class="line">            (activeSucc.prev == activePred) &amp;&amp;</span><br><span class="line">            (isFirst ? activePred.prev == null : activePred.item != null) &amp;&amp;</span><br><span class="line">            (isLast ? activeSucc.next == null : activeSucc.item != null)) &#123;</span><br><span class="line"></span><br><span class="line">            updateHead(); // Ensure x is not reachable from head</span><br><span class="line">            updateTail(); // Ensure x is not reachable from tail</span><br><span class="line"></span><br><span class="line">            // Finally, actually gc-unlink</span><br><span class="line">            x.lazySetPrev(isFirst ? prevTerminator() : x);</span><br><span class="line">            x.lazySetNext(isLast ? nextTerminator() : x);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>ConcurrentLinkedDeque相比ConcurrentLinkedQueue，功能更丰富，但是由于底层结构是双链表，且完全采用CAS+自旋的无锁算法保证线程安全性，所以需要考虑各种并发情况，源码比ConcurrentLinkedQueue更加难懂，留待有精力作进一步分析。</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>ConcurrentLinkedDeque使用了自旋+CAS的非阻塞算法来保证线程并发访问时的数据一致性。由于队列本身是一种双链表结构，所以虽然算法看起来很简单，但其实需要考虑各种并发的情况，实现复杂度较高，并且ConcurrentLinkedDeque不具备实时的数据一致性，实际运用中，如果需要一种线程安全的栈结构，可以使用ConcurrentLinkedDeque。</p>
+<p>另外，关于ConcurrentLinkedDeque还有以下需要注意的几点：</p>
+<ul>
+<li>ConcurrentLinkedDeque的迭代器是弱一致性的，这在并发容器中是比较普遍的现象，主要是指在一个线程在遍历队列结点而另一个线程尝试对某个队列结点进行修改的话不会抛出ConcurrentModificationException，这也就造成在遍历某个尚未被修改的结点时，在next方法返回时可以看到该结点的修改，但在遍历后再对该结点修改时就看不到这种变化。</li>
+<li>size方法需要遍历链表，所以在并发情况下，其结果不一定是准确的，只能供参考。</li>
+</ul>
+<p>转载自：<a href="https://segmentfault.com/a/1190000016284649" target="_blank" rel="noopener">https://segmentfault.com/a/1190000016284649</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_07_concurrent_linked_queue/" rel="next" title="J.U.C 并发集合（七）：ConcurrentLinkedQueue">
+                <i class="fa fa-chevron-left"></i> J.U.C 并发集合（七）：ConcurrentLinkedQueue
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_09_summary/" rel="prev" title="J.U.C 并发集合（九）：并发集合总结">
+                J.U.C 并发集合（九）：并发集合总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">121</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Queue接口定义"><span class="nav-number">1.</span> <span class="nav-text">Queue接口定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deque接口定义"><span class="nav-number">2.</span> <span class="nav-text">Deque接口定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ConcurrentLinkedDeque简介"><span class="nav-number">3.</span> <span class="nav-text">ConcurrentLinkedDeque简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#队列结构"><span class="nav-number">4.</span> <span class="nav-text">队列结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造器定义"><span class="nav-number">5.</span> <span class="nav-text">构造器定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#入队操作"><span class="nav-number">6.</span> <span class="nav-text">入队操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#出队操作"><span class="nav-number">7.</span> <span class="nav-text">出队操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

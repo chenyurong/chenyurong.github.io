@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="ArrayList是一种“列表”数据机构，其底层是通过数组来实现元素的随机访问。JDK1.5之前，如果想要在并发环境下使用“列表”，一般有以下3种方式：  使用Vector类 使用Collections.synchronizedList返回一个同步代理类； 自己实现ArrayList的子类，并进行同步/加锁。  前两种方式都相当于加了一把“全局锁”，访问任何方法都需要首先获取锁。第3种方式，需要自">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="J.U.C 并发集合（五）：CopyOnWriteArrayList">
+<meta property="og:url" content="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_05_copy_on_write_array_list/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="ArrayList是一种“列表”数据机构，其底层是通过数组来实现元素的随机访问。JDK1.5之前，如果想要在并发环境下使用“列表”，一般有以下3种方式：  使用Vector类 使用Collections.synchronizedList返回一个同步代理类； 自己实现ArrayList的子类，并进行同步/加锁。  前两种方式都相当于加了一把“全局锁”，访问任何方法都需要首先获取锁。第3种方式，需要自">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549545250514.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549546349789.jpg">
+<meta property="og:updated_time" content="2019-09-25T00:01:35.238Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="J.U.C 并发集合（五）：CopyOnWriteArrayList">
+<meta name="twitter:description" content="ArrayList是一种“列表”数据机构，其底层是通过数组来实现元素的随机访问。JDK1.5之前，如果想要在并发环境下使用“列表”，一般有以下3种方式：  使用Vector类 使用Collections.synchronizedList返回一个同步代理类； 自己实现ArrayList的子类，并进行同步/加锁。  前两种方式都相当于加了一把“全局锁”，访问任何方法都需要首先获取锁。第3种方式，需要自">
+<meta name="twitter:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549545250514.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_05_copy_on_write_array_list/"/>
+
+
+
+
+
+  <title>J.U.C 并发集合（五）：CopyOnWriteArrayList | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_05_copy_on_write_array_list/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">J.U.C 并发集合（五）：CopyOnWriteArrayList</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T08:01:21+08:00">
+                2019-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/并发集合系列/" itemprop="url" rel="index">
+                    <span itemprop="name">并发集合系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/09/25/java_concurrent_collection/java_concurrent_collection_05_copy_on_write_array_list/" class="leancloud_visitors" data-flag-title="J.U.C 并发集合（五）：CopyOnWriteArrayList">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>ArrayList是一种“列表”数据机构，其底层是通过数组来实现元素的随机访问。JDK1.5之前，如果想要在并发环境下使用“列表”，一般有以下3种方式：</p>
+<ol>
+<li>使用Vector类</li>
+<li>使用Collections.synchronizedList返回一个同步代理类；</li>
+<li>自己实现ArrayList的子类，并进行同步/加锁。</li>
+</ol>
+<p>前两种方式都相当于加了一把“全局锁”，访问任何方法都需要首先获取锁。第3种方式，需要自己实现，复杂度较高。</p>
+<p>JDK1.5时，随着J.U.C引入了一个新的集合工具类——CopyOnWriteArrayList：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549545250514.jpg" alt=""></p>
+<p>大多数业务场景都是一种“读多写少”的情形，CopyOnWriteArrayList就是为适应这种场景而诞生的。</p>
+<p>CopyOnWriteArrayList，运用了一种“写时复制”的思想。通俗的理解就是当我们需要修改（增/删/改）列表中的元素时，不直接进行修改，而是先将列表Copy，然后在新的副本上进行修改，修改完成之后，再将引用从原列表指向新列表。</p>
+<p>这样做的好处是读/写是不会冲突的，可以并发进行，读操作还是在原列表，写操作在新列表。仅仅当有多个线程同时进行写操作时，才会进行同步。</p>
+<h2 id="内部结构"><a href="#内部结构" class="headerlink" title="内部结构"></a>内部结构</h2><p>CopyOnWriteArrayList的字段很简单：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class CopyOnWriteArrayList&lt;E&gt;</span><br><span class="line">    implements List&lt;E&gt;, RandomAccess, Cloneable, java.io.Serializable &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 排它锁, 用于同步修改操作</span><br><span class="line">     */</span><br><span class="line">    final transient ReentrantLock lock = new ReentrantLock();</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 内部数组</span><br><span class="line">     */</span><br><span class="line">    private transient volatile Object[] array;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，lock用于对修改操作进行同步，array就是内部实际保存数据的数组。</p>
+<p>CopyOnWriteArrayList提供了三种不同的构造器，这三种构造器最终都是创建一个数组，并通过setArray方法赋给array字段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 空构造器.</span><br><span class="line"> */</span><br><span class="line">public CopyOnWriteArrayList() &#123;</span><br><span class="line">    setArray(new Object[0]);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">仅仅是设置一个了大小为0的数组，并赋给字段array：</span><br><span class="line">final void setArray(Object[] a) &#123;</span><br><span class="line">    array = a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 根据已有集合创建</span><br><span class="line"> */</span><br><span class="line">public CopyOnWriteArrayList(Collection&lt;? extends E&gt; c) &#123;</span><br><span class="line">    Object[] elements;</span><br><span class="line">    if (c.getClass() == CopyOnWriteArrayList.class)</span><br><span class="line">        elements = ((CopyOnWriteArrayList&lt;?&gt;) c).getArray();</span><br><span class="line">    else &#123;</span><br><span class="line">        elements = c.toArray();</span><br><span class="line">        // c.toArray might (incorrectly) not return Object[] (see 6260652)</span><br><span class="line">        if (elements.getClass() != Object[].class)</span><br><span class="line">            elements = Arrays.copyOf(elements, elements.length, Object[].class);</span><br><span class="line">    &#125;</span><br><span class="line">    setArray(elements);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 根据已有数组创建.</span><br><span class="line"> *</span><br><span class="line"> * @param toCopyIn the array (a copy of this array is used as the</span><br><span class="line"> *                 internal array)</span><br><span class="line"> * @throws NullPointerException if the specified array is null</span><br><span class="line"> */</span><br><span class="line">public CopyOnWriteArrayList(E[] toCopyIn) &#123;</span><br><span class="line">    setArray(Arrays.copyOf(toCopyIn, toCopyIn.length, Object[].class));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="核心方法"><a href="#核心方法" class="headerlink" title="核心方法"></a>核心方法</h2><h3 id="get方法"><a href="#get方法" class="headerlink" title="get方法"></a>get方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public E get(int index) &#123;</span><br><span class="line">    return get(getArray(), index);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private E get(Object[] a, int index) &#123;</span><br><span class="line">    return (E) a[index];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，get方法并没有加锁，直接返回了内部数组对应索引位置的值：array[index]</p>
+<h3 id="add方法"><a href="#add方法" class="headerlink" title="add方法"></a>add方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public boolean add(E e) &#123;</span><br><span class="line">    final ReentrantLock lock = this.lock;</span><br><span class="line">    lock.lock();</span><br><span class="line">    try &#123;</span><br><span class="line">        Object[] elements = getArray();     // 旧数组</span><br><span class="line">        int len = elements.length;</span><br><span class="line">        Object[] newElements = Arrays.copyOf(elements, len + 1);    // 复制并创建新数组</span><br><span class="line">        newElements[len] = e;               // 将元素插入到新数组末尾</span><br><span class="line">        setArray(newElements);              // 内部array引用指向新数组</span><br><span class="line">        return true;</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>add方法首先会进行加锁，保证只有一个线程能进行修改；然后会创建一个新数组（大小为n+1），并将原数组的值复制到新数组，新元素插入到新数组的最后；最后，将字段array指向新数组。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549546349789.jpg" alt=""></p>
+<p>上图中，ThreadB对Array的修改由于是在新数组上进行的，所以并不会对ThreadA的读操作产生影响。</p>
+<h3 id="remove方法"><a href="#remove方法" class="headerlink" title="remove方法"></a>remove方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public E remove(int index) &#123;</span><br><span class="line">    final ReentrantLock lock = this.lock;</span><br><span class="line">    lock.lock();</span><br><span class="line">    try &#123;</span><br><span class="line">        Object[] elements = getArray();</span><br><span class="line">        int len = elements.length;</span><br><span class="line">        E oldValue = get(elements, index);  // 获取旧数组中的元素, 用于返回</span><br><span class="line">        int numMoved = len - index - 1;     // 需要移动多少个元素</span><br><span class="line">        if (numMoved == 0)                  // index位置刚好是最后一个元素</span><br><span class="line">            setArray(Arrays.copyOf(elements, len - 1));</span><br><span class="line">        else &#123;</span><br><span class="line">            Object[] newElements = new Object[len - 1];</span><br><span class="line">            System.arraycopy(elements, 0, newElements, 0, index);</span><br><span class="line">            System.arraycopy(elements, index + 1, newElements, index, numMoved);</span><br><span class="line">            setArray(newElements);</span><br><span class="line">        &#125;</span><br><span class="line">        return oldValue;</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>删除方法和插入一样，都需要先加锁（所有涉及修改元素的方法都需要先加锁，写-写不能并发），然后构建新数组，复制旧数组元素至新数组，最后将array指向新数组。</p>
+<h3 id="迭代"><a href="#迭代" class="headerlink" title="迭代"></a>迭代</h3><p>CopyOnWriteArrayList对元素进行迭代时，仅仅返回一个当前内部数组的快照，也就是说，如果此时有其它线程正在修改元素，并不会在迭代中反映出来，因为修改都是在新数组中进行的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public Iterator&lt;E&gt; iterator() &#123;</span><br><span class="line">    return new COWIterator&lt;E&gt;(getArray(), 0);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">static final class COWIterator&lt;E&gt; implements ListIterator&lt;E&gt; &#123;</span><br><span class="line">    /**</span><br><span class="line">     * Snapshot of the array</span><br><span class="line">     */</span><br><span class="line">    private final Object[] snapshot;</span><br><span class="line">    /**</span><br><span class="line">     * Index of element to be returned by subsequent call to next.</span><br><span class="line">     */</span><br><span class="line">    private int cursor;</span><br><span class="line"></span><br><span class="line">    private COWIterator(Object[] elements, int initialCursor) &#123;</span><br><span class="line">        cursor = initialCursor;</span><br><span class="line">        snapshot = elements;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public boolean hasNext() &#123;</span><br><span class="line">        return cursor &lt; snapshot.length;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public E next() &#123;</span><br><span class="line">        if (!hasNext())</span><br><span class="line">            throw new NoSuchElementException();</span><br><span class="line">        return (E) snapshot[cursor++];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，上述iterator方法返回一个迭代器对象——COWIterator，COWIterator的迭代是在旧数组上进行的，当创建迭代器的那一刻就确定了，所以迭代过程中不会抛出并发修改异常——ConcurrentModificationException。</p>
+<p>另外，迭代器对象也不支持修改方法，全部会抛出UnsupportedOperationException异常。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>CopyOnWriteArrayList的思想和实现整体上还是比较简单，它适用于处理“读多写少”的并发场景。通过上述对CopyOnWriteArrayList的分析，读者也应该可以发现该类存在的一些问题：</p>
+<ol>
+<li>内存的使用</li>
+</ol>
+<p>由于CopyOnWriteArrayList使用了“写时复制”，所以在进行写操作的时候，内存里会同时存在两个array数组，如果数组内存占用的太大，那么可能会造成频繁GC,所以CopyOnWriteArrayList并不适合大数据量的场景。</p>
+<ol>
+<li>数据一致性</li>
+</ol>
+<p>CopyOnWriteArrayList只能保证数据的最终一致性，不能保证数据的实时一致性——读操作读到的数据只是一份快照。所以如果希望写入的数据可以立刻被读到，那CopyOnWriteArrayList并不适合。</p>
+<p>转载自：<a href="https://segmentfault.com/a/1190000016214572" target="_blank" rel="noopener">https://segmentfault.com/a/1190000016214572</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_04_concurrent_skip_list_set/" rel="next" title="J.U.C 并发集合（四）：ConcurrentSkipListSet">
+                <i class="fa fa-chevron-left"></i> J.U.C 并发集合（四）：ConcurrentSkipListSet
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_06_copy_on_write_array_set/" rel="prev" title="J.U.C 并发集合（六）：CopyOnWriteArraySet">
+                J.U.C 并发集合（六）：CopyOnWriteArraySet <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">121</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#内部结构"><span class="nav-number">1.</span> <span class="nav-text">内部结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#核心方法"><span class="nav-number">2.</span> <span class="nav-text">核心方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#get方法"><span class="nav-number">2.1.</span> <span class="nav-text">get方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#add方法"><span class="nav-number">2.2.</span> <span class="nav-text">add方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#remove方法"><span class="nav-number">2.3.</span> <span class="nav-text">remove方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代"><span class="nav-number">2.4.</span> <span class="nav-text">迭代</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

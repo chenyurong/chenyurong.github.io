@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="ConcurrentLinkedQueue是JDK1.5时随着J.U.C一起引入的一个支持并发环境的队列。从名字就可以看出来，ConcurrentLinkedQueue底层是基于链表实现的。 Doug Lea在实现ConcurrentLinkedQueue时，并没有利用锁或底层同步原语，而是完全基于自旋+CAS的方式实现了该队列。回想一下AQS，AQS内部的CLH等待队列也是利用了这种方式。 由于">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="J.U.C 并发集合（七）：ConcurrentLinkedQueue">
+<meta property="og:url" content="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_07_concurrent_linked_queue/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="ConcurrentLinkedQueue是JDK1.5时随着J.U.C一起引入的一个支持并发环境的队列。从名字就可以看出来，ConcurrentLinkedQueue底层是基于链表实现的。 Doug Lea在实现ConcurrentLinkedQueue时，并没有利用锁或底层同步原语，而是完全基于自旋+CAS的方式实现了该队列。回想一下AQS，AQS内部的CLH等待队列也是利用了这种方式。 由于">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549548988409.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549549409297.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549549718860.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549550417467.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549550696018.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549550896730.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549551116899.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549551320423.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549551743177.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549551930605.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549552130780.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549552296518.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549552490459.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549552579210.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549552659656.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549552751845.jpg">
+<meta property="og:updated_time" content="2019-09-25T00:03:08.992Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="J.U.C 并发集合（七）：ConcurrentLinkedQueue">
+<meta name="twitter:description" content="ConcurrentLinkedQueue是JDK1.5时随着J.U.C一起引入的一个支持并发环境的队列。从名字就可以看出来，ConcurrentLinkedQueue底层是基于链表实现的。 Doug Lea在实现ConcurrentLinkedQueue时，并没有利用锁或底层同步原语，而是完全基于自旋+CAS的方式实现了该队列。回想一下AQS，AQS内部的CLH等待队列也是利用了这种方式。 由于">
+<meta name="twitter:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549548988409.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_07_concurrent_linked_queue/"/>
+
+
+
+
+
+  <title>J.U.C 并发集合（七）：ConcurrentLinkedQueue | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_07_concurrent_linked_queue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">J.U.C 并发集合（七）：ConcurrentLinkedQueue</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T08:02:51+08:00">
+                2019-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/并发集合系列/" itemprop="url" rel="index">
+                    <span itemprop="name">并发集合系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/09/25/java_concurrent_collection/java_concurrent_collection_07_concurrent_linked_queue/" class="leancloud_visitors" data-flag-title="J.U.C 并发集合（七）：ConcurrentLinkedQueue">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>ConcurrentLinkedQueue是JDK1.5时随着J.U.C一起引入的一个支持并发环境的队列。从名字就可以看出来，ConcurrentLinkedQueue底层是基于链表实现的。</p>
+<p>Doug Lea在实现ConcurrentLinkedQueue时，并没有利用锁或底层同步原语，而是完全基于自旋+CAS的方式实现了该队列。回想一下AQS，AQS内部的CLH等待队列也是利用了这种方式。</p>
+<p>由于是完全基于无锁算法实现的，所以当出现多个线程同时进行修改队列的操作（比如同时入队），很可能出现CAS修改失败的情况，那么失败的线程会进入下一次自旋，再尝试入队操作，直到成功。所以，在并发量适中的情况下，ConcurrentLinkedQueue一般具有较好的性能。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549548988409.jpg" alt=""></p>
+<h2 id="队列结构"><a href="#队列结构" class="headerlink" title="队列结构"></a>队列结构</h2><p>我们来看下ConcurrentLinkedQueue的内部结构，：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">public class ConcurrentLinkedQueue&lt;E&gt; extends AbstractQueue&lt;E&gt;</span><br><span class="line">    implements Queue&lt;E&gt;, java.io.Serializable &#123;</span><br><span class="line"> </span><br><span class="line">    /**</span><br><span class="line">     * 队列头指针</span><br><span class="line">     */</span><br><span class="line">    private transient volatile Node&lt;E&gt; head;</span><br><span class="line"> </span><br><span class="line">    /**</span><br><span class="line">     * 队列尾指针.</span><br><span class="line">     */</span><br><span class="line">    private transient volatile Node&lt;E&gt; tail;</span><br><span class="line"> </span><br><span class="line">    // Unsafe mechanics</span><br><span class="line">     </span><br><span class="line">    private static final sun.misc.Unsafe UNSAFE;</span><br><span class="line">    private static final long headOffset;</span><br><span class="line">    private static final long tailOffset;</span><br><span class="line">     </span><br><span class="line">    static &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            UNSAFE = sun.misc.Unsafe.getUnsafe();</span><br><span class="line">            Class&lt;?&gt; k = ConcurrentLinkedQueue.class;</span><br><span class="line">            headOffset = UNSAFE.objectFieldOffset (k.getDeclaredField(&quot;head&quot;));</span><br><span class="line">            tailOffset = UNSAFE.objectFieldOffset (k.getDeclaredField(&quot;tail&quot;));</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            throw new Error(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    /**</span><br><span class="line">     * 队列结点定义</span><br><span class="line">     */</span><br><span class="line">    private static class Node&lt;E&gt; &#123;</span><br><span class="line">        volatile E item;        // 元素值</span><br><span class="line">        volatile Node&lt;E&gt; next;  // 后驱指针</span><br><span class="line"> </span><br><span class="line">        Node(E item) &#123;</span><br><span class="line">            UNSAFE.putObject(this, itemOffset, item);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        boolean casItem(E cmp, E val) &#123;</span><br><span class="line">            return UNSAFE.compareAndSwapObject(this, itemOffset, cmp, val);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        void lazySetNext(Node&lt;E&gt; val) &#123;</span><br><span class="line">            UNSAFE.putOrderedObject(this, nextOffset, val);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        boolean casNext(Node&lt;E&gt; cmp, Node&lt;E&gt; val) &#123;</span><br><span class="line">            return UNSAFE.compareAndSwapObject(this, nextOffset, cmp, val);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        // Unsafe mechanics</span><br><span class="line"> </span><br><span class="line">        private static final sun.misc.Unsafe UNSAFE;</span><br><span class="line">        private static final long itemOffset;</span><br><span class="line">        private static final long nextOffset;</span><br><span class="line"> </span><br><span class="line">        static &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                UNSAFE = sun.misc.Unsafe.getUnsafe();</span><br><span class="line">                Class&lt;?&gt; k = Node.class;</span><br><span class="line">                itemOffset = UNSAFE.objectFieldOffset(k.getDeclaredField(&quot;item&quot;));</span><br><span class="line">                nextOffset = UNSAFE.objectFieldOffset(k.getDeclaredField(&quot;next&quot;));</span><br><span class="line">            &#125; catch (Exception e) &#123;</span><br><span class="line">                throw new Error(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    //...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，ConcurrentLinkedQueue内部就是一个简单的单链表结构，每入队一个元素就是插入一个Node类型的结点。字段head指向队列头，tail指向队列尾，通过Unsafe来CAS操作字段值以及Node对象的字段值。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549549409297.jpg" alt=""></p>
+<h2 id="构造器定义"><a href="#构造器定义" class="headerlink" title="构造器定义"></a>构造器定义</h2><p>ConcurrentLinkedQueue包含两种构造器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 构建一个空队列（head,tail均指向一个占位结点）.</span><br><span class="line"> */</span><br><span class="line">public ConcurrentLinkedQueue() &#123;</span><br><span class="line">    head = tail = new Node&lt;E&gt;(null);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 根据已有集合,构造队列</span><br><span class="line"> */</span><br><span class="line">public ConcurrentLinkedQueue(Collection&lt;? extends E&gt; c) &#123;</span><br><span class="line">    Node&lt;E&gt; h = null, t = null;</span><br><span class="line">    for (E e : c) &#123;</span><br><span class="line">        checkNotNull(e);</span><br><span class="line">        Node&lt;E&gt; newNode = new Node&lt;E&gt;(e);</span><br><span class="line">        if (h == null)</span><br><span class="line">            h = t = newNode;</span><br><span class="line">        else &#123;</span><br><span class="line">            t.lazySetNext(newNode);</span><br><span class="line">            t = newNode;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    if (h == null)</span><br><span class="line">        h = t = new Node&lt;E&gt;(null);</span><br><span class="line">    head = h;</span><br><span class="line">    tail = t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们重点看下空构造器，通过空构造器建立的ConcurrentLinkedQueue对象，其head和tail指针并非指向null，而是指向一个item值为null的Node结点——哨兵结点，如下图：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549549718860.jpg" alt=""></p>
+<h2 id="入队操作"><a href="#入队操作" class="headerlink" title="入队操作"></a>入队操作</h2><p>ConcurrentLinkedQueue的入队代码很简单，却非常精妙：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 入队一个元素.</span><br><span class="line"> *</span><br><span class="line"> * @throws NullPointerException 元素不能为null</span><br><span class="line"> */</span><br><span class="line">public boolean add(E e) &#123;</span><br><span class="line">    return offer(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 在队尾入队元素e, 直到成功</span><br><span class="line"> */</span><br><span class="line">public boolean offer(E e) &#123;</span><br><span class="line">    checkNotNull(e);</span><br><span class="line">    final Node&lt;E&gt; newNode = new Node&lt;E&gt;(e);</span><br><span class="line">    for (Node&lt;E&gt; t = tail, p = t; ; ) &#123;             // 自旋, 直到插入结点成功</span><br><span class="line">        Node&lt;E&gt; q = p.next;</span><br><span class="line">        if (q == null) &#123;                            // CASE1: 正常情况下, 新结点直接插入到队尾</span><br><span class="line">            if (p.casNext(null, newNode)) &#123;</span><br><span class="line">                // CAS竞争插入成功</span><br><span class="line">                if (p != t)                         // CAS竞争失败的线程会在下一次自旋中进入该逻辑</span><br><span class="line">                    casTail(t, newNode);            // 重新设置队尾指针tail</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">            // CAS竞争插入失败,则进入下一次自旋</span><br><span class="line"> </span><br><span class="line">        &#125; else if (p == q)                          // CASE2: 发生了出队操作</span><br><span class="line">            p = (t != (t = tail)) ? t : head;</span><br><span class="line">        else</span><br><span class="line">            // 将p重新指向队尾结点</span><br><span class="line">            p = (p != t &amp;&amp; t != (t = tail)) ? t : q;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们来分析下上面offer方法的实现。单线程的情况下，元素入队比较好理解，直接线性地在队首插入元素即可。现在我们假设有两个线程ThreadA和ThreadB同时进行入队操作：</p>
+<p>①ThreadA先单独入队两个元素9、2</p>
+<p>此时队列的结构如下：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549550417467.jpg" alt=""></p>
+<p>②ThreadA入队元素“10”，ThreadB入队元素“25”</p>
+<p>此时ThreadA和ThreadB若并发执行，我们看下会发生什么：</p>
+<p>1、ThreadA和ThreadB同时进入自旋中的以下代码块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">if (q == null) &#123;                            // CASE1: 正常情况下, 新结点直接插入到队尾</span><br><span class="line">    if (p.casNext(null, newNode)) &#123;</span><br><span class="line">        // CAS竞争插入成功</span><br><span class="line">        if (p != t)                         // CAS竞争失败的线程会在下一次自旋中进入该逻辑</span><br><span class="line">            casTail(t, newNode);            // 重新设置队尾指针tail</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">    // CAS竞争插入失败,则进入下一次自旋</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2、ThreadA执行cas操作（p.casNext）成功，插入新结点“10”</p>
+<p>ThreadA执行完成后，直接返回true，队列结构如下：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549550696018.jpg" alt=""></p>
+<p>3、ThreadB执行cas操作（p.casNext）失败</p>
+<p>由于CAS操作同时修改队尾元素，导致ThreadB操作失败，则ThreadB进入下一次自旋；<br>在下一次自旋中，进入以下代码块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">else</span><br><span class="line">    // 将p重新指向队尾结点</span><br><span class="line">    p = (p != t &amp;&amp; t != (t = tail)) ? t : q;</span><br></pre></td></tr></table></figure>
+<p>上述分支的作用就是让p指针重新定位到队尾结点，此时队列结构如下：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549550896730.jpg" alt=""></p>
+<p>然后ThreadB会继续下一次自旋，并再次进入以下代码块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">if (q == null) &#123;                            // CASE1: 正常情况下, 新结点直接插入到队尾</span><br><span class="line">    if (p.casNext(null, newNode)) &#123;</span><br><span class="line">        // CAS竞争插入成功</span><br><span class="line">        if (p != t)                         // CAS竞争失败的线程会在下一次自旋中进入该逻辑</span><br><span class="line">            casTail(t, newNode);            // 重新设置队尾指针tail</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">    // CAS竞争插入失败,则进入下一次自旋</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时，CAS操作成功，队列结构如下：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549551116899.jpg" alt=""></p>
+<p>由于此时p!=t ，所以会调用casTail方法重新设置队尾指针：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">casTail(t, newNode); // 重新设置队尾指针tail</span><br></pre></td></tr></table></figure>
+<p>最终队列如下：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549551320423.jpg" alt=""></p>
+<p>从上面的分析过程可以看到，由于入队元素一定是要链接到队尾的，但并发情况下队尾结点可能随时变化，所以就需要指针定位最新的队尾结点，并在入队时判断队尾结点是否改变了，如果改变了，就需要重新设置定位指针，然后在下一次自旋中继续尝试入队操作。</p>
+<p>上面整个执行步骤有一段分支还没有覆盖到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">else if (p == q)                          // CASE2: 发生了出队操作</span><br><span class="line">     p = (t != (t = tail)) ? t : head;</span><br></pre></td></tr></table></figure>
+<p>这个分支只有在元素入队的同时，针对该元素也发生了“出队”操作才会执行，我们后面会分析元素的“出队”，理解了“出队”操作再回头来看这个分支就容易理解很多了。</p>
+<h2 id="出队操作"><a href="#出队操作" class="headerlink" title="出队操作"></a>出队操作</h2><p>队列中元素的“出队”是从队首移除元素，我们来看下ConcurrentLinkedQueue是如何实现出队的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 在队首出队元素, 直到成功</span><br><span class="line"> */</span><br><span class="line">public E poll() &#123;</span><br><span class="line">    restartFromHead:</span><br><span class="line">    for (; ; ) &#123;</span><br><span class="line">        for (Node&lt;E&gt; h = head, p = h, q; ; ) &#123;</span><br><span class="line">            E item = p.item;</span><br><span class="line"> </span><br><span class="line">            if (item != null &amp;&amp; p.casItem(item, null)) &#123;    // CASE2: 队首是非哨兵结点(item!=null)</span><br><span class="line">                if (p != h) // hop two nodes at a time</span><br><span class="line">                    updateHead(h, ((q = p.next) != null) ? q : p);</span><br><span class="line">                return item;</span><br><span class="line">            &#125; else if ((q = p.next) == null) &#123;      // CASE1: 队首是一个哨兵结点(item==null)</span><br><span class="line">                updateHead(h, p);</span><br><span class="line">                return null;</span><br><span class="line">            &#125; else if (p == q)</span><br><span class="line">                continue restartFromHead;</span><br><span class="line">            else</span><br><span class="line">                p = q;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还是通过示例来看，假设初始的队列结构如下：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549551743177.jpg" alt=""></p>
+<p>①ThreadA先单独进行出队操作</p>
+<p>由于head所指的是item==null的结点，所以ThreadA会执行以下分支：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">else</span><br><span class="line">   p = q;</span><br></pre></td></tr></table></figure>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549551930605.jpg" alt=""></p>
+<p>然后进入下一次自旋，在自旋中执行以下分支，如果CAS操作成功，则移除首个有效元素，并重新设置头指针：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if (item != null &amp;&amp; p.casItem(item, null)) &#123;    // CASE2: 队首是非哨兵结点(item!=null)</span><br><span class="line">    if (p != h) // hop two nodes at a time</span><br><span class="line">        updateHead(h, ((q = p.next) != null) ? q : p);</span><br><span class="line">    return item;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时队列的结构如下：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549552130780.jpg" alt=""></p>
+<p>如果ThreadA的CAS操作失败呢？</p>
+<p>CAS操作失败则会进入以下分支，并重新开始自旋：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">else if (p == q)</span><br><span class="line">    continue restartFromHead;</span><br></pre></td></tr></table></figure>
+<p>最终前面两个null结点会被GC回收，队列结构如下：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549552296518.jpg" alt=""></p>
+<p>②ThreadA继续进行出队操作</p>
+<p>ThreadA继续执行“出队”操作，还是执行以下分支：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if (item != null &amp;&amp; p.casItem(item, null)) &#123;    // CASE2: 队首是非哨兵结点(item!=null)</span><br><span class="line">    if (p != h) // hop two nodes at a time</span><br><span class="line">        updateHead(h, ((q = p.next) != null) ? q : p);</span><br><span class="line">    return item;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是此时p==h，所以仅将头结点置null，这其实是一种“懒删除”的策略。</p>
+<p>出队元素“2”：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549552490459.jpg" alt=""></p>
+<p>出队元素“10”：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549552579210.jpg" alt=""></p>
+<p>最终队列结果如下：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549552659656.jpg" alt=""></p>
+<p>③ThreadA进行出队，其它线程进行入队</p>
+<p>这是最特殊的一种情况，当队列中只剩下一个元素时，如果同时发生出队和入队操作，会导致队列出现下面这种结构：（假设ThreadA进行出队元素“25”，ThreadB进行入队元素“11”）</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15549552751845.jpg" alt=""></p>
+<p>此时tail.next=tail自身，所以ThreadB在执行入队时，会进入到offer方法的以下分支：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">else if (p == q)                          // CASE2: 发生了出队操作</span><br><span class="line">   p = (t != (t = tail)) ? t : head;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>ConcurrentLinkedQueue使用了自旋+CAS的非阻塞算法来保证线程并发访问时的数据一致性。由于队列本身是一种链表结构，所以虽然算法看起来很简单，但其实需要考虑各种并发的情况，实现复杂度较高，并且ConcurrentLinkedQueue不具备实时的数据一致性，实际运用中，队列一般在生产者-消费者的场景下使用得较多，所以ConcurrentLinkedQueue的使用场景并不如阻塞队列那么多。</p>
+<p>另外，关于ConcurrentLinkedQueue还有以下需要注意的几点：</p>
+<ol>
+<li>ConcurrentLinkedQueue的迭代器是弱一致性的，这在并发容器中是比较普遍的现象，主要是指在一个线程在遍历队列结点而另一个线程尝试对某个队列结点进行修改的话不会抛出ConcurrentModificationException，这也就造成在遍历某个尚未被修改的结点时，在next方法返回时可以看到该结点的修改，但在遍历后再对该结点修改时就看不到这种变化。</li>
+<li>size方法需要遍历链表，所以在并发情况下，其结果不一定是准确的，只能供参考。</li>
+</ol>
+<p>转载自：<a href="https://segmentfault.com/a/1190000016248143" target="_blank" rel="noopener">https://segmentfault.com/a/1190000016248143</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_06_copy_on_write_array_set/" rel="next" title="J.U.C 并发集合（六）：CopyOnWriteArraySet">
+                <i class="fa fa-chevron-left"></i> J.U.C 并发集合（六）：CopyOnWriteArraySet
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_08_concurrent_linked_deque/" rel="prev" title="J.U.C 并发集合（八）：ConcurrentLinkedDeque">
+                J.U.C 并发集合（八）：ConcurrentLinkedDeque <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">121</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#队列结构"><span class="nav-number">1.</span> <span class="nav-text">队列结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造器定义"><span class="nav-number">2.</span> <span class="nav-text">构造器定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#入队操作"><span class="nav-number">3.</span> <span class="nav-text">入队操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#出队操作"><span class="nav-number">4.</span> <span class="nav-text">出队操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
