@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="陈树义, Java, Spring, Dubbo, 源码阅读" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="[TOC] 为什么用Markdown，而不用Word？写博客、写文章比较多的人都知道 Markdown 是什么。  Markdown 是一种轻量级标记语言，创始人为 John Gruber。它允许人们「使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档」。——维基百科  简单地说，Markdown 与 HTML 语言一样，使用一些符号就代替样式。但是它比 HTML">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么用Markdown，而不用Word？">
+<meta property="og:url" content="http://yoursite.com/2019/10/09/essay/why_markdown_no_word/index.html">
+<meta property="og:site_name" content="陈树义">
+<meta property="og:description" content="[TOC] 为什么用Markdown，而不用Word？写博客、写文章比较多的人都知道 Markdown 是什么。  Markdown 是一种轻量级标记语言，创始人为 John Gruber。它允许人们「使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档」。——维基百科  简单地说，Markdown 与 HTML 语言一样，使用一些符号就代替样式。但是它比 HTML">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699122084154.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699125768215.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699129968966.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699130870317.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699135616495.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699136069632.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699131950343.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699132961212.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699134550132.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699137439495.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699138710108.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699140395703.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699147965916.jpg">
+<meta property="og:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699149820754.jpg">
+<meta property="og:updated_time" content="2019-10-09T14:24:51.738Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么用Markdown，而不用Word？">
+<meta name="twitter:description" content="[TOC] 为什么用Markdown，而不用Word？写博客、写文章比较多的人都知道 Markdown 是什么。  Markdown 是一种轻量级标记语言，创始人为 John Gruber。它允许人们「使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档」。——维基百科  简单地说，Markdown 与 HTML 语言一样，使用一些符号就代替样式。但是它比 HTML">
+<meta name="twitter:image" content="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699122084154.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/10/09/essay/why_markdown_no_word/"/>
+
+
+
+
+
+  <title>为什么用Markdown，而不用Word？ | 陈树义</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-113382792-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9d1e126f4ddcdf87de1bb8dd68964127";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈树义</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">偶尔写写文章的宅男</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/09/essay/why_markdown_no_word/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">为什么用Markdown，而不用Word？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-09T22:21:52+08:00">
+                2019-10-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/生活随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">生活随笔</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/10/09/essay/why_markdown_no_word/" class="leancloud_visitors" data-flag-title="为什么用Markdown，而不用Word？">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>[TOC]</p>
+<h1 id="为什么用Markdown，而不用Word？"><a href="#为什么用Markdown，而不用Word？" class="headerlink" title="为什么用Markdown，而不用Word？"></a>为什么用Markdown，而不用Word？</h1><p>写博客、写文章比较多的人都知道 Markdown 是什么。</p>
+<blockquote>
+<p>Markdown 是一种轻量级标记语言，创始人为 John Gruber。它允许人们「使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档」。——维基百科</p>
+</blockquote>
+<p>简单地说，Markdown 与 HTML 语言一样，使用一些符号就代替样式。但是它比 HTML 语言更加简单。例如我想要实现标题样式，那么我可以这么做：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699122084154.jpg" alt=""></p>
+<h2 id="Markdown的本质"><a href="#Markdown的本质" class="headerlink" title="Markdown的本质"></a>Markdown的本质</h2><p>有些朋友会觉得，我用 Word 也可以实现同样的效果，为什么要使用 Markdown 呢？这个问题提得非常好，直戳问题本质。</p>
+<p>Word 等其他文本编辑工具虽然也能实现同样的效果，但是其功能太强大了。Word 还能改变字体颜色，还可以调节字体大小。这么强大的功能可以说是 Word 的优点，但也可以说是它的缺点。</p>
+<p>当功能多了，我们的注意力就会分散，我们就会去纠结：这个字体大小到底是 14 还是 16 好？我想强调这一句话，是要加粗还是标红？</p>
+<p>而 Markdown 的出现让我们不需要去纠结这些问题。<strong>Markdown 的本质是让我们回归到内容本身，注重文章本身的结构，而不是样式。</strong></p>
+<p>例如我们想要强调一句话，那么我们直接使用两个星号为其加粗，而不需要考虑是加粗还是标红（Markdown中只有黑色字体，没有其他颜色字体）。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699125768215.jpg" alt=""></p>
+<p>你也不需要关心字体大小问题，因为 Markdown 中字体大小都与结构有关，无法手动设置。一级标题字体大一些，二级标题小一些。我们只需要关注哪些是一级标题，哪些是二级标题。而不需要去纠结标题字体到底要设置多大。</p>
+<p><strong>Markdown 的本质是让我们回归内容本身。</strong> 当你明白这个道理的时候，你会明白为什么许多功能 Markdown 没有。</p>
+<h2 id="Markdown语法"><a href="#Markdown语法" class="headerlink" title="Markdown语法"></a>Markdown语法</h2><p>原生的 Markdown 语法只包含了最基础的一些特性，例如：标题、加粗、斜体、段落、引用、超链接、图片、列表、代码块、水平分割线等。而一些自定义实现的编辑器，则有一些自定义的实现，例如：数学公式、TODO列表等。所以当你看到有一些语法在一个编辑可以用，但到另一个编辑器又用不了的时候，那么这个语法可能就不是通用的 Markdown 原生语法了。</p>
+<p>Markdown 语法非常简单，基本上只要多用几次就会了。下面简单介绍一些常用的 Markdown 语法。</p>
+<h3 id="段落"><a href="#段落" class="headerlink" title="段落"></a>段落</h3><p>Markdown 使用 <code>#</code> 号来表示段落。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699129968966.jpg" alt=""></p>
+<h3 id="加粗、斜体、加粗斜体"><a href="#加粗、斜体、加粗斜体" class="headerlink" title="加粗、斜体、加粗斜体"></a>加粗、斜体、加粗斜体</h3><p>Markdown 使用一个星号表示斜体，两个星号表示加粗，三个星号表示加粗斜体。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699130870317.jpg" alt=""></p>
+<h3 id="无序列表"><a href="#无序列表" class="headerlink" title="无序列表"></a>无序列表</h3><p>使用星号或者中横线来表示无序列表，注意后面需要加个空格。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699135616495.jpg" alt=""></p>
+<h3 id="有序列表"><a href="#有序列表" class="headerlink" title="有序列表"></a>有序列表</h3><p>使用<code>数字+.</code>来表示有序列表，后面同样需要价格空格。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699136069632.jpg" alt=""></p>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><p>Markdown 使用 <code>&gt;</code> 符号来表示引用。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699131950343.jpg" alt=""></p>
+<h3 id="超链接"><a href="#超链接" class="headerlink" title="超链接"></a>超链接</h3><p>Markdown 使用 <code>[]()</code> 来表示超链接，中括号表示链接文字，小括号表示链接地址。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699132961212.jpg" alt=""></p>
+<h3 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h3><p>图片的样式与超链接非常相似，只需在前面加个感叹号就可以了，即用<code>![]()</code>表示图片。其中中括号表示图片未加载时的提示文字，小括号表示图片地址。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699134550132.jpg" alt=""></p>
+<h3 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h3><p>我们使用 ` 号来表示代码块引用。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699137439495.jpg" alt=""></p>
+<h3 id="水平分割线"><a href="#水平分割线" class="headerlink" title="水平分割线"></a>水平分割线</h3><p>使用 <code>---</code> 来表示分割线</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699138710108.jpg" alt=""></p>
+<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h3><p>使用一根竖线来分隔各个单元格，使用冒号来决定单元格的对齐方向。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699140395703.jpg" alt=""></p>
+<h2 id="Markdown使用场景"><a href="#Markdown使用场景" class="headerlink" title="Markdown使用场景"></a>Markdown使用场景</h2><p>目前越来越多的站点都支持了 Markdown 语法，例如：Github 等代码托管平台，简书、博客园等写作平台。因此，掌握好 Markdown 语法可以非常方便地在各个主流站点使用。</p>
+<h2 id="编辑工具"><a href="#编辑工具" class="headerlink" title="编辑工具"></a>编辑工具</h2><p>因为 Markdown 本质上是一个纯文本，所以任何能打开纯文本的东西都可以来编辑 Markdown。但如果你想要有预览功能，那么一款顺手的编辑功能还是有必要的。</p>
+<p>在 Windows 上比较不错的编辑器有：MarkdownPad、Typora。在 OSX 上比较不错的编辑器有：Mou、MacDown、MWeb。</p>
+<p>而我之前使用 MouDown 和 sublime 做简单的编辑，但是笔记等的就使用印象笔记写，而要发表的文章则使用 MWeb 编写。</p>
+<h2 id="兼容神器"><a href="#兼容神器" class="headerlink" title="兼容神器"></a>兼容神器</h2><p>使用了 Markdown 可以写出条理非常清晰的文章，文章结构特别清晰。但是对于一些老编辑器而言，例如：ATLASSIAN 的 WIKI 对于 Markdown 的支持就很弱。</p>
+<p>那么怎么办呢？</p>
+<p>其实很简单，因为老的编辑器基本都支持 HTML，所以我们可以将 Markdown 渲染后的 HTML 复制到老编辑器。</p>
+<p>我一般是在本地写好 Markdown 文章，之后直接复制到一个 Markdown 编辑器，然后复制对应的 HTML 文本到老编辑器中。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699147965916.jpg" alt=""></p>
+<p>之后点击一下蓝色的复制按钮，就可以复制渲染后的 HTML 文本，最后直接粘贴到老编辑器中就可以了。我用的 Markdown 编辑器是：<a href="https://mdnice.github.io/" target="_blank" rel="noopener">https://mdnice.github.io/</a>，样式非常漂亮。</p>
+<h2 id="进阶应用"><a href="#进阶应用" class="headerlink" title="进阶应用"></a>进阶应用</h2><p>当你学会使用 Markdown 之后，你会发现 Markdown 还有更多好玩的地方。例如：开源的 gitbook 就可以教你把一个个 Markdown 文件组织起来，弄成一本电子书。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/15699149820754.jpg" alt=""></p>
+<p>具体如何操作，可以参考这里：<a href="https://github.com/chenyurong/gitbook-notebook" target="_blank" rel="noopener">https://github.com/chenyurong/gitbook-notebook</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/30/essay/the_problem_you_solve_is_more_important_than_the_code_you_write/" rel="next" title="你解决的问题，比你写的代码更重要！">
+                <i class="fa fa-chevron-left"></i> 你解决的问题，比你写的代码更重要！
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">陈树义</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">124</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenyurong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:shuyi.chen.china@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/chen-shu-yi-21/activities" target="_blank" title="ZhiHu">
+                      
+                        <i class="fa fa-fw fa-book"></i>ZhiHu</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dancefirstthinklater.github.io/" title="Java源码爱好者-草草集" target="_blank">Java源码爱好者-草草集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里巴巴中间件团队博客" target="_blank">阿里巴巴中间件团队博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么用Markdown，而不用Word？"><span class="nav-number">1.</span> <span class="nav-text">为什么用Markdown，而不用Word？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Markdown的本质"><span class="nav-number">1.1.</span> <span class="nav-text">Markdown的本质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Markdown语法"><span class="nav-number">1.2.</span> <span class="nav-text">Markdown语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#段落"><span class="nav-number">1.2.1.</span> <span class="nav-text">段落</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加粗、斜体、加粗斜体"><span class="nav-number">1.2.2.</span> <span class="nav-text">加粗、斜体、加粗斜体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无序列表"><span class="nav-number">1.2.3.</span> <span class="nav-text">无序列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有序列表"><span class="nav-number">1.2.4.</span> <span class="nav-text">有序列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引用"><span class="nav-number">1.2.5.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#超链接"><span class="nav-number">1.2.6.</span> <span class="nav-text">超链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片"><span class="nav-number">1.2.7.</span> <span class="nav-text">图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码块"><span class="nav-number">1.2.8.</span> <span class="nav-text">代码块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#水平分割线"><span class="nav-number">1.2.9.</span> <span class="nav-text">水平分割线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表格"><span class="nav-number">1.2.10.</span> <span class="nav-text">表格</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Markdown使用场景"><span class="nav-number">1.3.</span> <span class="nav-text">Markdown使用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编辑工具"><span class="nav-number">1.4.</span> <span class="nav-text">编辑工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#兼容神器"><span class="nav-number">1.5.</span> <span class="nav-text">兼容神器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进阶应用"><span class="nav-number">1.6.</span> <span class="nav-text">进阶应用</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈树义</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ytt7fLFQUG3Iaddbl8u37qR4-gzGzoHsz", "CgXunVBQDWaT1EHkxf8FR0QP");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
