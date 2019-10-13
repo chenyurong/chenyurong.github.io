@@ -279,7 +279,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_01_concurrent_hash_map_01/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/13/java_concurrent/java_juc_03_syn_status_acquire_release/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -298,7 +298,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_01_concurrent_hash_map_01/" itemprop="url">J.U.C 并发集合（一）：ConcurrentHashMap基础</a></h1>
+                <a class="post-title-link" href="/2019/10/13/java_concurrent/java_juc_03_syn_status_acquire_release/" itemprop="url">J.U.C 并发源码（三）：同步状态的获取与释放</a></h1>
         
 
         <div class="post-meta">
@@ -310,7 +310,820 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T07:52:09+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-13T08:11:56+08:00">
+                2019-10-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/并发系列/" itemprop="url" rel="index">
+                    <span itemprop="name">并发系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/10/13/java_concurrent/java_juc_03_syn_status_acquire_release/" class="leancloud_visitors" data-flag-title="J.U.C 并发源码（三）：同步状态的获取与释放">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          在前面提到过，AQS是构建Java同步组件的基础，我们期待它能够成为实现大部分同步需求的基础。AQS的设计模式采用的模板方法模式，子类通过继承的方式，实现它的抽象方法来管理同步状态。
+对于子类而言它并没有太多的活要做，AQS提供了大量的模板方法来实现同步，主要是分为三类：独占式获取和释放同步状态、共
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/10/13/java_concurrent/java_juc_03_syn_status_acquire_release/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+      
+    
+      
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/13/java_concurrent/java_juc_02_clh_queue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/13/java_concurrent/java_juc_02_clh_queue/" itemprop="url">J.U.C 并发源码（二）：CLH同步队列</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-13T08:10:15+08:00">
+                2019-10-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/并发系列/" itemprop="url" rel="index">
+                    <span itemprop="name">并发系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/10/13/java_concurrent/java_juc_02_clh_queue/" class="leancloud_visitors" data-flag-title="J.U.C 并发源码（二）：CLH同步队列">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          在上篇提到了AQS内部维护着一个FIFO队列，该队列就是CLH同步队列。CLH同步队列是一个FIFO双向队列，AQS依赖它来完成同步状态的管理，当前线程如果获取同步状态失败时，AQS则会将当前线程已经等待状态等信息构造成一个节点（Node）并将其加入到CLH同步队列，同时会阻塞当前线程，当同步状态释
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/10/13/java_concurrent/java_juc_02_clh_queue/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+      
+    
+      
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/13/java_concurrent/java_juc_01_aqs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/13/java_concurrent/java_juc_01_aqs/" itemprop="url">J.U.C 并发源码（一）：AQS简介</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-13T08:05:00+08:00">
+                2019-10-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/并发系列/" itemprop="url" rel="index">
+                    <span itemprop="name">并发系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/10/13/java_concurrent/java_juc_01_aqs/" class="leancloud_visitors" data-flag-title="J.U.C 并发源码（一）：AQS简介">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Java的内置锁一直都是备受争议的，在JDK 1.6之前，synchronized这个重量级锁其性能一直都是较为低下，虽然在1.6后，进行大量的锁优化策略。
+但是与Lock相比synchronized还是存在一些缺陷的：虽然synchronized提供了便捷性的隐式获取锁释放锁机制（基于JVM机制）
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/10/13/java_concurrent/java_juc_01_aqs/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+      
+    
+      
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/09/essay/why_markdown_no_word/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/09/essay/why_markdown_no_word/" itemprop="url">为什么用Markdown，而不用Word？</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-09T22:21:52+08:00">
+                2019-10-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/生活随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">生活随笔</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/10/09/essay/why_markdown_no_word/" class="leancloud_visitors" data-flag-title="为什么用Markdown，而不用Word？">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          写博客、写文章比较多的人都知道 Markdown 是什么。
+
+Markdown 是一种轻量级标记语言，创始人为 John Gruber。它允许人们「使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档」。——维基百科
+
+简单地说，Markdown 与 HTML 语言一
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/10/09/essay/why_markdown_no_word/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+      
+    
+      
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/30/essay/the_problem_you_solve_is_more_important_than_the_code_you_write/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/09/30/essay/the_problem_you_solve_is_more_important_than_the_code_you_write/" itemprop="url">你解决的问题，比你写的代码更重要！</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-30T19:08:58+08:00">
+                2019-09-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/好文分享/" itemprop="url" rel="index">
+                    <span itemprop="name">好文分享</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/09/30/essay/the_problem_you_solve_is_more_important_than_the_code_you_write/" class="leancloud_visitors" data-flag-title="你解决的问题，比你写的代码更重要！">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          程序员似乎忘记了软件的真正目的，那就是解决现实问题。如果开发人员过于专注于开发，他们可能会错过他们编写的软件背后的目的。他们可能看不到不需要任何代码的隐藏解决方案。
+这里有一个例子。
+有一家初创公司正在建造一种设备，允许一个人使用蓝牙解锁他们家的门。与其对应的是手机的一个应用，其有一个名为「开门」的
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/30/essay/the_problem_you_solve_is_more_important_than_the_code_you_write/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+      
+    
+      
+        
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_09_summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈树义">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈树义">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_09_summary/" itemprop="url">J.U.C 并发集合（九）：并发集合总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T08:04:20+08:00">
                 2019-09-25
               </time>
             
@@ -350,7 +1163,7 @@
 
           
           
-             <span id="/2019/09/25/java_concurrent_collection/java_concurrent_collection_01_concurrent_hash_map_01/" class="leancloud_visitors" data-flag-title="J.U.C 并发集合（一）：ConcurrentHashMap基础">
+             <span id="/2019/09/25/java_concurrent_collection/java_concurrent_collection_09_summary/" class="leancloud_visitors" data-flag-title="J.U.C 并发集合（九）：并发集合总结">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -383,14 +1196,17 @@
       
         
           
-          ConcurrentHashMap是在JDK1.5时，J.U.C引入的一个同步集合工具类，顾名思义，这是一个线程安全的HashMap。不同版本的ConcurrentHashMap，内部实现机制千差万别，本节所有的讨论基于JDK1.8。
-ConcurrentHashMap的类继承关系并不复杂：
+          让我们用过思维导图总结一下 JDK 中所有的并发集合。
 
-可以
+在 JDK 的并发集合包中，一共有如下 7 个类：
+
+ConcurrentHashMap：高并发的HashMap
+ConcurrentSkipListMap：高并发下的TreeMap（基于跳表实现）
+ConcurrentSkipListSet
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_01_concurrent_hash_map_01/#more" rel="contents">
+            <a class="btn" href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_09_summary/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -443,7 +1259,7 @@ ConcurrentHashMap的类继承关系并不复杂：
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_concurrent/java_juc_01/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_08_concurrent_linked_deque/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -462,7 +1278,7 @@ ConcurrentHashMap的类继承关系并不复杂：
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/09/25/java_concurrent/java_juc_01/" itemprop="url">J.U.C 并发集合（一）：ConcurrentHashMap基础</a></h1>
+                <a class="post-title-link" href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_08_concurrent_linked_deque/" itemprop="url">J.U.C 并发集合（八）：ConcurrentLinkedDeque</a></h1>
         
 
         <div class="post-meta">
@@ -474,7 +1290,7 @@ ConcurrentHashMap的类继承关系并不复杂：
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T07:52:09+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T08:03:36+08:00">
                 2019-09-25
               </time>
             
@@ -514,7 +1330,7 @@ ConcurrentHashMap的类继承关系并不复杂：
 
           
           
-             <span id="/2019/09/25/java_concurrent/java_juc_01/" class="leancloud_visitors" data-flag-title="J.U.C 并发集合（一）：ConcurrentHashMap基础">
+             <span id="/2019/09/25/java_concurrent_collection/java_concurrent_collection_08_concurrent_linked_deque/" class="leancloud_visitors" data-flag-title="J.U.C 并发集合（八）：ConcurrentLinkedDeque">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -547,14 +1363,14 @@ ConcurrentHashMap的类继承关系并不复杂：
       
         
           
-          ConcurrentHashMap是在JDK1.5时，J.U.C引入的一个同步集合工具类，顾名思义，这是一个线程安全的HashMap。不同版本的ConcurrentHashMap，内部实现机制千差万别，本节所有的讨论基于JDK1.8。
-ConcurrentHashMap的类继承关系并不复杂：
+          在开始讲ConcurrentLinkedDeque之前，我们先来了解下Deque这种数据结构，我们知道Queue是一种具有FIFO特点的数据结构，元素只能在队首进行“入队”操作，在队尾进行“出队”操作。
+Queue接口定义Queue的接口非常简单，一共只有三种类型的操作：入队、出队、读取。
 
-可以
+上述方
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/09/25/java_concurrent/java_juc_01/#more" rel="contents">
+            <a class="btn" href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_08_concurrent_linked_deque/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -607,7 +1423,7 @@ ConcurrentHashMap的类继承关系并不复杂：
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_blocking_queue/java_blocking_queue_09_summary/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_07_concurrent_linked_queue/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -626,7 +1442,7 @@ ConcurrentHashMap的类继承关系并不复杂：
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/09/25/java_blocking_queue/java_blocking_queue_09_summary/" itemprop="url">J.U.C 阻塞队列（九）：总结</a></h1>
+                <a class="post-title-link" href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_07_concurrent_linked_queue/" itemprop="url">J.U.C 并发集合（七）：ConcurrentLinkedQueue</a></h1>
         
 
         <div class="post-meta">
@@ -638,7 +1454,7 @@ ConcurrentHashMap的类继承关系并不复杂：
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T07:46:56+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T08:02:51+08:00">
                 2019-09-25
               </time>
             
@@ -661,8 +1477,8 @@ ConcurrentHashMap的类继承关系并不复杂：
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/阻塞队列系列/" itemprop="url" rel="index">
-                    <span itemprop="name">阻塞队列系列</span>
+                  <a href="/categories/并发集合系列/" itemprop="url" rel="index">
+                    <span itemprop="name">并发集合系列</span>
                   </a>
                 </span>
 
@@ -678,7 +1494,7 @@ ConcurrentHashMap的类继承关系并不复杂：
 
           
           
-             <span id="/2019/09/25/java_blocking_queue/java_blocking_queue_09_summary/" class="leancloud_visitors" data-flag-title="J.U.C 阻塞队列（九）：总结">
+             <span id="/2019/09/25/java_concurrent_collection/java_concurrent_collection_07_concurrent_linked_queue/" class="leancloud_visitors" data-flag-title="J.U.C 并发集合（七）：ConcurrentLinkedQueue">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -711,12 +1527,12 @@ ConcurrentHashMap的类继承关系并不复杂：
       
         
           
-          
-
-          
+          ConcurrentLinkedQueue是JDK1.5时随着J.U.C一起引入的一个支持并发环境的队列。从名字就可以看出来，ConcurrentLinkedQueue底层是基于链表实现的。
+Doug Lea在实现ConcurrentLinkedQueue时，并没有利用锁或底层同步原语，而是完全基于
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/09/25/java_blocking_queue/java_blocking_queue_09_summary/#more" rel="contents">
+            <a class="btn" href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_07_concurrent_linked_queue/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -769,7 +1585,7 @@ ConcurrentHashMap的类继承关系并不复杂：
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_blocking_queue/java_blocking_queue_08_linked_transfer_queue/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_06_copy_on_write_array_set/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -788,7 +1604,7 @@ ConcurrentHashMap的类继承关系并不复杂：
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/09/25/java_blocking_queue/java_blocking_queue_08_linked_transfer_queue/" itemprop="url">J.U.C 阻塞队列（八）：LinkedTransferQueue</a></h1>
+                <a class="post-title-link" href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_06_copy_on_write_array_set/" itemprop="url">J.U.C 并发集合（六）：CopyOnWriteArraySet</a></h1>
         
 
         <div class="post-meta">
@@ -800,7 +1616,7 @@ ConcurrentHashMap的类继承关系并不复杂：
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T07:45:55+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T08:02:03+08:00">
                 2019-09-25
               </time>
             
@@ -823,8 +1639,8 @@ ConcurrentHashMap的类继承关系并不复杂：
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/阻塞队列系列/" itemprop="url" rel="index">
-                    <span itemprop="name">阻塞队列系列</span>
+                  <a href="/categories/并发集合系列/" itemprop="url" rel="index">
+                    <span itemprop="name">并发集合系列</span>
                   </a>
                 </span>
 
@@ -840,7 +1656,7 @@ ConcurrentHashMap的类继承关系并不复杂：
 
           
           
-             <span id="/2019/09/25/java_blocking_queue/java_blocking_queue_08_linked_transfer_queue/" class="leancloud_visitors" data-flag-title="J.U.C 阻塞队列（八）：LinkedTransferQueue">
+             <span id="/2019/09/25/java_concurrent_collection/java_concurrent_collection_06_copy_on_write_array_set/" class="leancloud_visitors" data-flag-title="J.U.C 并发集合（六）：CopyOnWriteArraySet">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -873,12 +1689,11 @@ ConcurrentHashMap的类继承关系并不复杂：
       
         
           
-          LinkedTransferQueue 是在 JDK1.7 时，J.U.C 包新增的一种比较特殊的阻塞队列，它除了具备阻塞队列的常用功能外，还有一个比较特殊的 transfer 方法。
-12public class LinkedTransferQueue&lt;E&gt; extends Abstr
+          CopyOnWriteArraySet，是另一类适合并发环境的SET工具类，也是在JDK1.5时，随着J.U.C包一起引入的。我们之前已经介绍过了ConcurrentSkipListSet，ConcurrentSkipListSet底层基于Skip List（跳表）实现，其操作平均时间复杂度均为O(
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/09/25/java_blocking_queue/java_blocking_queue_08_linked_transfer_queue/#more" rel="contents">
+            <a class="btn" href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_06_copy_on_write_array_set/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -931,7 +1746,7 @@ ConcurrentHashMap的类继承关系并不复杂：
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_blocking_queue/java_blocking_queue_07_synchronous_queue/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_concurrent_collection/java_concurrent_collection_05_copy_on_write_array_list/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈树义">
@@ -950,7 +1765,7 @@ ConcurrentHashMap的类继承关系并不复杂：
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/09/25/java_blocking_queue/java_blocking_queue_07_synchronous_queue/" itemprop="url">J.U.C 阻塞队列（七）：SynchronousQueue</a></h1>
+                <a class="post-title-link" href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_05_copy_on_write_array_list/" itemprop="url">J.U.C 并发集合（五）：CopyOnWriteArrayList</a></h1>
         
 
         <div class="post-meta">
@@ -962,7 +1777,7 @@ ConcurrentHashMap的类继承关系并不复杂：
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T07:45:06+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T08:01:21+08:00">
                 2019-09-25
               </time>
             
@@ -985,8 +1800,8 @@ ConcurrentHashMap的类继承关系并不复杂：
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/阻塞队列系列/" itemprop="url" rel="index">
-                    <span itemprop="name">阻塞队列系列</span>
+                  <a href="/categories/并发集合系列/" itemprop="url" rel="index">
+                    <span itemprop="name">并发集合系列</span>
                   </a>
                 </span>
 
@@ -1002,7 +1817,7 @@ ConcurrentHashMap的类继承关系并不复杂：
 
           
           
-             <span id="/2019/09/25/java_blocking_queue/java_blocking_queue_07_synchronous_queue/" class="leancloud_visitors" data-flag-title="J.U.C 阻塞队列（七）：SynchronousQueue">
+             <span id="/2019/09/25/java_concurrent_collection/java_concurrent_collection_05_copy_on_write_array_list/" class="leancloud_visitors" data-flag-title="J.U.C 并发集合（五）：CopyOnWriteArrayList">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1035,827 +1850,15 @@ ConcurrentHashMap的类继承关系并不复杂：
       
         
           
-          SynchronousQueue 是 JDK 1.5 时，随着J.U.C包一起引入的一种阻塞队列，它实现了BlockingQueue接口。
-12public class SynchronousQueue&lt;E&gt; extends AbstractQueue&lt;E&gt;    imple
+          ArrayList是一种“列表”数据机构，其底层是通过数组来实现元素的随机访问。JDK1.5之前，如果想要在并发环境下使用“列表”，一般有以下3种方式：
+
+使用Vector类
+使用Collections.synchronizedList返回一个同步代理类；
+自己实现ArrayList的子类，并进行同
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/09/25/java_blocking_queue/java_blocking_queue_07_synchronous_queue/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-      
-    
-      
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_blocking_queue/java_blocking_queue_06_delayed_work_queue/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈树义">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="陈树义">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/25/java_blocking_queue/java_blocking_queue_06_delayed_work_queue/" itemprop="url">J.U.C 阻塞队列（六）：DelayedWorkQueue</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T07:44:10+08:00">
-                2019-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/阻塞队列系列/" itemprop="url" rel="index">
-                    <span itemprop="name">阻塞队列系列</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/09/25/java_blocking_queue/java_blocking_queue_06_delayed_work_queue/" class="leancloud_visitors" data-flag-title="J.U.C 阻塞队列（六）：DelayedWorkQueue">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          DelayedWorkQueue 是 ScheduledThreadPoolExecutor 中的内部类，它与 DelayQueue 一样继承了 AbstractQueue 接口，实现了 BlockingQueue 接口。
-12static class DelayedWorkQueue extend
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/09/25/java_blocking_queue/java_blocking_queue_06_delayed_work_queue/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-      
-    
-      
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_blocking_queue/java_blocking_queue_05_delay_queue/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈树义">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="陈树义">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/25/java_blocking_queue/java_blocking_queue_05_delay_queue/" itemprop="url">J.U.C 阻塞队列（五）：DelayQueue</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T07:43:25+08:00">
-                2019-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/阻塞队列系列/" itemprop="url" rel="index">
-                    <span itemprop="name">阻塞队列系列</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/09/25/java_blocking_queue/java_blocking_queue_05_delay_queue/" class="leancloud_visitors" data-flag-title="J.U.C 阻塞队列（五）：DelayQueue">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          DelayQueue 是 JDK 1.5 时，随着 J.U.C 包一起引入的一种阻塞队列，它实现了 BlockingQueue 接口，底层基于已有的 PriorityBlockingQueue 实现：
-
-DelayQueue 也是一种比较特殊的阻塞队列，从类声明也可以看出，DelayQueue 中的
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/09/25/java_blocking_queue/java_blocking_queue_05_delay_queue/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-      
-    
-      
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_blocking_queue/java_blocking_queue_04_priority_blocking_queue/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈树义">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="陈树义">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/25/java_blocking_queue/java_blocking_queue_04_priority_blocking_queue/" itemprop="url">J.U.C 阻塞队列（四）：PriorityBlockingQueue</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T07:42:35+08:00">
-                2019-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/阻塞队列系列/" itemprop="url" rel="index">
-                    <span itemprop="name">阻塞队列系列</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/09/25/java_blocking_queue/java_blocking_queue_04_priority_blocking_queue/" class="leancloud_visitors" data-flag-title="J.U.C 阻塞队列（四）：PriorityBlockingQueue">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          PriorityBlockingQueue，是在JDK1.5时，随着J.U.C包引入的一种阻塞队列，它实现了 BlockingQueue 接口，底层基于堆实现：
-
-特性PriorityBlockingQueue 是一种无界阻塞队列，在构造的时候可以指定队列的初始容量，也可以不指定其容量。当队列容量不
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/09/25/java_blocking_queue/java_blocking_queue_04_priority_blocking_queue/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-      
-    
-      
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_blocking_queue/java_blocking_queue_03_linked_blocking_deque/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈树义">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="陈树义">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/25/java_blocking_queue/java_blocking_queue_03_linked_blocking_deque/" itemprop="url">J.U.C 阻塞队列（三）：LinkedBlockingDeque</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T07:40:52+08:00">
-                2019-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/阻塞队列系列/" itemprop="url" rel="index">
-                    <span itemprop="name">阻塞队列系列</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/09/25/java_blocking_queue/java_blocking_queue_03_linked_blocking_deque/" class="leancloud_visitors" data-flag-title="J.U.C 阻塞队列（三）：LinkedBlockingDeque">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          J.U.C 阻塞队列（三）：LinkedBlockingDequeLinkedBlockingDeque 是在JDK1.5时随着J.U.C包引入的，实现了 BlockingDueue 接口，底层基于双链表实现：
-
-可以看到 LinkedBlockingDeque 是直接实现了 BlockingDeq
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/09/25/java_blocking_queue/java_blocking_queue_03_linked_blocking_deque/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-      
-    
-      
-        
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/java_blocking_queue/java_blocking_queue_02_linked_blocking_queue/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈树义">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="陈树义">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/25/java_blocking_queue/java_blocking_queue_02_linked_blocking_queue/" itemprop="url">J.U.C 阻塞队列（二）：LinkedBlockingQueue</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-25T07:39:47+08:00">
-                2019-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/阻塞队列系列/" itemprop="url" rel="index">
-                    <span itemprop="name">阻塞队列系列</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/09/25/java_blocking_queue/java_blocking_queue_02_linked_blocking_queue/" class="leancloud_visitors" data-flag-title="J.U.C 阻塞队列（二）：LinkedBlockingQueue">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          LinkedBlockingQueue是在JDK1.5时，随着J.U.C包引入的一种阻塞队列，它实现了BlockingQueue接口，底层基于单链表实现：
-
-在深入了解其源码之前，我们先用一个例子看看 LinkedBlockingQueue 是怎么使用的。
-123LinkedBlockingQueu
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/09/25/java_blocking_queue/java_blocking_queue_02_linked_blocking_queue/#more" rel="contents">
+            <a class="btn" href="/2019/09/25/java_concurrent_collection/java_concurrent_collection_05_copy_on_write_array_list/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1898,7 +1901,7 @@ DelayQueue 也是一种比较特殊的阻塞队列，从类声明也可以看出
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1944,7 +1947,7 @@ DelayQueue 也是一种比较特殊的阻塞队列，从类声明也可以看出
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">124</span>
+                  <span class="site-state-item-count">136</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1955,7 +1958,7 @@ DelayQueue 也是一种比较特殊的阻塞队列，从类声明也可以看出
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
